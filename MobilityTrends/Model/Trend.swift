@@ -14,6 +14,7 @@ enum GeoType: String, Codable {
     case subRegion = "sub-region"
 }
 
+
 enum TransportationType: String, Codable {
     case driving, walking, transit
 }

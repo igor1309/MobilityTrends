@@ -16,6 +16,10 @@
 		2A09EDF12463571B0021FC7D /* Trend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EDF02463571B0021FC7D /* Trend.swift */; };
 		2A09EDF3246357510021FC7D /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EDF2246357510021FC7D /* Store.swift */; };
 		2A09EDF62463593E0021FC7D /* SwiftPI in Frameworks */ = {isa = PBXBuildFile; productRef = 2A09EDF52463593E0021FC7D /* SwiftPI */; };
+		2A09EDF9246366EC0021FC7D /* CSVParcer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EDF8246366EC0021FC7D /* CSVParcer.swift */; };
+		2A09EDFC24636BDF0021FC7D /* Ext+URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EDFB24636BDF0021FC7D /* Ext+URLSession.swift */; };
+		2A09EDFF246377080021FC7D /* applemobilitytrends-2020-05-05.csv in Resources */ = {isa = PBXBuildFile; fileRef = 2A09EDFE246377070021FC7D /* applemobilitytrends-2020-05-05.csv */; };
+		2A09EE01246380900021FC7D /* TestFormWithPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EE00246380900021FC7D /* TestFormWithPickers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +33,10 @@
 		2A09EDEA246356910021FC7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2A09EDF02463571B0021FC7D /* Trend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trend.swift; sourceTree = "<group>"; };
 		2A09EDF2246357510021FC7D /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		2A09EDF8246366EC0021FC7D /* CSVParcer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVParcer.swift; sourceTree = "<group>"; };
+		2A09EDFB24636BDF0021FC7D /* Ext+URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+URLSession.swift"; sourceTree = "<group>"; };
+		2A09EDFE246377070021FC7D /* applemobilitytrends-2020-05-05.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "applemobilitytrends-2020-05-05.csv"; sourceTree = "<group>"; };
+		2A09EE00246380900021FC7D /* TestFormWithPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFormWithPickers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,8 +73,11 @@
 				2A09EDDC246356900021FC7D /* AppDelegate.swift */,
 				2A09EDDE246356900021FC7D /* SceneDelegate.swift */,
 				2A09EDE0246356900021FC7D /* ContentView.swift */,
+				2A09EE00246380900021FC7D /* TestFormWithPickers.swift */,
 				2A09EDF7246364BB0021FC7D /* Model */,
+				2A09EDFA246367080021FC7D /* Networking */,
 				2A09EDE2246356910021FC7D /* Assets.xcassets */,
+				2A09EDFD246376F50021FC7D /* Data */,
 				2A09EDE7246356910021FC7D /* LaunchScreen.storyboard */,
 				2A09EDEA246356910021FC7D /* Info.plist */,
 				2A09EDE4246356910021FC7D /* Preview Content */,
@@ -89,6 +100,23 @@
 				2A09EDF02463571B0021FC7D /* Trend.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		2A09EDFA246367080021FC7D /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				2A09EDF8246366EC0021FC7D /* CSVParcer.swift */,
+				2A09EDFB24636BDF0021FC7D /* Ext+URLSession.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		2A09EDFD246376F50021FC7D /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2A09EDFE246377070021FC7D /* applemobilitytrends-2020-05-05.csv */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,6 +183,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A09EDFF246377080021FC7D /* applemobilitytrends-2020-05-05.csv in Resources */,
 				2A09EDE9246356910021FC7D /* LaunchScreen.storyboard in Resources */,
 				2A09EDE6246356910021FC7D /* Preview Assets.xcassets in Resources */,
 				2A09EDE3246356910021FC7D /* Assets.xcassets in Resources */,
@@ -168,11 +197,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A09EDFC24636BDF0021FC7D /* Ext+URLSession.swift in Sources */,
 				2A09EDF3246357510021FC7D /* Store.swift in Sources */,
 				2A09EDDD246356900021FC7D /* AppDelegate.swift in Sources */,
 				2A09EDDF246356900021FC7D /* SceneDelegate.swift in Sources */,
 				2A09EDF12463571B0021FC7D /* Trend.swift in Sources */,
+				2A09EE01246380900021FC7D /* TestFormWithPickers.swift in Sources */,
 				2A09EDE1246356900021FC7D /* ContentView.swift in Sources */,
+				2A09EDF9246366EC0021FC7D /* CSVParcer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

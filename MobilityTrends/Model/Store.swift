@@ -46,10 +46,12 @@ final class Store: ObservableObject {
         updateRequested
             .flatMap { _ in
                 //  MARK: SUBSTITUTE THE PUBLISHER!
-                Just([Trend]())
+                MobilityTrendsAPI.getMobilityData(url: MobilityTrendsAPI.url)
         }
+        .subscribe(on: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
         .sink { [unowned self] value in
+            guard value.isNotEmpty else { return }
             self.trends = value
             self.createProperties()
         }
@@ -57,10 +59,10 @@ final class Store: ObservableObject {
     }
     
     private func createProperties() {
-        allRegions = trends.map { $0.region }
-        countries = trends.filter { $0.geoType == .country }.map { $0.region }
-        cities = trends.filter { $0.geoType == .city }.map { $0.region }
-        subRegions = trends.filter { $0.geoType == .subRegion }.map { $0.region }
+        allRegions = trends.map { $0.region }.removingDuplicates()
+        countries = trends.filter { $0.geoType == .country }.map { $0.region }.removingDuplicates()
+        cities = trends.filter { $0.geoType == .city }.map { $0.region }.removingDuplicates()
+        subRegions = trends.filter { $0.geoType == .subRegion }.map { $0.region }.removingDuplicates()
     }
     
     func fetch() {
