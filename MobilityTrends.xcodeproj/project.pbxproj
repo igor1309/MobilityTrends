@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,9 @@
 		2A09EDE3246356910021FC7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A09EDE2246356910021FC7D /* Assets.xcassets */; };
 		2A09EDE6246356910021FC7D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A09EDE5246356910021FC7D /* Preview Assets.xcassets */; };
 		2A09EDE9246356910021FC7D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A09EDE7246356910021FC7D /* LaunchScreen.storyboard */; };
+		2A09EDF12463571B0021FC7D /* Trend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EDF02463571B0021FC7D /* Trend.swift */; };
+		2A09EDF3246357510021FC7D /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EDF2246357510021FC7D /* Store.swift */; };
+		2A09EDF62463593E0021FC7D /* SwiftPI in Frameworks */ = {isa = PBXBuildFile; productRef = 2A09EDF52463593E0021FC7D /* SwiftPI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,8 @@
 		2A09EDE5246356910021FC7D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2A09EDE8246356910021FC7D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2A09EDEA246356910021FC7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2A09EDF02463571B0021FC7D /* Trend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trend.swift; sourceTree = "<group>"; };
+		2A09EDF2246357510021FC7D /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +36,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A09EDF62463593E0021FC7D /* SwiftPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +65,7 @@
 				2A09EDDC246356900021FC7D /* AppDelegate.swift */,
 				2A09EDDE246356900021FC7D /* SceneDelegate.swift */,
 				2A09EDE0246356900021FC7D /* ContentView.swift */,
+				2A09EDF7246364BB0021FC7D /* Model */,
 				2A09EDE2246356910021FC7D /* Assets.xcassets */,
 				2A09EDE7246356910021FC7D /* LaunchScreen.storyboard */,
 				2A09EDEA246356910021FC7D /* Info.plist */,
@@ -73,6 +80,15 @@
 				2A09EDE5246356910021FC7D /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		2A09EDF7246364BB0021FC7D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2A09EDF2246357510021FC7D /* Store.swift */,
+				2A09EDF02463571B0021FC7D /* Trend.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -91,6 +107,9 @@
 			dependencies = (
 			);
 			name = MobilityTrends;
+			packageProductDependencies = (
+				2A09EDF52463593E0021FC7D /* SwiftPI */,
+			);
 			productName = MobilityTrends;
 			productReference = 2A09EDD9246356900021FC7D /* MobilityTrends.app */;
 			productType = "com.apple.product-type.application";
@@ -119,6 +138,9 @@
 				Base,
 			);
 			mainGroup = 2A09EDD0246356900021FC7D;
+			packageReferences = (
+				2A09EDF42463593E0021FC7D /* XCRemoteSwiftPackageReference "SwiftPI" */,
+			);
 			productRefGroup = 2A09EDDA246356900021FC7D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -146,8 +168,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A09EDF3246357510021FC7D /* Store.swift in Sources */,
 				2A09EDDD246356900021FC7D /* AppDelegate.swift in Sources */,
 				2A09EDDF246356900021FC7D /* SceneDelegate.swift in Sources */,
+				2A09EDF12463571B0021FC7D /* Trend.swift in Sources */,
 				2A09EDE1246356900021FC7D /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -342,6 +366,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2A09EDF42463593E0021FC7D /* XCRemoteSwiftPackageReference "SwiftPI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/igor1309/SwiftPI.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2A09EDF52463593E0021FC7D /* SwiftPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2A09EDF42463593E0021FC7D /* XCRemoteSwiftPackageReference "SwiftPI" */;
+			productName = SwiftPI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2A09EDD1246356900021FC7D /* Project object */;
 }
