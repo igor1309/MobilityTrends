@@ -15,7 +15,7 @@ enum GeoType: String, CaseIterable, Codable {
 }
 
 
-enum TransportationType: String, CaseIterable, Codable {
+enum TransportType: String, CaseIterable, Codable {
     case driving, walking, transit
 }
 
@@ -24,7 +24,7 @@ struct Trend: Identifiable, Codable {
     let id = UUID()
     var region: String
     var geoType: GeoType
-    var transportationType: TransportationType
+    var transportType: TransportType
     //  MARK: for simplicity at first dates as strings
     var dates: [String]
     var series: [Double]

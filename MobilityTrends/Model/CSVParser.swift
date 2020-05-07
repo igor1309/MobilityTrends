@@ -27,7 +27,7 @@ enum CSVParser {
             
             trends.append(Trend(region: row[1],
                                 geoType: GeoType(rawValue: row[0])!,
-                                transportationType: TransportationType(rawValue: row[2])!,
+                                transportType: TransportType(rawValue: row[2])!,
                                 dates: Array(x),
                                 series: row.dropFirst(4).map { Double($0) ?? -1 }))
         }

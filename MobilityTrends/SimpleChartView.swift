@@ -13,8 +13,6 @@ struct SimpleChartView: View {
     @EnvironmentObject var store: Store
     
     @State private var showSearch = false
-    @State private var transportation = TransportationType.driving
-    @State private var region = "Moscow"
     
     var regionPicker: some View {
         HStack {
@@ -23,41 +21,38 @@ struct SimpleChartView: View {
             }) {
                 Image(systemName: "chevron.down")
                     .font(.headline)
-                Text(region)
+                Text(store.selectedRegion)
             }
         }
         .sheet(isPresented: $showSearch) {
             NavigationView {
-                SearchView(selection: self.$region)
+                SearchView(selection: self.$store.selectedRegion)
             }
             .environmentObject(self.store)
         }
     }
     
     var body: some View {
-        let originalSeries = store.series(for: region, transportationType: transportation)
-        let movingAverageSeries = store.movingAverageSeries(for: region, transportationType: transportation)
-        
-        return VStack {
-            Picker("Transportation Type", selection: $transportation) {
-                ForEach(TransportationType.allCases, id: \.self) { type in
+        VStack {
+            Picker("Transportation Type", selection: $store.transportation) {
+                ForEach(TransportType.allCases, id: \.self) { type in
                     Text(type.rawValue).tag(type)
                 }
             }
             .pickerStyle(SegmentedPickerStyle())
             
-            if originalSeries.isNotEmpty {
+            if store.originalSeries.isNotEmpty {
                 ZStack {
-                    LineGraphShape(series: movingAverageSeries, minY: originalSeries.min()!, maxY: originalSeries.max()!)
+                    LineGraphShape(series: store.movingAverageSeries, minY: store.originalSeries.min()!, maxY: store.originalSeries.max()!)
                         .stroke(Color.systemOrange, lineWidth: 2)
                     
-                    DotGraphShape(series: originalSeries, minY: originalSeries.min()!, maxY: originalSeries.max()!)
+                    DotGraphShape(series: store.originalSeries, minY: store.originalSeries.min()!, maxY: store.originalSeries.max()!)
                         .fill(Color.systemGray3)
                 }
                 .padding(.vertical)
             } else {
                 VStack {
-                    Text("No data for \(transportation.rawValue) in \(region)")
+                    Text("No data for \(store.transportation.rawValue) in \(store.selectedRegion)")
                         .padding(.top)
                         .foregroundColor(.systemRed)
                         .opacity(0.6)
@@ -77,7 +72,9 @@ struct SimpleChartView: View {
 
 struct SimpleChartView_Previews: PreviewProvider {
     static var previews: some View {
-        SimpleChartView()
-            .environmentObject(Store())
+        NavigationView {
+            SimpleChartView()
+        }
+        .environmentObject(Store())
     }
 }

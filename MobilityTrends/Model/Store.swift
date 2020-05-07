@@ -18,6 +18,9 @@ final class Store: ObservableObject {
     
     @Published private(set) var trends = [Trend]()
     
+    @Published var selectedRegion = "Moscow"
+    @Published var transportation = TransportType.driving
+    
     @Published var query: String = ""
     @Published var selectedGeoType = GeoType.country
     @Published var queryList = [String]()
@@ -27,28 +30,11 @@ final class Store: ObservableObject {
     var cities = [String]()
     var subRegions = [String]()
     
-    func series(for region: String, transportationType: TransportationType) -> [Double] {
-        guard let slice = trends.first(where: { $0.region == region && $0.transportationType == transportationType }) else {
-            return []
-        }
-        
-        return slice.series
+    var originalSeries: [Double] {
+        series(for: selectedRegion, transportType: transportation)
     }
-    
-    func movingAverageSeries(for region: String, transportationType: TransportationType) -> [Double] {
-        let original = series(for: region, transportationType: transportationType)
-        
-        guard original.isNotEmpty else { return [] }
-        
-        var maSeries = [Double]()
-        
-        for i in 0..<original.count {
-            let slice = original.prefix(i + 1).suffix(7)
-            let avg = slice.reduce(0, { $0 + $1 }) / Double(slice.count)
-            maSeries.append(avg)
-        }
-        
-        return maSeries
+    var movingAverageSeries: [Double] {
+        movingAverageSeries(for: selectedRegion, transportType: transportation)
     }
     
     init(_ filename: String = "apple-mobility.json") {
@@ -61,6 +47,11 @@ final class Store: ObservableObject {
         //  create properties
         createProperties()
         
+        //  create subscriptions
+        createSubscriptions()
+    }
+    
+    private func createSubscriptions() {
         //  create update (fetch) subscription
         updateRequested
             .flatMap { _ in
@@ -75,7 +66,9 @@ final class Store: ObservableObject {
             self?.trends = value
             self?.createProperties()
             
-            saveJSONToDocDir(data: self?.trends, filename: filename)
+            if self != nil {
+                self!.saveTrends()
+            }
         }
         .store(in: &cancellables)
         
@@ -84,13 +77,13 @@ final class Store: ObservableObject {
             .map { query, type in
                 query
         }
-            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
-            .map { self.queryResult(query: $0) }
-            .subscribe(on: DispatchQueue.global())
-            .receive(on: DispatchQueue.main)
-            .sink {
-                [weak self] in
-                self?.queryList = $0
+        .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+        .map { self.queryResult(query: $0) }
+        .subscribe(on: DispatchQueue.global())
+        .receive(on: DispatchQueue.main)
+        .sink {
+            [weak self] in
+            self?.queryList = $0
         }
         .store(in: &cancellables)
     }
@@ -129,10 +122,42 @@ final class Store: ObservableObject {
         }
     }
     
+    private func series(for region: String, transportType: TransportType) -> [Double] {
+        guard let slice = trends.first(where: { $0.region == region && $0.transportType == transportType }) else {
+            return []
+        }
+        
+        return slice.series
+    }
+    
+    private func movingAverageSeries(for region: String, transportType: TransportType) -> [Double] {
+        let original = series(for: region, transportType: transportType)
+        
+        guard original.isNotEmpty else { return [] }
+        
+        var maSeries = [Double]()
+        
+        for i in 0..<original.count {
+            let slice = original.prefix(i + 1).suffix(7)
+            let avg = slice.reduce(0, { $0 + $1 }) / Double(slice.count)
+            maSeries.append(avg)
+        }
+        
+        return maSeries
+    }
+    
     func loadTrends(_ filename: String) -> [Trend] {
         guard let savedDataSet: [Trend] = loadJSONFromDocDir(filename) else {
             return []
         }
         return savedDataSet
+    }
+    
+    private func saveTrends() {
+        guard trends.isNotEmpty else { return }
+        
+        DispatchQueue.main.async {
+            saveJSONToDocDir(data: self.trends, filename: self.filename)
+        }
     }
 }
