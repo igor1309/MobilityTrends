@@ -38,11 +38,11 @@ enum MobilityTrendsAPI {
 
 enum CSVParser {
     
-    static func getMobilityTrends() -> AnyPublisher<[Trend], Never> {
-        MobilityTrendsAPI.getMobilityData(url: MobilityTrendsAPI.url)
-            .map { CSVParser.parseCSVToTrends(csv: $0) }
-            .eraseToAnyPublisher()
-    }
+//    static func getMobilityTrends() -> AnyPublisher<[Trend], Never> {
+//        MobilityTrendsAPI.getMobilityData(url: MobilityTrendsAPI.url)
+//            .map { CSVParser.parseCSVToTrends(csv: $0) }
+//            .eraseToAnyPublisher()
+//    }
     
     
     static func parseCSVToTrends(csv: String) -> [Trend] {

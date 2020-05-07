@@ -43,14 +43,19 @@ final class Store: ObservableObject {
         
         //  create subscription
         updateRequested
-            .flatMap { _ in CSVParser.getMobilityTrends() }
-            .subscribe(on: DispatchQueue.global())
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] value in
-                guard value.isNotEmpty else { return }
-                self?.trends = value
-                self?.createProperties()
-                saveJSONToDocDir(data: self?.trends, filename: filename)
+            .flatMap { _ in
+                MobilityTrendsAPI.getMobilityData(url: MobilityTrendsAPI.url)
+        }
+        .map { CSVParser.parseCSVToTrends(csv: $0) }
+        .subscribe(on: DispatchQueue.global())
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] value in
+            guard value.isNotEmpty else { return }
+            
+            self?.trends = value
+            self?.createProperties()
+            
+            saveJSONToDocDir(data: self?.trends, filename: filename)
         }
         .store(in: &cancellables)
     }
