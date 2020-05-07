@@ -34,26 +34,23 @@ final class Store: ObservableObject {
     init(_ filename: String = "apple-mobility.json") {
         
         self.filename = filename
-
+        
         //  MARK: load dataSet from JSON
-        //  ...
         trends = loadTrends(filename)
         
-        //  create subscription
+        //  create properties
         createProperties()
         
         //  create subscription
         updateRequested
-            .flatMap { _ in
-                //  MARK: SUBSTITUTE THE PUBLISHER!
-                MobilityTrendsAPI.getMobilityData(url: MobilityTrendsAPI.url)
-        }
-        .subscribe(on: DispatchQueue.global())
-        .receive(on: DispatchQueue.main)
-        .sink { [unowned self] value in
-            guard value.isNotEmpty else { return }
-            self.trends = value
-            self.createProperties()
+            .flatMap { _ in CSVParser.getMobilityTrends() }
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                guard value.isNotEmpty else { return }
+                self?.trends = value
+                self?.createProperties()
+                saveJSONToDocDir(data: self?.trends, filename: filename)
         }
         .store(in: &cancellables)
     }
@@ -67,10 +64,6 @@ final class Store: ObservableObject {
     
     func fetch() {
         updateRequested.send("update")
-        
-        //  MARK: save
-        //  ...
-        saveJSONToDocDir(data: trends, filename: filename)
     }
     
     private var cancellables = Set<AnyCancellable>()

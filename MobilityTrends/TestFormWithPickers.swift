@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SwiftPI
 
 struct TestFormWithPickers: View {
     @EnvironmentObject var store: Store
@@ -19,6 +20,9 @@ struct TestFormWithPickers: View {
     var body: some View {
         NavigationView {
             Form {
+                Text("CHANGE FILE NAME TO GET NEW DATA!!!")
+                    .foregroundColor(.systemRed)
+                
                 Picker("Region", selection: $region) {
                     ForEach(store.allRegions, id: \.self) { item in
                         Text(item)
@@ -43,10 +47,10 @@ struct TestFormWithPickers: View {
                     }
                 }
             }
-            .navigationBarTitle(Text("Mobility Trends"), displayMode: .inline)
-        }
-        .onAppear {
-            self.store.fetch()
+            .navigationBarTitle(Text("Mobility Trends"), displayMode: .automatic)
+            .navigationBarItems(trailing: TrailingButtonSFSymbol("arrow.2.circlepath") {
+                self.store.fetch()
+            })
         }
     }
 }
@@ -55,6 +59,7 @@ struct TestFormWithPickers_Previews: PreviewProvider {
     static var previews: some View {
         TestFormWithPickers()
             .environmentObject(Store())
+            .environment(\.colorScheme, .dark)
     }
 }
 

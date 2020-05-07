@@ -12,7 +12,8 @@ struct ContentView: View {
     @EnvironmentObject var store: Store
     
     var body: some View {
-        TestFormWithPickers()
+        SearchViewTesting()
+//        TestFormWithPickers()
     }
 }
 
@@ -20,5 +21,6 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .environmentObject(Store())
+            .environment(\.colorScheme, .dark)
     }
 }

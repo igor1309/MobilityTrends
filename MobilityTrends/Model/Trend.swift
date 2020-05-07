@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum GeoType: String, Codable {
+enum GeoType: String, CaseIterable, Codable {
     case country = "country/region"
     case city = "city"
     case subRegion = "sub-region"
