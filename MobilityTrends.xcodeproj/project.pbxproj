@@ -21,6 +21,7 @@
 		2A09EDFF246377080021FC7D /* applemobilitytrends-2020-05-05.csv in Resources */ = {isa = PBXBuildFile; fileRef = 2A09EDFE246377070021FC7D /* applemobilitytrends-2020-05-05.csv */; };
 		2A09EE01246380900021FC7D /* TestFormWithPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EE00246380900021FC7D /* TestFormWithPickers.swift */; };
 		2A09EE03246382500021FC7D /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EE02246382500021FC7D /* SearchView.swift */; };
+		2A09EE052463FEBD0021FC7D /* CSVParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EE042463FEBD0021FC7D /* CSVParser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		2A09EDFE246377070021FC7D /* applemobilitytrends-2020-05-05.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "applemobilitytrends-2020-05-05.csv"; sourceTree = "<group>"; };
 		2A09EE00246380900021FC7D /* TestFormWithPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFormWithPickers.swift; sourceTree = "<group>"; };
 		2A09EE02246382500021FC7D /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		2A09EE042463FEBD0021FC7D /* CSVParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVParser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			children = (
 				2A09EDF2246357510021FC7D /* Store.swift */,
 				2A09EDF02463571B0021FC7D /* Trend.swift */,
+				2A09EE042463FEBD0021FC7D /* CSVParser.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 				2A09EDF3246357510021FC7D /* Store.swift in Sources */,
 				2A09EDDD246356900021FC7D /* AppDelegate.swift in Sources */,
 				2A09EDDF246356900021FC7D /* SceneDelegate.swift in Sources */,
+				2A09EE052463FEBD0021FC7D /* CSVParser.swift in Sources */,
 				2A09EDF12463571B0021FC7D /* Trend.swift in Sources */,
 				2A09EE01246380900021FC7D /* TestFormWithPickers.swift in Sources */,
 				2A09EDE1246356900021FC7D /* ContentView.swift in Sources */,
