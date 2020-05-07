@@ -146,7 +146,7 @@ final class Store: ObservableObject {
         return maSeries
     }
     
-    func loadTrends(_ filename: String) -> [Trend] {
+    private func loadTrends(_ filename: String) -> [Trend] {
         guard let savedDataSet: [Trend] = loadJSONFromDocDir(filename) else {
             return []
         }

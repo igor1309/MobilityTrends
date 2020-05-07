@@ -13,6 +13,7 @@ struct SimpleChartView: View {
     @EnvironmentObject var store: Store
     
     @State private var showSearch = false
+    @State private var showFavorites = false
     
     var regionPicker: some View {
         HStack {
@@ -25,10 +26,8 @@ struct SimpleChartView: View {
             }
         }
         .sheet(isPresented: $showSearch) {
-            NavigationView {
-                SearchView(selection: self.$store.selectedRegion)
-            }
-            .environmentObject(self.store)
+            SearchView(selection: self.$store.selectedRegion)
+                .environmentObject(self.store)
         }
     }
     
@@ -63,10 +62,21 @@ struct SimpleChartView: View {
         .padding()
         .navigationBarTitle(Text("Mobility Trends"), displayMode: .large)
         .navigationBarItems(
-            leading: regionPicker,
-            trailing: TrailingButtonSFSymbol("arrow.2.circlepath") {
-                self.store.fetch()
+            leading: HStack {
+                LeadingButtonSFSymbol("text.badge.star") {
+                    self.showFavorites = true
+                }
+                regionPicker
+            },
+            trailing: HStack {
+                TrailingButtonSFSymbol("text.badge.star") {
+                    self.showFavorites = true
+                }
+                TrailingButtonSFSymbol("arrow.2.circlepath") {
+                    self.store.fetch()
+                }
         })
+            .sh.
     }
 }
 

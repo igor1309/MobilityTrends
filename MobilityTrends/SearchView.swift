@@ -12,7 +12,7 @@ import SwiftPI
 struct SearchView: View {
     @Environment(\.presentationMode) var presentation
     @EnvironmentObject var store: Store
-        
+    
     @Binding var selection: String
     
     var geoTypePicker: some View {
@@ -50,34 +50,35 @@ struct SearchView: View {
     }
     
     var body: some View {
-        VStack {
-            
-            searchField
-                .padding(.top, 12)
-                .padding(.horizontal)
-            
-            geoTypePicker
-                .padding(.vertical, 3)
-                .padding(.horizontal)
-            
-            List {
-                ForEach(store.queryList, id: \.self) { item in
-                    HStack {
-                        Text(item)
-                        Spacer()
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        self.selection = item
-                        self.presentation.wrappedValue.dismiss()
+        NavigationView {
+            VStack {
+                searchField
+                    .padding(.top, 12)
+                    .padding(.horizontal)
+                
+                geoTypePicker
+                    .padding(.vertical, 3)
+                    .padding(.horizontal)
+                
+                List {
+                    ForEach(store.queryList, id: \.self) { item in
+                        HStack {
+                            Text(item)
+                            Spacer()
+                        }
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            self.selection = item
+                            self.presentation.wrappedValue.dismiss()
+                        }
                     }
                 }
             }
+            .navigationBarTitle(Text("Select Region"), displayMode: .inline)
+            .navigationBarItems(trailing: TrailingButtonSFSymbol("arrow.2.circlepath") {
+                self.store.fetch()
+            })
         }
-        .navigationBarTitle(Text("Select Region"), displayMode: .inline)
-        .navigationBarItems(trailing: TrailingButtonSFSymbol("arrow.2.circlepath") {
-            self.store.fetch()
-        })
     }
 }
 
@@ -85,9 +86,7 @@ struct SearchViewTesting: View {
     @State private var selection = ""
     
     var body: some View {
-        NavigationView {
-            SearchView(selection: $selection)
-        }
+        SearchView(selection: $selection)
     }
 }
 
