@@ -11,6 +11,7 @@ import SwiftPI
 
 struct SimpleChartView: View {
     @EnvironmentObject var store: Store
+    @EnvironmentObject var favoriteRegions: FavoriteRegions
     
     @State private var showSearch = false
     @State private var showFavorites = false
@@ -66,17 +67,25 @@ struct SimpleChartView: View {
                 LeadingButtonSFSymbol("text.badge.star") {
                     self.showFavorites = true
                 }
+                
                 regionPicker
             },
             trailing: HStack {
+                TrailingFavoriteToggleButton(region: $store.selectedRegion)
+                
                 TrailingButtonSFSymbol("text.badge.star") {
                     self.showFavorites = true
                 }
+                
                 TrailingButtonSFSymbol("arrow.2.circlepath") {
                     self.store.fetch()
                 }
         })
-            .sh.
+            .sheet(isPresented: $showFavorites) {
+                FavoriteRegionsView(selected: self.$store.selectedRegion)
+                    .environmentObject(self.store)
+                    .environmentObject(self.favoriteRegions)
+        }
     }
 }
 
@@ -86,5 +95,23 @@ struct SimpleChartView_Previews: PreviewProvider {
             SimpleChartView()
         }
         .environmentObject(Store())
+        .environmentObject(FavoriteRegions())
+    }
+}
+
+struct TrailingFavoriteToggleButton: View {
+    @EnvironmentObject var favoriteRegions: FavoriteRegions
+
+    @Binding var region: String
+    
+    var body: some View {
+        TrailingButtonSFSymbol(favoriteRegions.isFavorite(region: region) ? "star.circle" : "star") {
+            if self.favoriteRegions.isFavorite(region: self.region) {
+                self.favoriteRegions.delete(region: self.region)
+            } else {
+                self.favoriteRegions.add(region: self.region)
+            }
+        }
+        .foregroundColor(favoriteRegions.isFavorite(region: region) ? .systemOrange : .secondary)
     }
 }

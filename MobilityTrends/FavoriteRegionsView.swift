@@ -14,7 +14,7 @@ struct FavoriteRegionsView: View {
     
     @EnvironmentObject var store: Store
     
-    @ObservedObject var favoriteRegions = FavoriteRegions()
+    @EnvironmentObject var favoriteRegions: FavoriteRegions
     
     @Binding var selected: String
     
