@@ -48,10 +48,10 @@ struct SimpleChartView: View {
             
             if originalSeries.isNotEmpty {
                 ZStack {
-                    LineGraphShape(series: movingAverageSeries)
+                    LineGraphShape(series: movingAverageSeries, minY: originalSeries.min()!, maxY: originalSeries.max()!)
                         .stroke(Color.systemOrange, lineWidth: 2)
                     
-                    DotGraphShape(series: originalSeries)
+                    DotGraphShape(series: originalSeries, minY: originalSeries.min()!, maxY: originalSeries.max()!)
                         .fill(Color.systemGray3)
                 }
                 .padding(.vertical)
