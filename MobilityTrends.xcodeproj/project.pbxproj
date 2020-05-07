@@ -27,6 +27,7 @@
 		2A0BD5C0246435B800D98C96 /* DotGraphShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5BF246435B800D98C96 /* DotGraphShape.swift */; };
 		2A0BD5C22464529D00D98C96 /* FavoriteRegionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */; };
 		2A0BD5C4246452B300D98C96 /* FavoriteRegions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5C3246452B300D98C96 /* FavoriteRegions.swift */; };
+		2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF4360824649CEC00212222 /* BaseLineShape.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		2A0BD5BF246435B800D98C96 /* DotGraphShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotGraphShape.swift; sourceTree = "<group>"; };
 		2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRegionsView.swift; sourceTree = "<group>"; };
 		2A0BD5C3246452B300D98C96 /* FavoriteRegions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRegions.swift; sourceTree = "<group>"; };
+		2AF4360824649CEC00212222 /* BaseLineShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseLineShape.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,8 +92,7 @@
 				2A0BD5BB246420BB00D98C96 /* SimpleChartView.swift */,
 				2A09EE02246382500021FC7D /* SearchView.swift */,
 				2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */,
-				2A0BD5BD2464325200D98C96 /* LineGraphShape.swift */,
-				2A0BD5BF246435B800D98C96 /* DotGraphShape.swift */,
+				2AF4360524649C8200212222 /* Graph Shapes */,
 				2A09EDF7246364BB0021FC7D /* Model */,
 				2A09EDFA246367080021FC7D /* Networking */,
 				2A09EDFD246376F50021FC7D /* Data */,
@@ -146,6 +147,16 @@
 				2A09EE00246380900021FC7D /* TestFormWithPickers.swift */,
 			);
 			path = TEST;
+			sourceTree = "<group>";
+		};
+		2AF4360524649C8200212222 /* Graph Shapes */ = {
+			isa = PBXGroup;
+			children = (
+				2A0BD5BD2464325200D98C96 /* LineGraphShape.swift */,
+				2A0BD5BF246435B800D98C96 /* DotGraphShape.swift */,
+				2AF4360824649CEC00212222 /* BaseLineShape.swift */,
+			);
+			path = "Graph Shapes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -228,6 +239,7 @@
 			files = (
 				2A09EDFC24636BDF0021FC7D /* Ext+URLSession.swift in Sources */,
 				2A09EE03246382500021FC7D /* SearchView.swift in Sources */,
+				2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */,
 				2A09EDF3246357510021FC7D /* Store.swift in Sources */,
 				2A09EDDD246356900021FC7D /* AppDelegate.swift in Sources */,
 				2A09EDDF246356900021FC7D /* SceneDelegate.swift in Sources */,
