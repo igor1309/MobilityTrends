@@ -15,7 +15,7 @@ enum GeoType: String, CaseIterable, Codable {
 }
 
 
-enum TransportationType: String, Codable {
+enum TransportationType: String, CaseIterable, Codable {
     case driving, walking, transit
 }
 

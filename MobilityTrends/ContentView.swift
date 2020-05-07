@@ -7,20 +7,22 @@
 //
 
 import SwiftUI
+import SwiftPI
 
 struct ContentView: View {
-    @EnvironmentObject var store: Store
-    
     var body: some View {
-        SearchViewTesting()
-//        TestFormWithPickers()
+        NavigationView {
+            SimpleChartView()
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
-            .environmentObject(Store())
-            .environment(\.colorScheme, .dark)
+        NavigationView {
+            ContentView()
+        }
+        .environmentObject(Store())
+        .environment(\.colorScheme, .dark)
     }
 }

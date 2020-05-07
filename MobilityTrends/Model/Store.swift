@@ -18,6 +18,10 @@ final class Store: ObservableObject {
     
     @Published private(set) var trends = [Trend]()
     
+    @Published var query: String = ""
+    @Published var selectedGeoType = GeoType.country
+    @Published var queryList = [String]()
+    
     var allRegions = [String]()
     var countries = [String]()
     var cities = [String]()
@@ -31,6 +35,22 @@ final class Store: ObservableObject {
         return slice.series
     }
     
+    func movingAverageSeries(for region: String, transportationType: TransportationType) -> [Double] {
+        let original = series(for: region, transportationType: transportationType)
+        
+        guard original.isNotEmpty else { return [] }
+        
+        var maSeries = [Double]()
+        
+        for i in 0..<original.count {
+            let slice = original.prefix(i + 1).suffix(7)
+            let avg = slice.reduce(0, { $0 + $1 }) / Double(slice.count)
+            maSeries.append(avg)
+        }
+        
+        return maSeries
+    }
+    
     init(_ filename: String = "apple-mobility.json") {
         
         self.filename = filename
@@ -41,7 +61,7 @@ final class Store: ObservableObject {
         //  create properties
         createProperties()
         
-        //  create subscription
+        //  create update (fetch) subscription
         updateRequested
             .flatMap { _ in
                 MobilityTrendsAPI.getMobilityData(url: MobilityTrendsAPI.url)
@@ -58,6 +78,36 @@ final class Store: ObservableObject {
             saveJSONToDocDir(data: self?.trends, filename: filename)
         }
         .store(in: &cancellables)
+        
+        //  create search query subscription
+        Publishers.CombineLatest($query, $selectedGeoType)
+            .map { query, type in
+                query
+        }
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+            .map { self.queryResult(query: $0) }
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink {
+                [weak self] in
+                self?.queryList = $0
+        }
+        .store(in: &cancellables)
+    }
+    
+    func queryResult(query: String) -> [String] {
+        let array: [String]
+        
+        switch selectedGeoType {
+        case .country:
+            array = countries
+        case .city:
+            array = cities
+        case .subRegion:
+            array = subRegions
+        }
+        
+        return array.filter { $0.contains(query) }
     }
     
     private func createProperties() {

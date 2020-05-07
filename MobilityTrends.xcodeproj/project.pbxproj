@@ -22,6 +22,9 @@
 		2A09EE01246380900021FC7D /* TestFormWithPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EE00246380900021FC7D /* TestFormWithPickers.swift */; };
 		2A09EE03246382500021FC7D /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EE02246382500021FC7D /* SearchView.swift */; };
 		2A09EE052463FEBD0021FC7D /* CSVParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EE042463FEBD0021FC7D /* CSVParser.swift */; };
+		2A0BD5BC246420BB00D98C96 /* SimpleChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5BB246420BB00D98C96 /* SimpleChartView.swift */; };
+		2A0BD5BE2464325200D98C96 /* LineGraphShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5BD2464325200D98C96 /* LineGraphShape.swift */; };
+		2A0BD5C0246435B800D98C96 /* DotGraphShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5BF246435B800D98C96 /* DotGraphShape.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +44,9 @@
 		2A09EE00246380900021FC7D /* TestFormWithPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFormWithPickers.swift; sourceTree = "<group>"; };
 		2A09EE02246382500021FC7D /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		2A09EE042463FEBD0021FC7D /* CSVParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVParser.swift; sourceTree = "<group>"; };
+		2A0BD5BB246420BB00D98C96 /* SimpleChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleChartView.swift; sourceTree = "<group>"; };
+		2A0BD5BD2464325200D98C96 /* LineGraphShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphShape.swift; sourceTree = "<group>"; };
+		2A0BD5BF246435B800D98C96 /* DotGraphShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotGraphShape.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +83,9 @@
 				2A09EDDC246356900021FC7D /* AppDelegate.swift */,
 				2A09EDDE246356900021FC7D /* SceneDelegate.swift */,
 				2A09EDE0246356900021FC7D /* ContentView.swift */,
+				2A0BD5BB246420BB00D98C96 /* SimpleChartView.swift */,
+				2A0BD5BD2464325200D98C96 /* LineGraphShape.swift */,
+				2A0BD5BF246435B800D98C96 /* DotGraphShape.swift */,
 				2A09EE02246382500021FC7D /* SearchView.swift */,
 				2A09EE00246380900021FC7D /* TestFormWithPickers.swift */,
 				2A09EDF7246364BB0021FC7D /* Model */,
@@ -208,10 +217,13 @@
 				2A09EDF3246357510021FC7D /* Store.swift in Sources */,
 				2A09EDDD246356900021FC7D /* AppDelegate.swift in Sources */,
 				2A09EDDF246356900021FC7D /* SceneDelegate.swift in Sources */,
+				2A0BD5C0246435B800D98C96 /* DotGraphShape.swift in Sources */,
 				2A09EE052463FEBD0021FC7D /* CSVParser.swift in Sources */,
 				2A09EDF12463571B0021FC7D /* Trend.swift in Sources */,
 				2A09EE01246380900021FC7D /* TestFormWithPickers.swift in Sources */,
 				2A09EDE1246356900021FC7D /* ContentView.swift in Sources */,
+				2A0BD5BC246420BB00D98C96 /* SimpleChartView.swift in Sources */,
+				2A0BD5BE2464325200D98C96 /* LineGraphShape.swift in Sources */,
 				2A09EDF9246366EC0021FC7D /* MobilityTrendsAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
