@@ -53,3 +53,33 @@ struct LineGraphShape_Previews: PreviewProvider {
             .stroke()
     }
 }
+
+
+///  Baseline at 100
+struct BaseLineShape: Shape {
+    let minY: CGFloat
+    let maxY: CGFloat
+    
+    init(series: [Double], minY: Double? = nil, maxY: Double? = nil) {
+        if series.isEmpty {
+            self.minY = 0
+            self.maxY = 1
+        } else {
+            self.minY = CGFloat(minY ?? series.min()!)
+            self.maxY = CGFloat(maxY ?? series.max()!)
+        }
+    }
+    
+    func path(in rect: CGRect) -> Path {
+        let stepY: CGFloat = rect.height / (maxY - minY)
+        
+        return Path { path in
+            path.addLines([
+                CGPoint(x: 0,
+                        y: rect.height - (100 - minY) * stepY),
+                CGPoint(x: rect.width,
+                        y: rect.height - (100 - minY) * stepY)
+            ])
+        }
+    }
+}

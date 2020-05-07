@@ -14,6 +14,10 @@ final class FavoriteRegions: ObservableObject {
     
     @Published private(set) var regions = [String]()
     
+    func isFavorite(region: String) -> Bool {
+        regions.contains(region)
+    }
+    
     init(_ filename: String = "favorite-regions.json") {
         self.filename = filename
         
@@ -25,6 +29,11 @@ final class FavoriteRegions: ObservableObject {
         guard !regions.contains(region) else { return }
         
         regions.append(region)
+        save()
+    }
+    
+    func delete(region: String) {
+        regions.removeAll { $0 == region }
         save()
     }
     

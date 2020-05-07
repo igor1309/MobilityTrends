@@ -43,11 +43,17 @@ struct SimpleChartView: View {
             
             if store.originalSeries.isNotEmpty {
                 ZStack {
-                    LineGraphShape(series: store.movingAverageSeries, minY: store.originalSeries.min()!, maxY: store.originalSeries.max()!)
-                        .stroke(Color.systemOrange, lineWidth: 2)
+                    BaseLineShape(series: store.originalSeries, minY: store.originalSeries.min()!, maxY: store.originalSeries.max()!)
+                        .stroke()
                     
                     DotGraphShape(series: store.originalSeries, minY: store.originalSeries.min()!, maxY: store.originalSeries.max()!)
                         .fill(Color.systemGray3)
+                    
+                    LineGraphShape(series: store.originalSeries, minY: store.originalSeries.min()!, maxY: store.originalSeries.max()!)
+                        .stroke(Color.systemGray4, lineWidth: 0.5)
+                    
+                    LineGraphShape(series: store.movingAverageSeries, minY: store.originalSeries.min()!, maxY: store.originalSeries.max()!)
+                        .stroke(Color.systemOrange, lineWidth: 2)
                 }
                 .padding(.vertical)
             } else {
@@ -105,7 +111,7 @@ struct TrailingFavoriteToggleButton: View {
     @Binding var region: String
     
     var body: some View {
-        TrailingButtonSFSymbol(favoriteRegions.isFavorite(region: region) ? "star.circle" : "star") {
+        TrailingButtonSFSymbol(favoriteRegions.isFavorite(region: region) ? "star.fill" : "star") {
             if self.favoriteRegions.isFavorite(region: self.region) {
                 self.favoriteRegions.delete(region: self.region)
             } else {
