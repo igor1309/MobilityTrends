@@ -10,6 +10,7 @@ import SwiftUI
 import SwiftPI
 
 //  FOR NON-EMPTY SERIES ONLY!!!
+//  don't use with series that could be empty, always check before
 struct OneLineChartView: View {
     let baseline: Double = 100
     
@@ -36,6 +37,7 @@ struct OneLineChartView: View {
         }
         
         func yScale(originalLast: Double, maLast: Double) -> some View {
+            
             var legend: some View {
                 VStack(alignment: .trailing) {
                     if originalLast > maLast {
@@ -59,20 +61,20 @@ struct OneLineChartView: View {
                 ZStack(alignment: .trailing) {
                     /// min
                     Text(self.minY.formattedGrouped)
-                        .offset(y: geo.size.height / 2 - 8)
+                        .offset(y: geo.size.height / 2 - 9)
                     
                     /// max
                     Text(self.maxY.formattedGrouped)
-                        .offset(y: -geo.size.height / 2 + 8)
+                        .offset(y: -geo.size.height / 2 - 9)
                     
                     /// baseline
                     Text("Baseline")
                         .fixedSize()
-                        .offset(y: geo.size.height / CGFloat(self.maxY - self.minY) * CGFloat((self.maxY + self.minY) / 2 - self.baseline) - 8)
+                        .offset(y: geo.size.height / CGFloat(self.maxY - self.minY) * CGFloat((self.maxY + self.minY) / 2 - self.baseline) - 9)
                     
                     /// legend
                     legend
-                        .offset(y: geo.size.height / CGFloat(self.maxY - self.minY) * CGFloat((self.maxY + self.minY) / 2 - maLast) - 8)
+                        .offset(y: geo.size.height / CGFloat(self.maxY - self.minY) * CGFloat((self.maxY + self.minY) / 2 - maLast))
                 }
                 .foregroundColor(.tertiary)
                 .font(.caption)
