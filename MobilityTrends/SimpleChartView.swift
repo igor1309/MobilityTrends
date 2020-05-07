@@ -32,30 +32,76 @@ struct SimpleChartView: View {
         }
     }
     
+    func chart(original: [Double], movingAverage: [Double], minY: Double, maxY: Double) -> some View {
+        
+        func originalAndMovingAverageGraph(original: [Double], movingAverage: [Double], minY: Double, maxY: Double) -> some View {
+            
+            ZStack {
+                DotGraphShape(series: original, minY: minY, maxY: maxY)
+                    .fill(Color.systemGray3)
+                
+                LineGraphShape(series: original, minY: minY, maxY: maxY)
+                    .stroke(Color.systemGray4, lineWidth: 0.5)
+                
+                LineGraphShape(series: movingAverage, minY: minY, maxY: maxY)
+                    .stroke(Color.systemOrange, lineWidth: 2)
+                
+            }
+        }
+        
+        var yScale: some View {
+            ZStack(alignment: .leading) {
+                Text("???")
+                    .offset(y: 200)
+                
+                Text("Baseline")
+                
+                
+                Text("?????")
+                    .offset(y: -100)
+            }
+            .foregroundColor(.secondary)
+            .font(.caption)
+        }
+        
+        func simpleLegend(originalLast: Double, maLast: Double) -> some View {
+            VStack(alignment: .trailing) {
+                Text((originalLast/100).formattedPercentage)
+                    .foregroundColor(.secondary)
+                
+                Text((maLast/100).formattedPercentage)
+                    .foregroundColor(.systemOrange)
+            }
+            .font(.caption)
+        }
+        
+        return ZStack {
+            GraphGridShape(series: original, minY: minY, maxY: maxY)
+                .stroke(Color.green)
+            
+            BaseLineShape(series: original, minY: minY, maxY: maxY)
+                .stroke(Color.blue)//systemGray3)
+            
+            HStack(spacing: 0) {
+                yScale
+                
+                originalAndMovingAverageGraph(original: original, movingAverage: movingAverage, minY: minY, maxY: maxY)
+                
+                simpleLegend(originalLast: original.last!, maLast: movingAverage.last!)
+            }
+        }
+    }
+    
     var body: some View {
         VStack {
-            Picker("Transportation Type", selection: $store.transportation) {
-                ForEach(TransportType.allCases, id: \.self) { type in
-                    Text(type.rawValue).tag(type)
-                }
-            }
-            .pickerStyle(SegmentedPickerStyle())
+            TransportTypePicker(selection: $store.transportation)
             
             if store.originalSeries.isNotEmpty {
-                ZStack {
-                    BaseLineShape(series: store.originalSeries, minY: store.originalSeries.min()!, maxY: store.originalSeries.max()!)
-                        .stroke()
-                    
-                    DotGraphShape(series: store.originalSeries, minY: store.originalSeries.min()!, maxY: store.originalSeries.max()!)
-                        .fill(Color.systemGray3)
-                    
-                    LineGraphShape(series: store.originalSeries, minY: store.originalSeries.min()!, maxY: store.originalSeries.max()!)
-                        .stroke(Color.systemGray4, lineWidth: 0.5)
-                    
-                    LineGraphShape(series: store.movingAverageSeries, minY: store.originalSeries.min()!, maxY: store.originalSeries.max()!)
-                        .stroke(Color.systemOrange, lineWidth: 2)
-                }
-                .padding(.vertical)
+                chart(original: store.originalSeries,
+                      movingAverage: store.movingAverageSeries,
+                      minY:  store.originalSeries.min()!,
+                      maxY: store.originalSeries.max()!)
+                    .padding(.top)
             } else {
                 VStack {
                     Text("No data for \(store.transportation.rawValue) in \(store.selectedRegion)")
@@ -102,22 +148,5 @@ struct SimpleChartView_Previews: PreviewProvider {
         }
         .environmentObject(Store())
         .environmentObject(FavoriteRegions())
-    }
-}
-
-struct TrailingFavoriteToggleButton: View {
-    @EnvironmentObject var favoriteRegions: FavoriteRegions
-
-    @Binding var region: String
-    
-    var body: some View {
-        TrailingButtonSFSymbol(favoriteRegions.isFavorite(region: region) ? "star.fill" : "star") {
-            if self.favoriteRegions.isFavorite(region: self.region) {
-                self.favoriteRegions.delete(region: self.region)
-            } else {
-                self.favoriteRegions.add(region: self.region)
-            }
-        }
-        .foregroundColor(favoriteRegions.isFavorite(region: region) ? .systemOrange : .secondary)
     }
 }
