@@ -23,7 +23,7 @@ final class Store: ObservableObject {
     
     @Published var query: String = ""
     @Published var selectedGeoType = GeoType.country
-    @Published var queryList = [String]()
+    @Published var queryResult = [String]()
     
     var allRegions = [String]()
     var countries = [String]()
@@ -51,6 +51,14 @@ final class Store: ObservableObject {
         createSubscriptions()
     }
     
+    private var cancellables = Set<AnyCancellable>()
+    
+    deinit {
+        for cancell in cancellables {
+            cancell.cancel()
+        }
+    }
+    
     private func createSubscriptions() {
         //  create update (fetch) subscription
         updateRequested
@@ -74,24 +82,23 @@ final class Store: ObservableObject {
         
         //  create search query subscription
         Publishers.CombineLatest($query, $selectedGeoType)
+            .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
             .map { query, type in
-                query
+                self.queryList(query: query, type: type)
         }
-        .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
-        .map { self.queryResult(query: $0) }
         .subscribe(on: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
         .sink {
             [weak self] in
-            self?.queryList = $0
+            self?.queryResult = $0
         }
         .store(in: &cancellables)
     }
     
-    func queryResult(query: String) -> [String] {
+    func queryList(query: String, type: GeoType) -> [String] {
         let array: [String]
         
-        switch selectedGeoType {
+        switch type {
         case .country:
             array = countries
         case .city:
@@ -116,14 +123,6 @@ final class Store: ObservableObject {
     
     func fetch() {
         updateRequested.send("update")
-    }
-    
-    private var cancellables = Set<AnyCancellable>()
-    
-    deinit {
-        for cancell in cancellables {
-            cancell.cancel()
-        }
     }
     
     private func series(for region: String, transportType: TransportType) -> [Double] {

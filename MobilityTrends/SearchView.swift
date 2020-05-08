@@ -61,7 +61,7 @@ struct SearchView: View {
                     .padding(.horizontal)
                 
                 List {
-                    ForEach(store.queryList, id: \.self) { item in
+                    ForEach(store.queryResult, id: \.self) { item in
                         HStack {
                             Text(item)
                             Spacer()
