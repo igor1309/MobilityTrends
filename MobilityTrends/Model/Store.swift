@@ -86,11 +86,15 @@ final class Store: ObservableObject {
             .flatMap { _ in
                 MobilityTrendsAPI.getMobilityData(url: MobilityTrendsAPI.url)
         }
-        .map { CSVParser.parseCSVToTrends(csv: $0) }
+        .tryMap { try CSVParser.parseCSVToTrends(csv: $0) }
+        .catch { _ in Just([]) }
         .subscribe(on: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
         .sink { [weak self] value in
-            guard value.isNotEmpty else { return }
+            guard value.isNotEmpty else {
+                print("parser returned empty array, no new data")
+                return
+            }
             
             print("fetched on-empty data")
             
@@ -132,8 +136,8 @@ final class Store: ObservableObject {
         
         return array.filter {
             query.isNotEmpty
-            ? $0.contains(query)
-            : true
+                ? $0.contains(query)
+                : true
         }
     }
     

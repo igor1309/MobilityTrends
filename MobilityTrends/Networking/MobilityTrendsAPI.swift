@@ -31,7 +31,8 @@ enum MobilityTrendsAPI {
             .map { String(data: $0.data, encoding: .utf8)! }
             //  .mapError{ _ in FetchError.genericError }
             .catch { _ in Just("") }
-            .map { CSVParser.parseCSVToTrends(csv: $0) }
+            .tryMap { try CSVParser.parseCSVToTrends(csv: $0) }
+            .catch { _ in Just([]) }
             .eraseToAnyPublisher()
     }
 }
