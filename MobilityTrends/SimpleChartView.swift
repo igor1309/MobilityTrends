@@ -69,10 +69,8 @@ struct SimpleChartView: View {
 
 struct SimpleChartView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            SimpleChartView()
-        }
-        .environmentObject(Store())
-        .environmentObject(FavoriteRegions())
+        SimpleChartView()
+            .environmentObject(Store())
+            .environmentObject(FavoriteRegions())
     }
 }

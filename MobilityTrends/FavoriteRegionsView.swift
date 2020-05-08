@@ -13,7 +13,6 @@ struct FavoriteRegionsView: View {
     @Environment(\.presentationMode) var presentation
     
     @EnvironmentObject var store: Store
-    
     @EnvironmentObject var favoriteRegions: FavoriteRegions
     
     @Binding var selected: String
@@ -72,6 +71,8 @@ struct FavoriteRegionsView: View {
 struct FavoriteRegionsView_Previews: PreviewProvider {
     static var previews: some View {
         FavoriteRegionsView(selected: .constant("Moscow"))
+            .environmentObject(Store())
+            .environmentObject(FavoriteRegions())
             .environment(\.colorScheme, .dark)
     }
 }

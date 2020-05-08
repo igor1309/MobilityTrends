@@ -12,17 +12,16 @@ import SwiftPI
 struct ContentView: View {
     var body: some View {
         CountryTrendsView()
-//        SearchViewTesting()
-//        SimpleChartView()
+        //        SearchViewTesting()
+        //        SimpleChartView()
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            ContentView()
-        }
-        .environmentObject(Store())
-        .environment(\.colorScheme, .dark)
+        ContentView()
+            .environmentObject(Store())
+            .environmentObject(FavoriteRegions())
+            .environment(\.colorScheme, .dark)
     }
 }

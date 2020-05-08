@@ -50,7 +50,10 @@ struct FavoriteToggleButtonTesting: View {
 
 struct FavoriteToggleButton_Previews: PreviewProvider {
     static var previews: some View {
-        FavoriteToggleButtonTesting()
-            .environmentObject(FavoriteRegions())
+        Group {
+            FavoriteToggleButton(region: "Moscow")
+            FavoriteToggleButtonTesting()
+        }
+        .environmentObject(FavoriteRegions())
     }
 }

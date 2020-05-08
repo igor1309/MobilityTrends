@@ -115,7 +115,6 @@
 				2A28BB1D24656AC20041EDD5 /* CountryTrendsView.swift */,
 				2A0BD5BB246420BB00D98C96 /* SimpleChartView.swift */,
 				2A28BB0E2464AC9A0041EDD5 /* OneLineChartView.swift */,
-				2A28BB0A2464A2F70041EDD5 /* TransportTypePicker.swift */,
 				2A09EE02246382500021FC7D /* SearchView.swift */,
 				2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */,
 				2AF4360524649C8200212222 /* Graph Shapes */,
@@ -180,6 +179,7 @@
 		2A28BB2524657ABA0041EDD5 /* Supporting Views */ = {
 			isa = PBXGroup;
 			children = (
+				2A28BB0A2464A2F70041EDD5 /* TransportTypePicker.swift */,
 				2A28BB1F24656C1B0041EDD5 /* RegionPicker.swift */,
 				2A28BB2124656F130041EDD5 /* FavoriteRegionPicker.swift */,
 				2A28BB23246573130041EDD5 /* FetchDataButton.swift */,
