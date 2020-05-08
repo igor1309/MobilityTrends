@@ -33,6 +33,11 @@
 		2A28BB0F2464AC9A0041EDD5 /* OneLineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB0E2464AC9A0041EDD5 /* OneLineChartView.swift */; };
 		2A28BB1E24656AC30041EDD5 /* CountryTrendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB1D24656AC20041EDD5 /* CountryTrendsView.swift */; };
 		2A28BB2024656C1B0041EDD5 /* RegionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB1F24656C1B0041EDD5 /* RegionPicker.swift */; };
+		2A28BB2224656F130041EDD5 /* FavoriteRegionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB2124656F130041EDD5 /* FavoriteRegionPicker.swift */; };
+		2A28BB24246573130041EDD5 /* FetchDataButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB23246573130041EDD5 /* FetchDataButton.swift */; };
+		2A28BB2724657BA90041EDD5 /* FavoriteToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB2624657BA90041EDD5 /* FavoriteToggleButton.swift */; };
+		2A28BB29246582320041EDD5 /* GeoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB28246582320041EDD5 /* GeoType.swift */; };
+		2A28BB2B246582470041EDD5 /* TransportType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB2A246582470041EDD5 /* TransportType.swift */; };
 		2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF4360824649CEC00212222 /* BaseLineShape.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +69,11 @@
 		2A28BB0E2464AC9A0041EDD5 /* OneLineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneLineChartView.swift; sourceTree = "<group>"; };
 		2A28BB1D24656AC20041EDD5 /* CountryTrendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryTrendsView.swift; sourceTree = "<group>"; };
 		2A28BB1F24656C1B0041EDD5 /* RegionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPicker.swift; sourceTree = "<group>"; };
+		2A28BB2124656F130041EDD5 /* FavoriteRegionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRegionPicker.swift; sourceTree = "<group>"; };
+		2A28BB23246573130041EDD5 /* FetchDataButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchDataButton.swift; sourceTree = "<group>"; };
+		2A28BB2624657BA90041EDD5 /* FavoriteToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteToggleButton.swift; sourceTree = "<group>"; };
+		2A28BB28246582320041EDD5 /* GeoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoType.swift; sourceTree = "<group>"; };
+		2A28BB2A246582470041EDD5 /* TransportType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportType.swift; sourceTree = "<group>"; };
 		2AF4360824649CEC00212222 /* BaseLineShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseLineShape.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,11 +111,10 @@
 				2A09EDDC246356900021FC7D /* AppDelegate.swift */,
 				2A09EDDE246356900021FC7D /* SceneDelegate.swift */,
 				2A09EDE0246356900021FC7D /* ContentView.swift */,
-				2A28BB1F24656C1B0041EDD5 /* RegionPicker.swift */,
+				2A28BB2524657ABA0041EDD5 /* Supporting Views */,
 				2A28BB1D24656AC20041EDD5 /* CountryTrendsView.swift */,
 				2A0BD5BB246420BB00D98C96 /* SimpleChartView.swift */,
 				2A28BB0E2464AC9A0041EDD5 /* OneLineChartView.swift */,
-				2A28BB082464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift */,
 				2A28BB0A2464A2F70041EDD5 /* TransportTypePicker.swift */,
 				2A09EE02246382500021FC7D /* SearchView.swift */,
 				2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */,
@@ -135,6 +144,8 @@
 			children = (
 				2A09EDF2246357510021FC7D /* Store.swift */,
 				2A09EDF02463571B0021FC7D /* Trend.swift */,
+				2A28BB28246582320041EDD5 /* GeoType.swift */,
+				2A28BB2A246582470041EDD5 /* TransportType.swift */,
 				2A09EE042463FEBD0021FC7D /* CSVParser.swift */,
 				2A0BD5C3246452B300D98C96 /* FavoriteRegions.swift */,
 			);
@@ -164,6 +175,18 @@
 				2A09EE00246380900021FC7D /* TestFormWithPickers.swift */,
 			);
 			path = TEST;
+			sourceTree = "<group>";
+		};
+		2A28BB2524657ABA0041EDD5 /* Supporting Views */ = {
+			isa = PBXGroup;
+			children = (
+				2A28BB1F24656C1B0041EDD5 /* RegionPicker.swift */,
+				2A28BB2124656F130041EDD5 /* FavoriteRegionPicker.swift */,
+				2A28BB23246573130041EDD5 /* FetchDataButton.swift */,
+				2A28BB2624657BA90041EDD5 /* FavoriteToggleButton.swift */,
+				2A28BB082464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift */,
+			);
+			path = "Supporting Views";
 			sourceTree = "<group>";
 		};
 		2AF4360524649C8200212222 /* Graph Shapes */ = {
@@ -262,7 +285,10 @@
 				2A09EDF3246357510021FC7D /* Store.swift in Sources */,
 				2A09EDDD246356900021FC7D /* AppDelegate.swift in Sources */,
 				2A09EDDF246356900021FC7D /* SceneDelegate.swift in Sources */,
+				2A28BB2724657BA90041EDD5 /* FavoriteToggleButton.swift in Sources */,
 				2A0BD5C0246435B800D98C96 /* DotGraphShape.swift in Sources */,
+				2A28BB2B246582470041EDD5 /* TransportType.swift in Sources */,
+				2A28BB24246573130041EDD5 /* FetchDataButton.swift in Sources */,
 				2A09EE052463FEBD0021FC7D /* CSVParser.swift in Sources */,
 				2A09EDF12463571B0021FC7D /* Trend.swift in Sources */,
 				2A09EE01246380900021FC7D /* TestFormWithPickers.swift in Sources */,
@@ -270,10 +296,12 @@
 				2A28BB1E24656AC30041EDD5 /* CountryTrendsView.swift in Sources */,
 				2A0BD5C22464529D00D98C96 /* FavoriteRegionsView.swift in Sources */,
 				2A28BB0B2464A2F70041EDD5 /* TransportTypePicker.swift in Sources */,
+				2A28BB29246582320041EDD5 /* GeoType.swift in Sources */,
 				2A0BD5BC246420BB00D98C96 /* SimpleChartView.swift in Sources */,
 				2A0BD5BE2464325200D98C96 /* LineGraphShape.swift in Sources */,
 				2A28BB0F2464AC9A0041EDD5 /* OneLineChartView.swift in Sources */,
 				2A28BB0D2464A47F0041EDD5 /* GraphGridShape.swift in Sources */,
+				2A28BB2224656F130041EDD5 /* FavoriteRegionPicker.swift in Sources */,
 				2A28BB2024656C1B0041EDD5 /* RegionPicker.swift in Sources */,
 				2A0BD5C4246452B300D98C96 /* FavoriteRegions.swift in Sources */,
 				2A09EDF9246366EC0021FC7D /* MobilityTrendsAPI.swift in Sources */,

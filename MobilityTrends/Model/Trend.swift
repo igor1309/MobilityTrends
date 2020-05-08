@@ -8,18 +8,6 @@
 
 import Foundation
 
-enum GeoType: String, CaseIterable, Codable {
-    case country = "country/region"
-    case city = "city"
-    case subRegion = "sub-region"
-}
-
-
-enum TransportType: String, CaseIterable, Codable {
-    case driving, walking, transit
-}
-
-
 struct Trend: Identifiable, Codable {
     let id = UUID()
     var region: String

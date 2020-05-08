@@ -33,8 +33,17 @@ final class Store: ObservableObject {
     var originalSeries: [Double] {
         series(for: selectedRegion, transportType: transportation)
     }
+    
     var movingAverageSeries: [Double] {
         movingAverageSeries(for: selectedRegion, transportType: transportation)
+    }
+    
+    //  MARK: - FINISH WITH THIS - IT SHOULD BE SMART!!
+    var selectedRegionMinY: Double {
+        0
+    }
+    var selectedRegionMaxY: Double {
+        150
     }
     
     init(_ filename: String = "apple-mobility.json") {
@@ -70,6 +79,8 @@ final class Store: ObservableObject {
         .receive(on: DispatchQueue.main)
         .sink { [weak self] value in
             guard value.isNotEmpty else { return }
+            
+            print("fetched on-empty data")
             
             self?.trends = value
             self?.createProperties()
@@ -125,7 +136,7 @@ final class Store: ObservableObject {
         updateRequested.send("update")
     }
     
-    private func series(for region: String, transportType: TransportType) -> [Double] {
+    func series(for region: String, transportType: TransportType) -> [Double] {
         guard let slice = trends.first(where: { $0.region == region && $0.transportType == transportType }) else {
             return []
         }
@@ -133,7 +144,7 @@ final class Store: ObservableObject {
         return slice.series
     }
     
-    private func movingAverageSeries(for region: String, transportType: TransportType) -> [Double] {
+    func movingAverageSeries(for region: String, transportType: TransportType) -> [Double] {
         let original = series(for: region, transportType: transportType)
         
         guard original.isNotEmpty else { return [] }

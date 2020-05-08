@@ -29,5 +29,6 @@ struct TrailingFavoriteToggleButton: View {
 struct TrailingFavoriteToggleButton_Previews: PreviewProvider {
     static var previews: some View {
         TrailingFavoriteToggleButton(region: .constant("Moscow"))
+            .environmentObject(FavoriteRegions())
     }
 }

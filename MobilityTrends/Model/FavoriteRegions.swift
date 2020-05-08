@@ -14,15 +14,15 @@ final class FavoriteRegions: ObservableObject {
     
     @Published private(set) var regions = [String]()
     
-    func isFavorite(region: String) -> Bool {
-        regions.contains(region)
-    }
-    
     init(_ filename: String = "favorite-regions.json") {
         self.filename = filename
         
         //  load regions from JSON
         self.regions = load(filename)
+    }
+    
+    func isFavorite(region: String) -> Bool {
+        regions.contains(region)
     }
     
     func add(region: String) {
@@ -35,6 +35,14 @@ final class FavoriteRegions: ObservableObject {
     func delete(region: String) {
         regions.removeAll { $0 == region }
         save()
+    }
+    
+    func toggleFavorite(region: String) {
+        if isFavorite(region: region) {
+            delete(region: region)
+        } else {
+            add(region: region)
+        }
     }
     
     func move(from source: IndexSet, to destination: Int) {
