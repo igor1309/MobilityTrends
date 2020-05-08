@@ -39,11 +39,23 @@ final class Store: ObservableObject {
     }
     
     //  MARK: - FINISH WITH THIS - IT SHOULD BE SMART!!
+    //  - to define Y Ssale
+    //  - to use moving average
     var selectedRegionMinY: Double {
-        0
+        let min = trends
+            .filter { $0.region == selectedRegion }
+            .flatMap { $0.series }
+            .min()
+        
+        return min ?? 1
     }
     var selectedRegionMaxY: Double {
-        150
+        let max = trends
+            .filter { $0.region == selectedRegion }
+            .flatMap { $0.series }
+            .max()
+        
+        return max ?? 1
     }
     
     init(_ filename: String = "apple-mobility.json") {

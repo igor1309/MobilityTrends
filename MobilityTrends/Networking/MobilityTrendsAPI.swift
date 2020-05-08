@@ -13,9 +13,9 @@ enum MobilityTrendsAPI {
     
     static let base = "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev49/v2/en-us/"
     //  MARK: - CHANGING URL!!!
-    static let CHANGINGurlPART = "applemobilitytrends-2020-05-05.csv"
+    static let CHANGINGurlPART = "applemobilitytrends-2020-05-06.csv"
     
-    static let url = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev49/v2/en-us/applemobilitytrends-2020-05-05.csv")!
+    static let url = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev49/v2/en-us/applemobilitytrends-2020-05-06.csv")!
     
     
     static func getMobilityData(url: URL) -> AnyPublisher<String, Never> {
