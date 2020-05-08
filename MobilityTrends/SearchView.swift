@@ -38,7 +38,7 @@ struct SearchView: View {
                 }) {
                     Image(systemName: "xmark.circle.fill")
                         .imageScale(.small)
-                        .foregroundColor(.accentColor)
+                        .foregroundColor(.tertiary)
                 }
             }
         }
