@@ -77,7 +77,7 @@ final class Store: ObservableObject {
             .map { query, type in
                 query
         }
-        .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+        .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
         .map { self.queryResult(query: $0) }
         .subscribe(on: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
@@ -100,7 +100,11 @@ final class Store: ObservableObject {
             array = subRegions
         }
         
-        return array.filter { $0.contains(query) }
+        return array.filter {
+            query.isNotEmpty
+            ? $0.contains(query)
+            : true
+        }
     }
     
     private func createProperties() {
