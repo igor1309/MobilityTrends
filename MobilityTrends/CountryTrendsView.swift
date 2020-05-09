@@ -7,12 +7,13 @@
 //
 
 import SwiftUI
+import SwiftPI
 
 struct CountryTrendsHeader: View {
     @EnvironmentObject var store: Store
-
+    
     var body: some View {
-        HStack {
+        HStack(spacing: 16) {
             FavoriteRegionPicker(selectedRegion: $store.selectedRegion)
             RegionPicker(selectedRegion: $store.selectedRegion)
                 .font(.headline)
@@ -28,33 +29,11 @@ struct CountryTrendsView: View {
     @EnvironmentObject var store: Store
     @EnvironmentObject var favoriteRegions: FavoriteRegions
     
-    let baseline: Double = 100
-    
-    var storeChecker: some View {
-        VStack {
-            Divider()
-            Form {
-                Section(header: Text("First five regions:".uppercased())) {
-                    ForEach(store.allRegions.prefix(5), id: \.self) { region in
-                        Text(region)
-                    }
-                }
-                
-                Section(header: Text("Favorite regions:".uppercased())) {
-                    ForEach(favoriteRegions.regions, id: \.self) { region in
-                        Text(region)
-                    }
-                }
-            }
-        }
-        .foregroundColor(.secondary)
-    }
-    
-    
     var body: some View {
         
         let minY = self.store.selectedRegionMinY
         let maxY = self.store.selectedRegionMaxY
+        let maAvg: Double = store.lastMovingAverageAverage
         
         func lineGraph(transportType: TransportType) -> LineGraphShape {
             LineGraphShape(
@@ -64,14 +43,14 @@ struct CountryTrendsView: View {
                 minY: minY,
                 maxY: maxY)
         }
-
+        
         func yScale(originalLast: Double, maLast: Double) -> some View {
             
             var legend: some View {
                 VStack(alignment: .trailing) {
-                    ForEach(TransportType.allCases, id: \.self) { transportType in
-                        Text("TBD%")
-                            .foregroundColor(transportType.color)
+                    ForEach(store.lastMovingAverageForSelectedRegion, id: \.self) { tail in
+                        Text((tail.last/100).formattedPercentage)
+                            .foregroundColor(tail.type.color)
                             .font(.footnote)
                     }
                 }
@@ -91,11 +70,11 @@ struct CountryTrendsView: View {
                     /// baseline
                     Text("Baseline")
                         .fixedSize()
-                        .offset(y: geo.size.height / CGFloat(maxY - minY) * CGFloat((maxY + minY) / 2 - self.baseline) - 9)
+                        .offset(y: geo.size.height / CGFloat(maxY - minY) * CGFloat((maxY + minY) / 2 - self.store.baseline) - 9)
                     //
                     /// legend
                     legend
-                        .offset(y: geo.size.height / CGFloat(maxY - minY) * CGFloat((maxY + minY) / 2 - maLast))
+                        .offset(y: geo.size.height / CGFloat(maxY - minY) * CGFloat((maxY + minY) / 2 - maAvg) - 9)
                 }
                 .foregroundColor(.tertiary)
                 .font(.caption)
@@ -104,40 +83,46 @@ struct CountryTrendsView: View {
         }
         
         return VStack {
-            
             CountryTrendsHeader()
+            
+            if store.trends.isNotEmpty {
+                VStack {
+                    
+                    ZStack(alignment: .topLeading) {
                         
-            ZStack(alignment: .topLeading) {
-                
-                VStack(alignment: .leading) {
-                    ForEach(TransportType.allCases, id: \.self) { transportType in
-                        Text(transportType.rawValue)
-                            .foregroundColor(transportType.color)
-                            .font(.footnote)
-                    }
-                }
-                .padding()
-                
-                GraphGridShape(series: [100], minY: minY, maxY: maxY)
-                    .stroke(Color.systemGray3, lineWidth: 0.5)
-                
-                BaseLineShape(series: [100], minY: minY, maxY: maxY)
-                    .stroke(Color.systemGray3)
-                
-                
-                HStack(spacing: -20) {
-                    ZStack {
-                        ForEach(TransportType.allCases, id: \.self) { transportType in
+                        VStack(alignment: .leading) {
+                            ForEach(TransportType.allCases, id: \.self) { transportType in
+                                Text(transportType.rawValue)
+                                    .foregroundColor(transportType.color)
+                                    .font(.footnote)
+                            }
+                        }
+                        .padding()
+                        
+                        GraphGridShape(series: [100], minY: minY, maxY: maxY)
+                            .stroke(Color.systemGray3, lineWidth: 0.5)
+                        
+                        BaseLineShape(series: [100], minY: minY, maxY: maxY)
+                            .stroke(Color.systemGray3)
+                        
+                        
+                        HStack(spacing: -20) {
+                            ZStack {
+                                ForEach(TransportType.allCases, id: \.self) { transportType in
+                                    
+                                    lineGraph(transportType: transportType)
+                                        .stroke(transportType.color, lineWidth: 2)
+                                }
+                            }
                             
-                            lineGraph(transportType: transportType)
-                                .stroke(transportType.color, lineWidth: 2)
+                            yScale(originalLast: 10, maLast: 12)
                         }
                     }
-                    
-                    yScale(originalLast: 10, maLast: 12)
                 }
+            } else {
+                Text("No date, please update")
+                Spacer()
             }
-            .padding(.top)
         }
         .padding(.horizontal)
     }
@@ -145,8 +130,13 @@ struct CountryTrendsView: View {
 
 struct CountryTrendsView_Previews: PreviewProvider {
     static var previews: some View {
-        CountryTrendsView()
-            .environmentObject(Store())
-            .environmentObject(FavoriteRegions())
+        ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
+            
+            CountryTrendsView()
+        }
+        .environmentObject(Store())
+        .environmentObject(FavoriteRegions())
+        .environment(\.colorScheme, .dark)
     }
 }

@@ -15,10 +15,17 @@ enum MobilityTrendsAPI {
     //  MARK: - CHANGING URL!!!
     static let CHANGINGurlPART = "applemobilitytrends-2020-05-06.csv"
     
-    static let url = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev49/v2/en-us/applemobilitytrends-2020-05-06.csv")!
+    static let urlCSV = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev49/v2/en-us/applemobilitytrends-2020-05-07.csv")!
+    static let urlJSON = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev51/v2/en-us/applemobilitytrends.json")!
     
+    static func getMobilityDataJSON(url: URL) -> AnyPublisher<Mobility, Error> {
+        URLSession.shared.fetchData(url: url)
+            .decode(type: Mobility.self, decoder: JSONDecoder())
+            .subscribe(on: DispatchQueue.global())
+            .eraseToAnyPublisher()
+    }
     
-    static func getMobilityData(url: URL) -> AnyPublisher<String, Never> {
+    static func getMobilityDataCSV(url: URL) -> AnyPublisher<String, Never> {
         URLSession.shared.dataTaskPublisher(for: url)
             .map { String(data: $0.data, encoding: .utf8)! }
             //  .mapError{ _ in FetchError.genericError }

@@ -13,6 +13,7 @@ enum FetchError: Error {
     case responseError((status: Int, message: String))
     case emptyResponse
     case genericError
+    case noFile
 }
 
 

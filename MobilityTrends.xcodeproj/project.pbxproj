@@ -18,7 +18,6 @@
 		2A09EDF62463593E0021FC7D /* SwiftPI in Frameworks */ = {isa = PBXBuildFile; productRef = 2A09EDF52463593E0021FC7D /* SwiftPI */; };
 		2A09EDF9246366EC0021FC7D /* MobilityTrendsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EDF8246366EC0021FC7D /* MobilityTrendsAPI.swift */; };
 		2A09EDFC24636BDF0021FC7D /* Ext+URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EDFB24636BDF0021FC7D /* Ext+URLSession.swift */; };
-		2A09EDFF246377080021FC7D /* applemobilitytrends-2020-05-05.csv in Resources */ = {isa = PBXBuildFile; fileRef = 2A09EDFE246377070021FC7D /* applemobilitytrends-2020-05-05.csv */; };
 		2A09EE01246380900021FC7D /* TestFormWithPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EE00246380900021FC7D /* TestFormWithPickers.swift */; };
 		2A09EE03246382500021FC7D /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EE02246382500021FC7D /* SearchView.swift */; };
 		2A09EE052463FEBD0021FC7D /* CSVParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EE042463FEBD0021FC7D /* CSVParser.swift */; };
@@ -38,6 +37,11 @@
 		2A28BB2724657BA90041EDD5 /* FavoriteToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB2624657BA90041EDD5 /* FavoriteToggleButton.swift */; };
 		2A28BB29246582320041EDD5 /* GeoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB28246582320041EDD5 /* GeoType.swift */; };
 		2A28BB2B246582470041EDD5 /* TransportType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB2A246582470041EDD5 /* TransportType.swift */; };
+		2A89C2E3246607A400D8D113 /* Tail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A89C2E2246607A400D8D113 /* Tail.swift */; };
+		2A89C2E524660FC700D8D113 /* applemobilitytrends-2020-05-07.csv in Resources */ = {isa = PBXBuildFile; fileRef = 2A89C2E424660FC700D8D113 /* applemobilitytrends-2020-05-07.csv */; };
+		2A89C2E72466177A00D8D113 /* Mobility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A89C2E62466177A00D8D113 /* Mobility.swift */; };
+		2AC582BE24669446002E2FBD /* Ext+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC582BD24669446002E2FBD /* Ext+Bundle.swift */; };
+		2AC582C12466DB9E002E2FBD /* applemobilitytrends.json in Resources */ = {isa = PBXBuildFile; fileRef = 2AC582C02466D8BD002E2FBD /* applemobilitytrends.json */; };
 		2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF4360824649CEC00212222 /* BaseLineShape.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,7 +58,6 @@
 		2A09EDF2246357510021FC7D /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		2A09EDF8246366EC0021FC7D /* MobilityTrendsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobilityTrendsAPI.swift; sourceTree = "<group>"; };
 		2A09EDFB24636BDF0021FC7D /* Ext+URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+URLSession.swift"; sourceTree = "<group>"; };
-		2A09EDFE246377070021FC7D /* applemobilitytrends-2020-05-05.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "applemobilitytrends-2020-05-05.csv"; sourceTree = "<group>"; };
 		2A09EE00246380900021FC7D /* TestFormWithPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFormWithPickers.swift; sourceTree = "<group>"; };
 		2A09EE02246382500021FC7D /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		2A09EE042463FEBD0021FC7D /* CSVParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVParser.swift; sourceTree = "<group>"; };
@@ -74,6 +77,11 @@
 		2A28BB2624657BA90041EDD5 /* FavoriteToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteToggleButton.swift; sourceTree = "<group>"; };
 		2A28BB28246582320041EDD5 /* GeoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoType.swift; sourceTree = "<group>"; };
 		2A28BB2A246582470041EDD5 /* TransportType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportType.swift; sourceTree = "<group>"; };
+		2A89C2E2246607A400D8D113 /* Tail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tail.swift; sourceTree = "<group>"; };
+		2A89C2E424660FC700D8D113 /* applemobilitytrends-2020-05-07.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "applemobilitytrends-2020-05-07.csv"; sourceTree = "<group>"; };
+		2A89C2E62466177A00D8D113 /* Mobility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mobility.swift; sourceTree = "<group>"; };
+		2AC582BD24669446002E2FBD /* Ext+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+Bundle.swift"; sourceTree = "<group>"; };
+		2AC582C02466D8BD002E2FBD /* applemobilitytrends.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = applemobilitytrends.json; sourceTree = "<group>"; };
 		2AF4360824649CEC00212222 /* BaseLineShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseLineShape.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -118,7 +126,9 @@
 				2A09EE02246382500021FC7D /* SearchView.swift */,
 				2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */,
 				2AF4360524649C8200212222 /* Graph Shapes */,
+				2A28BB2C2465F25C0041EDD5 /* View Model */,
 				2A09EDF7246364BB0021FC7D /* Model */,
+				2A28BB2D2465F2810041EDD5 /* Parsing */,
 				2A09EDFA246367080021FC7D /* Networking */,
 				2A09EDFD246376F50021FC7D /* Data */,
 				2A0BD5C52464530700D98C96 /* TEST */,
@@ -141,12 +151,11 @@
 		2A09EDF7246364BB0021FC7D /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				2A09EDF2246357510021FC7D /* Store.swift */,
 				2A09EDF02463571B0021FC7D /* Trend.swift */,
 				2A28BB28246582320041EDD5 /* GeoType.swift */,
 				2A28BB2A246582470041EDD5 /* TransportType.swift */,
-				2A09EE042463FEBD0021FC7D /* CSVParser.swift */,
-				2A0BD5C3246452B300D98C96 /* FavoriteRegions.swift */,
+				2A89C2E2246607A400D8D113 /* Tail.swift */,
+				2A89C2E62466177A00D8D113 /* Mobility.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -163,7 +172,8 @@
 		2A09EDFD246376F50021FC7D /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				2A09EDFE246377070021FC7D /* applemobilitytrends-2020-05-05.csv */,
+				2AC582C02466D8BD002E2FBD /* applemobilitytrends.json */,
+				2A89C2E424660FC700D8D113 /* applemobilitytrends-2020-05-07.csv */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -187,6 +197,24 @@
 				2A28BB082464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift */,
 			);
 			path = "Supporting Views";
+			sourceTree = "<group>";
+		};
+		2A28BB2C2465F25C0041EDD5 /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				2A09EDF2246357510021FC7D /* Store.swift */,
+				2A0BD5C3246452B300D98C96 /* FavoriteRegions.swift */,
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
+		2A28BB2D2465F2810041EDD5 /* Parsing */ = {
+			isa = PBXGroup;
+			children = (
+				2A09EE042463FEBD0021FC7D /* CSVParser.swift */,
+				2AC582BD24669446002E2FBD /* Ext+Bundle.swift */,
+			);
+			path = Parsing;
 			sourceTree = "<group>";
 		};
 		2AF4360524649C8200212222 /* Graph Shapes */ = {
@@ -264,8 +292,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A09EDFF246377080021FC7D /* applemobilitytrends-2020-05-05.csv in Resources */,
+				2AC582C12466DB9E002E2FBD /* applemobilitytrends.json in Resources */,
 				2A09EDE9246356910021FC7D /* LaunchScreen.storyboard in Resources */,
+				2A89C2E524660FC700D8D113 /* applemobilitytrends-2020-05-07.csv in Resources */,
 				2A09EDE6246356910021FC7D /* Preview Assets.xcassets in Resources */,
 				2A09EDE3246356910021FC7D /* Assets.xcassets in Resources */,
 			);
@@ -279,12 +308,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A09EDFC24636BDF0021FC7D /* Ext+URLSession.swift in Sources */,
+				2AC582BE24669446002E2FBD /* Ext+Bundle.swift in Sources */,
 				2A28BB092464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift in Sources */,
 				2A09EE03246382500021FC7D /* SearchView.swift in Sources */,
 				2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */,
 				2A09EDF3246357510021FC7D /* Store.swift in Sources */,
 				2A09EDDD246356900021FC7D /* AppDelegate.swift in Sources */,
 				2A09EDDF246356900021FC7D /* SceneDelegate.swift in Sources */,
+				2A89C2E72466177A00D8D113 /* Mobility.swift in Sources */,
+				2A89C2E3246607A400D8D113 /* Tail.swift in Sources */,
 				2A28BB2724657BA90041EDD5 /* FavoriteToggleButton.swift in Sources */,
 				2A0BD5C0246435B800D98C96 /* DotGraphShape.swift in Sources */,
 				2A28BB2B246582470041EDD5 /* TransportType.swift in Sources */,

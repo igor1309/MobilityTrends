@@ -1,0 +1,365 @@
+//
+//  Store.swift
+//  MobilityTrends
+//
+//  Created by Igor Malyarov on 06.05.2020.
+//  Copyright © 2020 Igor Malyarov. All rights reserved.
+//
+
+import Foundation
+import SwiftPI
+import Combine
+
+final class Store: ObservableObject {
+    
+    let filename: String
+    let baseline: Double = 100
+    
+    var updateRequested = PassthroughSubject<String, Never>()
+    
+    @Published private(set) var trends = [Trend]()
+    
+    @Published var selectedRegion = "Moscow"
+    @Published var transportation = TransportType.driving
+    
+    @Published var query: String = ""
+    @Published var selectedGeoType = GeoType.country
+    @Published var queryResult = [String]()
+    
+    var allRegions = [String]()
+    var countries = [String]()
+    var cities = [String]()
+    var subRegions = [String]()
+    
+    var originalSeries: [Double] {
+        series(for: selectedRegion, transportType: transportation)
+    }
+    
+    var movingAverageSeries: [Double] {
+        movingAverageSeries(for: selectedRegion, transportType: transportation)
+    }
+    
+    var lastMovingAverageForSelectedRegion: [Tail] {
+        var lastMAs = [Tail]()
+        
+        for type in TransportType.allCases {
+            guard let last = movingAverageSeries(for: selectedRegion, transportType: type).last else { break }
+            lastMAs.append(Tail(type: type, last: last))
+        }
+        
+        return lastMAs.sorted(by: { $0.last > $1.last })
+    }
+    
+    var lastMovingAverageAverage: Double {
+        guard lastMovingAverageForSelectedRegion.isNotEmpty else { return 0 }
+        return lastMovingAverageForSelectedRegion
+            .map { $0.last }
+            .reduce(0, { $0 + $1 }) / Double(lastMovingAverageForSelectedRegion.count)
+    }
+    
+    //  MARK: - FINISH WITH THIS - IT SHOULD BE SMART!!
+    //  - to define Y Ssale
+    //  - to use moving average (how?)
+    var selectedRegionMinY: Double {
+        let min = trends
+            .filter { $0.region == selectedRegion }
+            .flatMap { $0.series }
+            .min()
+        
+        return min ?? 1
+    }
+    var selectedRegionMaxY: Double {
+        let max = trends
+            .filter { $0.region == selectedRegion }
+            .flatMap { $0.series }
+            .max()
+        
+        return max ?? 1
+    }
+    
+    init(_ filename: String = "apple-mobility.json") {
+        
+        self.filename = filename
+        
+        //  MARK: load dataSet from JSON
+        //        trends = loadTrends(filename)
+        
+        //  MARK: TESTING
+        //  get Trends from remote JSON ans save to Document Directory
+        //        getTrendsFromRemoteJSONAndSave()
+        //          get local JSON
+        getTrendsFromLocalJSON()
+        
+        //  create properties
+        createProperties()
+        
+        //  create subscriptions
+        createUpdateSubscription()
+        createSearchSubscription()
+        //  not used anymore
+        //        createCSVSubscription()
+    }
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    deinit {
+        for cancell in cancellables {
+            cancell.cancel()
+        }
+    }
+    
+    ///  create update (fetch) subscription
+    private func createUpdateSubscription() {
+        updateRequested
+            .setFailureType(to: Error.self)
+            .flatMap { _ -> AnyPublisher<Mobility, Error> in
+                MobilityTrendsAPI.getMobilityDataJSON(url: MobilityTrendsAPI.urlJSON)
+        }
+        .map { self.getTrendsFrom($0) }
+        .subscribe(on: DispatchQueue.global())
+        .receive(on: DispatchQueue.main)
+        .sink(
+            receiveCompletion: { completion in
+                switch completion {
+                case .failure(_):
+                    print("error mapping Mobility from JSON in Bundle to Trends")
+                case .finished:
+                    print("mapping Mobility from JSON in Bundle to Trends ok")
+                }
+        }) { [weak self] value in
+            guard value.isNotEmpty else {
+                print("returned empty trends array, no new data")
+                return
+            }
+            
+            print("fetched on-empty data")
+            
+            self?.trends = value
+            self?.createProperties()
+            
+            if self != nil {
+                self!.saveTrends()
+            }
+        }
+        .store(in: &cancellables)
+    }
+    
+    ///  create search query subscription
+    private func createSearchSubscription() {
+        Publishers.CombineLatest($query, $selectedGeoType)
+            .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
+            .map { query, type in
+                self.queryList(query: query, type: type)
+        }
+        .subscribe(on: DispatchQueue.global())
+        .receive(on: DispatchQueue.main)
+        .sink {
+            [weak self] in
+            self?.queryResult = $0
+        }
+        .store(in: &cancellables)
+    }
+    
+    
+    private func queryList(query: String, type: GeoType) -> [String] {
+        let array: [String]
+        
+        switch type {
+        case .country:
+            array = countries
+        case .city:
+            array = cities
+        case .subRegion:
+            array = subRegions
+        }
+        
+        return array.filter {
+            query.isNotEmpty
+                ? $0.lowercased().contains(query.lowercased())
+                : true
+        }
+    }
+    
+    private func createProperties() {
+        allRegions = trends.map { $0.region }.removingDuplicates()
+        countries = trends.filter { $0.geoType == .country }.map { $0.region }.removingDuplicates()
+        cities = trends.filter { $0.geoType == .city }.map { $0.region }.removingDuplicates()
+        subRegions = trends.filter { $0.geoType == .subRegion }.map { $0.region }.removingDuplicates()
+    }
+    
+    func fetch() {
+        updateRequested.send("update")
+    }
+    
+    func series(for region: String, transportType: TransportType) -> [Double] {
+        guard let slice = trends.first(where: { $0.region == region && $0.transportType == transportType }) else {
+            return []
+        }
+        
+        return slice.series
+    }
+    
+    func movingAverageSeries(for region: String, transportType: TransportType) -> [Double] {
+        let original = series(for: region, transportType: transportType)
+        
+        guard original.isNotEmpty else { return [] }
+        
+        var maSeries = [Double]()
+        
+        for i in 0..<original.count {
+            let slice = original.prefix(i + 1).suffix(7)
+            let avg = slice.reduce(0, { $0 + $1 }) / Double(slice.count)
+            maSeries.append(avg)
+        }
+        
+        return maSeries
+    }
+    
+    private func loadTrends(_ filename: String) -> [Trend] {
+        guard let savedDataSet: [Trend] = loadJSONFromDocDir(filename) else {
+            return []
+        }
+        return savedDataSet
+    }
+    
+    private func saveTrends() {
+        guard trends.isNotEmpty else { return }
+        
+        DispatchQueue.main.async {
+            saveJSONToDocDir(data: self.trends, filename: self.filename)
+        }
+    }
+}
+
+extension Store {
+    func getTrendsFrom(_ mobility: Mobility) -> [Trend] {
+        var trends = [Trend]()
+        
+        for (region, dataArray) in mobility.data {
+            
+            let isTheSame = dataArray
+                .reduce(true, { $0 && ($1.name == $1.title) })
+            if !isTheSame {
+                print("name, title: Name are different? - \(!isTheSame)")
+            }
+            
+            for data in dataArray {
+                
+                let series = data.values.map { Double($0.value) ?? -1 }
+                let hasConversionErrors = series.filter { $0 < 0 }.count != 0
+                if hasConversionErrors {
+                    print("String to Double conversion has errors")
+                }
+                
+                trends.append(
+                    Trend(region: region,
+                          //    MARK: THAT'S NOT CORRECT!!!
+                        geoType: .country,
+                        transportType: TransportType(rawValue: data.name.rawValue)!,
+                        //    MARK: THAT'S NOT CORRECT!!!
+                        dates: [],
+                        series:  series)
+                )
+            }
+        }
+        return trends
+    }
+}
+
+
+extension Store {
+    
+    //  get Trends From Local JSON
+    func getTrendsFromLocalJSON() {
+        Bundle.main.fetch("applemobilitytrends.json", type: Mobility.self)
+            .map { self.getTrendsFrom($0) }
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    switch completion {
+                    case .failure(_):
+                        print("error mapping Mobility from JSON in Bundle to Trends")
+                    case .finished:
+                        print("mapping Mobility from JSON in Bundle to Trends ok")
+                    }
+            }) { [weak self] value in
+                guard value.isNotEmpty else {
+                    print("returned empty trends array, no new data")
+                    return
+                }
+                
+                print("fetched on-empty data")
+                
+                self?.trends = value
+                self?.createProperties()
+                
+                if self != nil {
+                    self!.saveTrends()
+                }
+        }
+        .store(in: &cancellables)
+    }
+}
+
+
+extension Store {
+    
+    //  TESTING ONLY
+    //  get Trends from remote JSON ans save to Document Directory
+    private func getTrendsFromRemoteJSONAndSave() {
+        let url = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev51/v2/en-us/applemobilitytrends.json")!
+        
+        MobilityTrendsAPI.getMobilityDataJSON(url: url)
+            //        URLSession.shared.fetchData(url: url)
+            //            .decode(type: Mobility.self, decoder: JSONDecoder())
+            //            .subscribe(on: DispatchQueue.global())
+            //  this functiona just saves JSON
+            //  there is no UI update so no need in DispatchQueue.main
+            // .receive(on: DispatchQueue.main)
+            .receive(on: DispatchQueue.global())
+            .sink(
+                receiveCompletion: { completion in
+                    switch completion {
+                    case .failure(let error):
+                        print("error getting Mobility from remote JSON \(error)")
+                    case .finished:
+                        print("read Mobility from remote JSON ok")
+                    }
+            }) {
+                saveJSONToDocDir(data: $0, filename: "applemobilitytrends.json")
+        }
+        .store(in: &cancellables)
+    }
+}
+
+extension Store {
+    //  not used anymore
+    private func createCSVSubscription() {
+        //  create update (fetch) subscription
+        updateRequested
+            .flatMap { _ in
+                MobilityTrendsAPI.getMobilityDataCSV(url: MobilityTrendsAPI.urlCSV)
+        }
+        .tryMap { try CSVParser.parseCSVToTrends(csv: $0) }
+        .catch { _ in Just([]) }
+        .subscribe(on: DispatchQueue.global())
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] value in
+            guard value.isNotEmpty else {
+                print("parser returned empty array, no new data")
+                return
+            }
+            
+            print("fetched on-empty data")
+            
+            self?.trends = value
+            self?.createProperties()
+            
+            if self != nil {
+                self!.saveTrends()
+            }
+        }
+        .store(in: &cancellables)
+    }
+}

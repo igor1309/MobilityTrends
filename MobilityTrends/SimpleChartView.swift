@@ -24,6 +24,7 @@ struct SimpleChartView: View {
                 if store.originalSeries.isNotEmpty {
                     OneLineChartView(original: store.originalSeries,
                                      movingAverage: store.movingAverageSeries,
+                                     baseline: store.baseline,
                                      minY: store.originalSeries.min()!,
                                      maxY: store.originalSeries.max()!)
                         .padding(.top)
