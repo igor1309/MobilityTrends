@@ -29,7 +29,7 @@ final class Store: ObservableObject {
         //  get Trends from remote JSON ans save to Document Directory
         //        getTrendsFromRemoteJSONAndSave()
         //          get local JSON
-        getTrendsFromLocalJSON()
+        loadTrendsFromLocalJSON()
         
         //  create subscriptions
         createUpdateSubscription()
@@ -57,7 +57,7 @@ extension Store {
         updateRequested
             .setFailureType(to: Error.self)
             .flatMap { _ -> AnyPublisher<Mobility, Error> in
-                MobilityTrendsAPI.fetchMobilityDataJSON()
+                MobilityTrendsAPI.fetchMobilityJSON()
         }
         .map { self.convertMobilityToTrends($0) }
         .subscribe(on: DispatchQueue.global())
@@ -161,24 +161,6 @@ extension Store {
     }
 }
 
-//  MARK: - Load and Save
-extension Store {
-    private func loadTrends(_ filename: String) -> [Trend] {
-        guard let savedDataSet: [Trend] = loadJSONFromDocDir(filename) else {
-            return []
-        }
-        return savedDataSet
-    }
-    
-    private func saveTrends() {
-        guard trends.isNotEmpty else { return }
-        
-        DispatchQueue.main.async {
-            saveJSONToDocDir(data: self.trends, filename: self.filename)
-        }
-    }
-}
-
 //  MARK: - Mobility to Trends Conversion
 extension Store {
     private func convertMobilityToTrends(_ mobility: Mobility) -> [Trend] {
@@ -214,11 +196,29 @@ extension Store {
     }
 }
 
-//  MARK: - Mobility to Trends Conversion
+//  MARK: - Load and Save
+extension Store {
+    private func loadTrends(_ filename: String) -> [Trend] {
+        guard let savedDataSet: [Trend] = loadJSONFromDocDir(filename) else {
+            return []
+        }
+        return savedDataSet
+    }
+    
+    private func saveTrends() {
+        guard trends.isNotEmpty else { return }
+        
+        DispatchQueue.main.async {
+            saveJSONToDocDir(data: self.trends, filename: self.filename)
+        }
+    }
+}
+
+//  MARK: - Trends From Local JSON
 extension Store {
     
     //  get Trends From Local JSON
-    private func getTrendsFromLocalJSON() {
+    private func loadTrendsFromLocalJSON() {
         Bundle.main.fetch("applemobilitytrends.json", type: Mobility.self)
             .map { self.convertMobilityToTrends($0) }
             .subscribe(on: DispatchQueue.global())
@@ -256,7 +256,7 @@ extension Store {
     //  fetch Trends from remote JSON ans save to Document Directory
     private func fetchTrendsFromRemoteJSONAndSave() {
         
-        MobilityTrendsAPI.fetchMobilityDataJSON()
+        MobilityTrendsAPI.fetchMobilityJSON()
             //        URLSession.shared.fetchData(url: url)
             //            .decode(type: Mobility.self, decoder: JSONDecoder())
             //            .subscribe(on: DispatchQueue.global())
@@ -286,7 +286,7 @@ extension Store {
         //  create update (fetch) subscription
         updateRequested
             .flatMap { _ in
-                MobilityTrendsAPI.fetchMobilityDataCSV()
+                MobilityTrendsAPI.fetchMobilityCSV()
         }
         .tryMap { try CSVParser.parseCSVToTrends(csv: $0) }
         .catch { _ in Just([]) }

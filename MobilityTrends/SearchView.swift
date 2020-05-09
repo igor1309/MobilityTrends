@@ -18,7 +18,7 @@ struct SearchView: View {
     var geoTypePicker: some View {
         Picker(selection: $regions.selectedGeoType, label: Text("Geo Type")) {
             ForEach(GeoType.allCases, id: \.self) { type in
-                Text(type.rawValue).tag(type)
+                Text(type.id).tag(type)
             }
         }
         .pickerStyle(SegmentedPickerStyle())

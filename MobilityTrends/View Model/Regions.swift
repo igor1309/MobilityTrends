@@ -81,7 +81,7 @@ extension Regions {
         updateRequested
             .setFailureType(to: Error.self)
             .flatMap { _ -> AnyPublisher<[String], Error> in
-                MobilityTrendsAPI.fetchMobilityLocalesJSON()
+                MobilityTrendsAPI.fetchLocaleNamesJSON()
         }
         .subscribe(on: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
@@ -104,7 +104,7 @@ extension Regions {
             self?.locales = value
             
             if self != nil {
-                self!.saveLocaless()
+                self!.saveLocales()
             }
         }
         .store(in: &cancellables)
@@ -113,7 +113,7 @@ extension Regions {
     private func createUpdateCSVSubscription() {
         updateRequested
             .flatMap { _ -> AnyPublisher<String, Never> in
-                MobilityTrendsAPI.fetchMobilityDataCSV()
+                MobilityTrendsAPI.fetchMobilityCSV()
         }
         .tryMap { try CSVParser.parseCSVToRegions(csv: $0) }
         .catch { _ in Just([]) }
@@ -139,7 +139,7 @@ extension Regions {
             $selectedGeoType,
             $allRegions)
             .map { query, type, _ in
-                self.queryList(query: query, type: type)
+                self.queryList(for: query, with: type)
         }
         .subscribe(on: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
@@ -150,7 +150,7 @@ extension Regions {
         .store(in: &cancellables)
     }
     
-    private func queryList(query: String, type: GeoType) -> [String] {
+    private func queryList(for query: String, with type: GeoType) -> [String] {
         let array: [String]
         
         switch type {
@@ -239,7 +239,7 @@ extension Regions {
         return saved
     }
     
-    private func saveLocaless() {
+    private func saveLocales() {
         guard locales.isNotEmpty else { return }
         
         DispatchQueue.main.async {

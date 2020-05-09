@@ -6,6 +6,8 @@
 //  Copyright © 2020 Igor Malyarov. All rights reserved.
 //
 
+import SwiftPI
+
 enum CSVParser {
     enum ParserError: Error { case general }
     
@@ -60,14 +62,16 @@ enum CSVParser {
         for i in 1..<table.count-1 {
             let row = table[i]
             
+            let name = row[1]
+            guard !regions.map({ $0.name }).contains(name) else { continue }
+            
             guard let geoType:GeoType = GeoType(rawValue: row[0]) else { throw ParserError.general }
             
             regions.append(Region(name: row[1],
                                   type: geoType))
         }
-        print(regions)
+//        print(regions)
         
         return regions
     }
-    
 }
