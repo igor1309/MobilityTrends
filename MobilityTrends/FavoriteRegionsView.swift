@@ -53,6 +53,7 @@ struct RegionsView: View {
                     //  MARK: THAT'S NOT COREECT!!!!!
                     SearchView(selection: self.$draft)
                         .environmentObject(self.store)
+                        .environmentObject(self.regions)
                 }
             )
         }

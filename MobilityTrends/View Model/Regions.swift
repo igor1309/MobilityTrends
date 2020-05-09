@@ -10,12 +10,6 @@ import SwiftUI
 import SwiftPI
 import Combine
 
-struct Region: Identifiable, Codable {
-    var id: String { name }
-    var name: String
-    var type: GeoType
-}
-
 final class Regions: ObservableObject {
     private let localesFilename = "locales.json"
     private let regionsFilename = "regions.json"
@@ -34,20 +28,31 @@ final class Regions: ObservableObject {
     
     /// source - applemobilitytrends-2020-xx-xx.csv
     @Published var allRegions = [Region]()
-    @Published var countries = [String]()
-    @Published var cities = [String]()
-    @Published var subRegions = [String]()
+    
+    var countries: [String] {
+        allRegions
+            .filter { $0.type == .country }
+            .map { $0.name }
+    }
+    
+    var cities: [String] {
+        allRegions
+            .filter { $0.type == .city }
+            .map { $0.name }
+    }
+    
+    var subRegions: [String] {
+        allRegions
+            .filter { $0.type == .subRegion }
+            .map { $0.name }
+    }
     
     init() {
-        
         //  load regions from JSON
         self.locales = loadLocales(localesFilename)
         self.allRegions = loadAllRegions(regionsFilename)
         self.favorites = loadFavorites(favoritesFilename)
-        
-        //  create properties
-        createProperties()
-        
+                
         //  create subscriptions
         createUpdateJSONSubscription()
         createUpdateCSVSubscription()
@@ -71,7 +76,7 @@ extension Regions {
         updateRequested.send("update")
     }
     
-    ///  create update (fetch) subscription
+    ///  create update (fetch) subscription | source locale-names.json
     private func createUpdateJSONSubscription() {
         updateRequested
             .setFailureType(to: Error.self)
@@ -99,7 +104,7 @@ extension Regions {
             self?.locales = value
             
             if self != nil {
-                self!.saveRegions()
+                self!.saveLocaless()
             }
         }
         .store(in: &cancellables)
@@ -117,6 +122,10 @@ extension Regions {
         .sink {
             [weak self] in
             self?.allRegions = $0
+            if self != nil {
+                print("updated regions from csv")
+                self!.saveAllRegions()
+            }
         }
         .store(in: &cancellables)
     }
@@ -124,9 +133,12 @@ extension Regions {
     
     ///  create search query subscription
     private func createSearchSubscription() {
-        Publishers.CombineLatest($query, $selectedGeoType)
-            .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
-            .map { query, type in
+        Publishers.CombineLatest3(
+            $query
+                .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main),
+            $selectedGeoType,
+            $allRegions)
+            .map { query, type, _ in
                 self.queryList(query: query, type: type)
         }
         .subscribe(on: DispatchQueue.global())
@@ -142,6 +154,8 @@ extension Regions {
         let array: [String]
         
         switch type {
+        case .all:
+            array = locales
         case .country:
             array = countries
         case .city:
@@ -150,30 +164,13 @@ extension Regions {
             array = subRegions
         }
         
-        return array.filter {
+        let result = array.filter {
             query.isNotEmpty
                 ? $0.lowercased().contains(query.lowercased())
                 : true
         }
-    }
-    
-    private func createProperties() {
-        //  MARK: - нужен ли .removingDuplicates() ?????
         
-        countries = allRegions
-            .filter { $0.type == .country }
-            .map { $0.name }
-            .removingDuplicates()
-        
-        cities = allRegions
-            .filter { $0.type == .city }
-            .map { $0.name }
-            .removingDuplicates()
-        
-        subRegions = allRegions
-            .filter { $0.type == .subRegion }
-            .map { $0.name }
-            .removingDuplicates()
+        return result
     }
 }
 
@@ -225,7 +222,7 @@ extension Regions {
         return saved
     }
     
-    private func saveRegions() {
+    private func saveAllRegions() {
         guard allRegions.isNotEmpty else { return }
         
         DispatchQueue.main.async {

@@ -12,8 +12,8 @@ import SwiftPI
 struct ContentView: View {
     var body: some View {
         CountryTrendsView()
-        //        SearchViewTesting()
-        //        SimpleChartView()
+//                SearchViewTesting()
+//                SimpleChartView()
     }
 }
 

@@ -22,7 +22,6 @@ final class Store: ObservableObject {
     @Published var transportation = TransportType.driving
     
     init() {
-        
         //  MARK: load dataSet from JSON
         //        trends = loadTrends(filename)
         
@@ -103,7 +102,7 @@ extension Store {
         var lastMAs = [Tail]()
         
         for type in TransportType.allCases {
-            guard let last = movingAverageSeries(for: selectedRegion, transportType: type).last else { break }
+            guard let last = movingAverageSeries(for: selectedRegion, transportType: type).last else { continue }
             lastMAs.append(Tail(type: type, last: last))
         }
         

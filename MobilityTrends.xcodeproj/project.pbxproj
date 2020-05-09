@@ -42,6 +42,7 @@
 		2A89C2E72466177A00D8D113 /* Mobility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A89C2E62466177A00D8D113 /* Mobility.swift */; };
 		2AC582BE24669446002E2FBD /* Ext+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC582BD24669446002E2FBD /* Ext+Bundle.swift */; };
 		2AC582C12466DB9E002E2FBD /* applemobilitytrends.json in Resources */ = {isa = PBXBuildFile; fileRef = 2AC582C02466D8BD002E2FBD /* applemobilitytrends.json */; };
+		2AC582C324674E04002E2FBD /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC582C224674E04002E2FBD /* Region.swift */; };
 		2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF4360824649CEC00212222 /* BaseLineShape.swift */; };
 /* End PBXBuildFile section */
 
@@ -82,6 +83,7 @@
 		2A89C2E62466177A00D8D113 /* Mobility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mobility.swift; sourceTree = "<group>"; };
 		2AC582BD24669446002E2FBD /* Ext+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+Bundle.swift"; sourceTree = "<group>"; };
 		2AC582C02466D8BD002E2FBD /* applemobilitytrends.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = applemobilitytrends.json; sourceTree = "<group>"; };
+		2AC582C224674E04002E2FBD /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
 		2AF4360824649CEC00212222 /* BaseLineShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseLineShape.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -155,6 +157,7 @@
 				2A28BB28246582320041EDD5 /* GeoType.swift */,
 				2A28BB2A246582470041EDD5 /* TransportType.swift */,
 				2A89C2E2246607A400D8D113 /* Tail.swift */,
+				2AC582C224674E04002E2FBD /* Region.swift */,
 				2A89C2E62466177A00D8D113 /* Mobility.swift */,
 			);
 			path = Model;
@@ -310,6 +313,7 @@
 				2A09EDFC24636BDF0021FC7D /* Ext+URLSession.swift in Sources */,
 				2AC582BE24669446002E2FBD /* Ext+Bundle.swift in Sources */,
 				2A28BB092464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift in Sources */,
+				2AC582C324674E04002E2FBD /* Region.swift in Sources */,
 				2A09EE03246382500021FC7D /* SearchView.swift in Sources */,
 				2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */,
 				2A09EDF3246357510021FC7D /* Store.swift in Sources */,
