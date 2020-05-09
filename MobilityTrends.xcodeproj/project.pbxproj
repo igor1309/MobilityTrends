@@ -25,7 +25,7 @@
 		2A0BD5BE2464325200D98C96 /* LineGraphShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5BD2464325200D98C96 /* LineGraphShape.swift */; };
 		2A0BD5C0246435B800D98C96 /* DotGraphShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5BF246435B800D98C96 /* DotGraphShape.swift */; };
 		2A0BD5C22464529D00D98C96 /* FavoriteRegionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */; };
-		2A0BD5C4246452B300D98C96 /* FavoriteRegions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5C3246452B300D98C96 /* FavoriteRegions.swift */; };
+		2A0BD5C4246452B300D98C96 /* Regions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5C3246452B300D98C96 /* Regions.swift */; };
 		2A28BB092464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB082464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift */; };
 		2A28BB0B2464A2F70041EDD5 /* TransportTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB0A2464A2F70041EDD5 /* TransportTypePicker.swift */; };
 		2A28BB0D2464A47F0041EDD5 /* GraphGridShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB0C2464A47F0041EDD5 /* GraphGridShape.swift */; };
@@ -65,7 +65,7 @@
 		2A0BD5BD2464325200D98C96 /* LineGraphShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphShape.swift; sourceTree = "<group>"; };
 		2A0BD5BF246435B800D98C96 /* DotGraphShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotGraphShape.swift; sourceTree = "<group>"; };
 		2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRegionsView.swift; sourceTree = "<group>"; };
-		2A0BD5C3246452B300D98C96 /* FavoriteRegions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRegions.swift; sourceTree = "<group>"; };
+		2A0BD5C3246452B300D98C96 /* Regions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Regions.swift; sourceTree = "<group>"; };
 		2A28BB082464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingFavoriteToggleButton.swift; sourceTree = "<group>"; };
 		2A28BB0A2464A2F70041EDD5 /* TransportTypePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportTypePicker.swift; sourceTree = "<group>"; };
 		2A28BB0C2464A47F0041EDD5 /* GraphGridShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphGridShape.swift; sourceTree = "<group>"; };
@@ -203,7 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				2A09EDF2246357510021FC7D /* Store.swift */,
-				2A0BD5C3246452B300D98C96 /* FavoriteRegions.swift */,
+				2A0BD5C3246452B300D98C96 /* Regions.swift */,
 			);
 			path = "View Model";
 			sourceTree = "<group>";
@@ -335,7 +335,7 @@
 				2A28BB0D2464A47F0041EDD5 /* GraphGridShape.swift in Sources */,
 				2A28BB2224656F130041EDD5 /* FavoriteRegionPicker.swift in Sources */,
 				2A28BB2024656C1B0041EDD5 /* RegionPicker.swift in Sources */,
-				2A0BD5C4246452B300D98C96 /* FavoriteRegions.swift in Sources */,
+				2A0BD5C4246452B300D98C96 /* Regions.swift in Sources */,
 				2A09EDF9246366EC0021FC7D /* MobilityTrendsAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

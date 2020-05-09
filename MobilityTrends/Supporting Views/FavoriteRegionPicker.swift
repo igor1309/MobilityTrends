@@ -10,7 +10,7 @@ import SwiftUI
 
 struct FavoriteRegionPicker: View {
     @EnvironmentObject var store: Store
-    @EnvironmentObject var favoriteRegions: FavoriteRegions
+    @EnvironmentObject var regions: Regions
     
     @Binding var selectedRegion: String
     
@@ -23,9 +23,9 @@ struct FavoriteRegionPicker: View {
             Image(systemName: "text.badge.star")
         }
         .sheet(isPresented: $showFavorites) {
-            FavoriteRegionsView(selected: self.$selectedRegion)
+            RegionsView(selected: self.$selectedRegion)
                 .environmentObject(self.store)
-                .environmentObject(self.favoriteRegions)
+                .environmentObject(self.regions)
         }
     }
 }
@@ -42,6 +42,6 @@ struct FavoriteRegionPicker_Previews: PreviewProvider {
     static var previews: some View {
         FavoriteRegionPickerTester()
             .environmentObject(Store())
-            .environmentObject(FavoriteRegions())
+            .environmentObject(Regions())
     }
 }

@@ -11,12 +11,12 @@ import SwiftPI
 
 struct SearchView: View {
     @Environment(\.presentationMode) var presentation
-    @EnvironmentObject var store: Store
+    @EnvironmentObject var regions: Regions
     
     @Binding var selection: String
     
     var geoTypePicker: some View {
-        Picker(selection: $store.selectedGeoType, label: Text("Geo Type")) {
+        Picker(selection: $regions.selectedGeoType, label: Text("Geo Type")) {
             ForEach(GeoType.allCases, id: \.self) { type in
                 Text(type.rawValue).tag(type)
             }
@@ -30,11 +30,11 @@ struct SearchView: View {
                 .imageScale(.small)
                 .foregroundColor(.tertiary)
             
-            TextField("Search \(store.selectedGeoType.rawValue.capitalized)", text: $store.query)
+            TextField("Search \(regions.selectedGeoType.rawValue.capitalized)", text: $regions.query)
             
-            if store.query.isNotEmpty {
+            if regions.query.isNotEmpty {
                 Button(action: {
-                    self.store.query = ""
+                    self.regions.query = ""
                 }) {
                     Image(systemName: "xmark.circle.fill")
                         .imageScale(.small)
@@ -61,7 +61,7 @@ struct SearchView: View {
                     .padding(.horizontal)
                 
                 List {
-                    ForEach(store.queryResult, id: \.self) { item in
+                    ForEach(regions.queryResult, id: \.self) { item in
                         HStack {
                             Text(item)
                             Spacer()
@@ -76,7 +76,7 @@ struct SearchView: View {
             }
             .navigationBarTitle(Text("Select Region"), displayMode: .inline)
             .navigationBarItems(trailing: TrailingButtonSFSymbol("arrow.2.circlepath") {
-                self.store.fetch()
+                self.regions.fetch()
             })
         }
     }
@@ -93,7 +93,7 @@ struct SearchViewTesting: View {
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         SearchViewTesting()
-            .environmentObject(Store())
+            .environmentObject(Regions())
             .environment(\.colorScheme, .dark)
     }
 }

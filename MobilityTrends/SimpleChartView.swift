@@ -11,7 +11,7 @@ import SwiftPI
 
 struct SimpleChartView: View {
     @EnvironmentObject var store: Store
-    @EnvironmentObject var favoriteRegions: FavoriteRegions
+    @EnvironmentObject var regions: Regions
     
     @State private var showSearch = false
     @State private var showFavorites = false
@@ -57,12 +57,13 @@ struct SimpleChartView: View {
                     
                     TrailingButtonSFSymbol("arrow.2.circlepath") {
                         self.store.fetch()
+                        self.regions.fetch()
                     }
             })
                 .sheet(isPresented: $showFavorites) {
-                    FavoriteRegionsView(selected: self.$store.selectedRegion)
+                    RegionsView(selected: self.$store.selectedRegion)
                         .environmentObject(self.store)
-                        .environmentObject(self.favoriteRegions)
+                        .environmentObject(self.regions)
             }
         }
     }
@@ -72,6 +73,6 @@ struct SimpleChartView_Previews: PreviewProvider {
     static var previews: some View {
         SimpleChartView()
             .environmentObject(Store())
-            .environmentObject(FavoriteRegions())
+            .environmentObject(Regions())
     }
 }

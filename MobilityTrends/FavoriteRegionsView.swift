@@ -1,5 +1,5 @@
 //
-//  FavoriteRegionsView.swift
+//  RegionsView.swift
 //  MobilityTrends
 //
 //  Created by Igor Malyarov on 07.05.2020.
@@ -9,11 +9,11 @@
 import SwiftUI
 import SwiftPI
 
-struct FavoriteRegionsView: View {
+struct RegionsView: View {
     @Environment(\.presentationMode) var presentation
     
     @EnvironmentObject var store: Store
-    @EnvironmentObject var favoriteRegions: FavoriteRegions
+    @EnvironmentObject var regions: Regions
     
     @Binding var selected: String
     
@@ -23,14 +23,14 @@ struct FavoriteRegionsView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(favoriteRegions.regions, id: \.self) { region in
+                ForEach(regions.favorites, id: \.self) { favorite in
                     HStack {
-                        Text(region)
+                        Text(favorite)
                         Spacer()
                     }
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        self.selected = region
+                        self.selected = favorite
                         self.presentation.wrappedValue.dismiss()
                     }
                 }
@@ -47,7 +47,7 @@ struct FavoriteRegionsView: View {
                 }
                 .sheet(isPresented: $showSearch, onDismiss: {
                     if self.draft.isNotEmpty {
-                        self.favoriteRegions.add(region: self.draft)
+                        self.regions.add(region: self.draft)
                     }
                 }) {
                     //  MARK: THAT'S NOT COREECT!!!!!
@@ -59,20 +59,20 @@ struct FavoriteRegionsView: View {
     }
     
     private func delete(at offsets: IndexSet) {
-        favoriteRegions.delete(at: offsets)
+        regions.delete(at: offsets)
     }
     
     private func move(from source: IndexSet, to destination: Int) {
-        favoriteRegions.move(from: source, to: destination)
+        regions.move(from: source, to: destination)
     }
 }
 
 
-struct FavoriteRegionsView_Previews: PreviewProvider {
+struct RegionsView_Previews: PreviewProvider {
     static var previews: some View {
-        FavoriteRegionsView(selected: .constant("Moscow"))
+        RegionsView(selected: .constant("Moscow"))
             .environmentObject(Store())
-            .environmentObject(FavoriteRegions())
+            .environmentObject(Regions())
             .environment(\.colorScheme, .dark)
     }
 }

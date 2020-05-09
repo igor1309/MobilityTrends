@@ -34,12 +34,40 @@ enum CSVParser {
             trends.append(Trend(region: row[1],
                                 geoType: geoType,
                                 transportType: TransportType(rawValue: row[2])!,
-                                dates: Array(x),
+                                datesStr: Array(x),
                                 series: row.dropFirst(4).map { Double($0) ?? -1 }))
         }
         print(trends)
         
         return trends
+    }
+    
+    static func parseCSVToRegions(csv: String) throws -> [Region] {
+        guard csv.isNotEmpty else {
+            print("empty csv")
+            return []
+        }
+
+        let rows = csv.components(separatedBy: "\n")
+        var table = [[String]]()
+        
+        for row in rows {
+            table.append(row.components(separatedBy: ","))
+        }
+        
+        var regions = [Region]()
+        
+        for i in 1..<table.count-1 {
+            let row = table[i]
+            
+            guard let geoType:GeoType = GeoType(rawValue: row[0]) else { throw ParserError.general }
+            
+            regions.append(Region(name: row[1],
+                                  type: geoType))
+        }
+        print(regions)
+        
+        return regions
     }
     
 }

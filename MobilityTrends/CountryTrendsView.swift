@@ -27,7 +27,7 @@ struct CountryTrendsHeader: View {
 
 struct CountryTrendsView: View {
     @EnvironmentObject var store: Store
-    @EnvironmentObject var favoriteRegions: FavoriteRegions
+    @EnvironmentObject var regions: Regions
     
     var body: some View {
         
@@ -136,7 +136,7 @@ struct CountryTrendsView_Previews: PreviewProvider {
             CountryTrendsView()
         }
         .environmentObject(Store())
-        .environmentObject(FavoriteRegions())
+        .environmentObject(Regions())
         .environment(\.colorScheme, .dark)
     }
 }

@@ -11,6 +11,7 @@ import SwiftPI
 
 struct TestFormWithPickers: View {
     @EnvironmentObject var store: Store
+    @EnvironmentObject var regions: Regions
     
     @State private var region: String = ""
     @State private var country: String = ""
@@ -24,25 +25,25 @@ struct TestFormWithPickers: View {
                     .foregroundColor(.systemRed)
                 
                 Picker("Region", selection: $region) {
-                    ForEach(store.allRegions, id: \.self) { item in
+                    ForEach(regions.allRegions.map { $0.name }, id: \.self) { item in
                         Text(item)
                     }
                 }
                 
                 Picker("Country", selection: $country) {
-                    ForEach(store.countries, id: \.self) { item in
+                    ForEach(regions.countries, id: \.self) { item in
                         Text(item)
                     }
                 }
                 
                 Picker("City", selection: $city) {
-                    ForEach(store.cities, id: \.self) { item in
+                    ForEach(regions.cities, id: \.self) { item in
                         Text(item)
                     }
                 }
                 
                 Picker("Sub-Region", selection: $subRegion) {
-                    ForEach(store.subRegions, id: \.self) { item in
+                    ForEach(regions.subRegions, id: \.self) { item in
                         Text(item)
                     }
                 }
@@ -50,6 +51,7 @@ struct TestFormWithPickers: View {
             .navigationBarTitle(Text("Mobility Trends"), displayMode: .automatic)
             .navigationBarItems(trailing: TrailingButtonSFSymbol("arrow.2.circlepath") {
                 self.store.fetch()
+                self.regions.fetch()
             })
         }
     }

@@ -14,6 +14,6 @@ struct Trend: Identifiable, Codable {
     var geoType: GeoType
     var transportType: TransportType
     //  MARK: for simplicity at first dates as strings
-    var dates: [String]
+    var datesStr: [String]
     var series: [Double]
 }

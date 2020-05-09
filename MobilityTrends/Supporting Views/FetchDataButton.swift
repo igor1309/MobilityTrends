@@ -10,10 +10,12 @@ import SwiftUI
 
 struct FetchDataButton: View {
     @EnvironmentObject var store: Store
+    @EnvironmentObject var regions: Regions
     
     var body: some View {
         Button(action: {
             self.store.fetch()
+            self.regions.fetch()
         }) {
             Image(systemName: "arrow.2.circlepath")
         }
@@ -24,5 +26,6 @@ struct FetchDataButton_Previews: PreviewProvider {
     static var previews: some View {
         FetchDataButton()
             .environmentObject(Store())
+            .environmentObject(Regions())
     }
 }
