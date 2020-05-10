@@ -11,8 +11,9 @@ import SwiftPI
 import Combine
 
 final class Store: ObservableObject {
-    private let filename: String = "apple-mobility.json"
     let baseline: Double = 100
+    private let filename: String = "apple-mobility.json"
+    private let mobilityTrendsAPI: MobilityTrendsAPI
     
     var updateRequested = PassthroughSubject<String, Never>()
     
@@ -21,7 +22,9 @@ final class Store: ObservableObject {
     @Published var selectedRegion = "Moscow"
     @Published var transportation = TransportType.driving
     
-    init() {
+    init(api: MobilityTrendsAPI = .shared) {
+        self.mobilityTrendsAPI = api
+        
         //  MARK: load dataSet from JSON
         //        trends = loadTrends(filename)
         
@@ -57,7 +60,7 @@ extension Store {
         updateRequested
             .setFailureType(to: Error.self)
             .flatMap { _ -> AnyPublisher<Mobility, Error> in
-                MobilityTrendsAPI.fetchMobilityJSON()
+                self.mobilityTrendsAPI.fetchMobilityJSON()
         }
         .map { self.convertMobilityToTrends($0) }
         .subscribe(on: DispatchQueue.global())
@@ -259,7 +262,7 @@ extension Store {
     //  fetch Trends from remote JSON ans save to Document Directory
     private func fetchTrendsFromRemoteJSONAndSave() {
         
-        MobilityTrendsAPI.fetchMobilityJSON()
+        self.mobilityTrendsAPI.fetchMobilityJSON()
             //        URLSession.shared.fetchData(url: url)
             //            .decode(type: Mobility.self, decoder: JSONDecoder())
             //            .subscribe(on: DispatchQueue.global())
@@ -289,7 +292,7 @@ extension Store {
         //  create update (fetch) subscription
         updateRequested
             .flatMap { _ in
-                MobilityTrendsAPI.fetchMobilityCSV()
+                self.mobilityTrendsAPI.fetchMobilityCSV()
         }
         .tryMap { try CSVParser.parseCSVToTrends(csv: $0) }
         .catch { _ in Just([]) }

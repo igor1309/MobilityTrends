@@ -11,9 +11,10 @@ import Combine
 
 //  https://covid19-static.cdn-apple.com/covid19-mobility-data/current/v2/index.json
 
-enum MobilityTrendsAPI {
+class MobilityTrendsAPI {
+    static let shared = MobilityTrendsAPI()
     
-    private static func getURL(for endpoint: Endpoint) -> AnyPublisher<URL, Error> {
+    private func getURL(for endpoint: Endpoint) -> AnyPublisher<URL, Error> {
         let url = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/current/v2/index.json")!
         
         return URLSession.shared.fetchData(url: url)
@@ -22,20 +23,20 @@ enum MobilityTrendsAPI {
             .eraseToAnyPublisher()
     }
     
-    //  MARK: -
+    //  MARK: - fetch()
+    
     ///  JSON with Mobility Trends data but without GeoType (less info than in CSV)
-    static func fetchMobilityJSON() -> AnyPublisher<Mobility, Error> {
-        MobilityTrendsAPI.getURL(for: Endpoint.jsonPath)
+    func fetchMobilityJSON() -> AnyPublisher<Mobility, Error> {
+        getURL(for: Endpoint.jsonPath)
             .flatMap { URLSession.shared.fetchData(url: $0) }
             .decode(type: Mobility.self, decoder: JSONDecoder())
             .subscribe(on: DispatchQueue.global())
             .eraseToAnyPublisher()
     }
     
-    //  MARK: -
     ///  JSON locale names (plain string array, no GeoType)
-    static func fetchLocaleNamesJSON() -> AnyPublisher<[String], Error> {
-        MobilityTrendsAPI.getURL(for: Endpoint.localeNamesPath)
+    func fetchLocaleNamesJSON() -> AnyPublisher<[String], Error> {
+        getURL(for: Endpoint.localeNamesPath)
             .flatMap { URLSession.shared.fetchData(url: $0) }
             .decode(type: [String].self, decoder: JSONDecoder())
             .map { $0.sorted() }
@@ -43,10 +44,9 @@ enum MobilityTrendsAPI {
             .eraseToAnyPublisher()
     }
     
-    //  MARK: -
     //  CSV (everything, but date in filename makes update tricky)
-    static func fetchMobilityCSV() -> AnyPublisher<String, Never> {
-        MobilityTrendsAPI.getURL(for: Endpoint.csvPath)
+    func fetchMobilityCSV() -> AnyPublisher<String, Never> {
+        getURL(for: Endpoint.csvPath)
             .flatMap {
                 URLSession.shared.dataTaskPublisher(for: $0)
                     .mapError { $0 as Error }
@@ -67,27 +67,23 @@ enum MobilityTrendsAPI {
             case lang = "regions"
         }
         
-        // MARK: - Regions
         struct Lang: Codable {
             let enUs: EnUs
             
             enum CodingKeys: String, CodingKey {
                 case enUs = "en-us"
             }
+            
+            struct EnUs: Codable {
+                let jsonPath, localeNamesPath, csvPath, initialPath: String
+                let shards: Shards
+                
+                struct Shards: Codable {
+                    let defaults: String
+                }
+            }
         }
         
-        // MARK: - EnUs
-        struct EnUs: Codable {
-            let jsonPath, localeNamesPath, csvPath, initialPath: String
-            let shards: Shards
-        }
-        
-        // MARK: - Shards
-        struct Shards: Codable {
-            let defaults: String
-        }
-        
-        // MARK: - URL
         func url(for endpoint: Endpoint) -> URL {
             var components = URLComponents()
             components.scheme = "https"
@@ -110,11 +106,12 @@ enum MobilityTrendsAPI {
         }
     }
     
+    //  MARK: - Endpoint
     private enum Endpoint {
         case jsonPath, localeNamesPath, csvPath, initialPath
     }
     
-    
+    //  MARK: - old urls for reference
     //  JSON (data, no GeoType)
     private static let urlMobilityJSON = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev51/v2/en-us/applemobilitytrends.json")!
     //  JSON locale names (plain string array, no GeoType)

@@ -14,7 +14,8 @@ final class Regions: ObservableObject {
     private let localesFilename = "locales.json"
     private let regionsFilename = "regions.json"
     private let favoritesFilename = "favorite-regions.json"
-    
+    private let mobilityTrendsAPI: MobilityTrendsAPI
+
     var updateRequested = PassthroughSubject<String, Never>()
     
     @Published private(set) var favorites = [String]()
@@ -47,7 +48,9 @@ final class Regions: ObservableObject {
             .map { $0.name }
     }
     
-    init() {
+    init(api: MobilityTrendsAPI = .shared) {
+        self.mobilityTrendsAPI = api
+
         //  load regions from JSON
         self.locales = loadLocales(localesFilename)
         self.allRegions = loadAllRegions(regionsFilename)
@@ -81,7 +84,7 @@ extension Regions {
         updateRequested
             .setFailureType(to: Error.self)
             .flatMap { _ -> AnyPublisher<[String], Error> in
-                MobilityTrendsAPI.fetchLocaleNamesJSON()
+                self.mobilityTrendsAPI.fetchLocaleNamesJSON()
         }
         .subscribe(on: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
@@ -113,7 +116,7 @@ extension Regions {
     private func createUpdateCSVSubscription() {
         updateRequested
             .flatMap { _ -> AnyPublisher<String, Never> in
-                MobilityTrendsAPI.fetchMobilityCSV()
+                self.mobilityTrendsAPI.fetchMobilityCSV()
         }
         .tryMap { try CSVParser.parseCSVToRegions(csv: $0) }
         .catch { _ in Just([]) }
