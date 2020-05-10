@@ -9,8 +9,11 @@
 import Foundation
 import Combine
 
+//  https://covid19-static.cdn-apple.com/covid19-mobility-data/current/v2/index.json
+
 enum MobilityTrendsAPI {
     
+    //  JSON (data, no GeoType)
     private static let urlMobilityJSON = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev51/v2/en-us/applemobilitytrends.json")!
     
     static func fetchMobilityJSON() -> AnyPublisher<Mobility, Error> {
@@ -20,6 +23,7 @@ enum MobilityTrendsAPI {
             .eraseToAnyPublisher()
     }
     
+    //  JSON locale names (plain string array, no GeoType)
     private static let urlLocaleNamesJSON = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev51/v2/en-us/locale-names.json")!
     
     static func fetchLocaleNamesJSON() -> AnyPublisher<[String], Error> {
@@ -30,7 +34,8 @@ enum MobilityTrendsAPI {
             .eraseToAnyPublisher()
     }
     
-    private static let urlMobilityCSV = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev49/v2/en-us/applemobilitytrends-2020-05-05.csv")!
+    //  CSV (everything, but date in filename makes uptade tricky)
+    private static let urlMobilityCSV = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev53/v2/en-us/applemobilitytrends-2020-05-08.csv")!
     
     static func fetchMobilityCSV() -> AnyPublisher<String, Never> {
         URLSession.shared.dataTaskPublisher(for: urlMobilityCSV)
