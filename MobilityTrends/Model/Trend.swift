@@ -9,18 +9,14 @@
 import Foundation
 
 struct Trend {
-    var sourses: [Source]
+    var sources: [Source]
 }
 
 //  MARK: - Series and other properties and methods
 extension Trend {
-    var isEmpty: Bool { sourses.isEmpty }
-    var isNotEmpty: Bool { !sourses.isEmpty }
+    var isEmpty: Bool { sources.isEmpty }
+    var isNotEmpty: Bool { !sources.isEmpty }
     
-    func originalSeries(for selectedRegion: String, with type: TransportType) -> [Double] {
-        series(for: selectedRegion, with: type)
-    }
-
     func lastMovingAveragesForSelectedRegion(for selectedRegion: String) -> [Tail] {
         var lastMAs = [Tail]()
         
@@ -45,7 +41,7 @@ extension Trend {
     //  - to define Y Ssale
     //  - to use moving average (how?)
     func selectedRegionMinY(for selectedRegion: String) -> Double {
-        let min = sourses
+        let min = sources
             .filter { $0.region == selectedRegion }
             .flatMap { $0.series }
             .min()
@@ -54,7 +50,7 @@ extension Trend {
     }
     
     func selectedRegionMaxY(for selectedRegion: String) -> Double {
-        let max = sourses
+        let max = sources
             .filter { $0.region == selectedRegion }
             .flatMap { $0.series }
             .max()
@@ -63,7 +59,7 @@ extension Trend {
     }
     
     func series(for region: String, with transportType: TransportType) -> [Double] {
-        guard let trend = sourses.first(where: { $0.region == region && $0.transportType == transportType }) else {
+        guard let trend = sources.first(where: { $0.region == region && $0.transportType == transportType }) else {
             return []
         }
         

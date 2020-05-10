@@ -15,8 +15,7 @@ final class Store: ObservableObject {
     private let filename: String = "apple-mobility.json"
     let baseline: Double = 100
     
-//    @Published private(set) var sources = [Source]()
-    @Published var trend = Trend(sourses: [])
+    @Published var trend = Trend(sources: [])
     @Published var selectedRegion = "Moscow"
     @Published var transportType = TransportType.driving
     
@@ -26,13 +25,13 @@ final class Store: ObservableObject {
         self.mobilityTrendsAPI = api
         
         //  MARK: load dataSet from JSON
-        //        sources = loadSources(filename)
+        self.trend.sources = loadSources(filename)
         
         //  MARK: TESTING
         //  get Sources from remote JSON ans save to Document Directory
         //        getSourcesFromRemoteJSONAndSave()
         //          get local JSON
-        loadSourcesFromLocalJSON()
+        //        loadSourcesFromBundle()
         
         //  create subscriptions
         createUpdateSubscription()
@@ -81,7 +80,7 @@ extension Store {
             
             print("fetched on-empty data")
             
-            self?.trend.sourses = value
+            self?.trend.sources = value
             
             if self != nil {
                 self!.saveSources()
@@ -90,82 +89,6 @@ extension Store {
         .store(in: &cancellables)
     }
 }
-
-//  MARK: - Series and other properties and methods
-//extension Store {
-//    var isEmpty: Bool { sources.isEmpty }
-//    var isNotEmpty: Bool { !sources.isEmpty }
-//
-//    var originalSeries: [Double] {
-//        series(for: selectedRegion, transportType: transportType)
-//    }
-//
-//    var movingAverageSeries: [Double] {
-//        movingAverageSeries(for: selectedRegion, transportType: transportType)
-//    }
-//
-//    var lastMovingAveragesForSelectedRegion: [Tail] {
-//        var lastMAs = [Tail]()
-//
-//        for type in TransportType.allCases {
-//            guard let last = movingAverageSeries(for: selectedRegion, transportType: type).last else { continue }
-//            lastMAs.append(Tail(type: type, last: last))
-//        }
-//
-//        return lastMAs.sorted(by: { $0.last > $1.last })
-//    }
-//
-//    var lastMovingAverageAverage: Double {
-//        guard lastMovingAveragesForSelectedRegion.isNotEmpty else { return 0 }
-//        return lastMovingAveragesForSelectedRegion
-//            .map { $0.last }
-//            .reduce(0, { $0 + $1 }) / Double(lastMovingAveragesForSelectedRegion.count)
-//    }
-//
-//    //  MARK: - FINISH WITH THIS - IT SHOULD BE SMART!!
-//    //  - to define Y Ssale
-//    //  - to use moving average (how?)
-//    var selectedRegionMinY: Double {
-//        let min = sources
-//            .filter { $0.region == selectedRegion }
-//            .flatMap { $0.series }
-//            .min()
-//
-//        return min ?? 1
-//    }
-//    var selectedRegionMaxY: Double {
-//        let max = sources
-//            .filter { $0.region == selectedRegion }
-//            .flatMap { $0.series }
-//            .max()
-//
-//        return max ?? 1
-//    }
-//
-//    func series(for region: String, transportType: TransportType) -> [Double] {
-//        guard let trend = sources.first(where: { $0.region == region && $0.transportType == transportType }) else {
-//            return []
-//        }
-//
-//        return trend.series
-//    }
-//
-//    func movingAverageSeries(for region: String, transportType: TransportType) -> [Double] {
-//        let original = series(for: region, transportType: transportType)
-//
-//        guard original.isNotEmpty else { return [] }
-//
-//        var maSeries = [Double]()
-//
-//        for i in 0..<original.count {
-//            let slice = original.prefix(i + 1).suffix(7)
-//            let avg = slice.reduce(0, { $0 + $1 }) / Double(slice.count)
-//            maSeries.append(avg)
-//        }
-//
-//        return maSeries
-//    }
-//}
 
 //  MARK: - Mobility to Sources Conversion
 extension Store {
@@ -190,7 +113,7 @@ extension Store {
                 
                 sources.append(
                     Source(region: region,
-                          //    MARK: THAT'S NOT CORRECT!!!
+                           //    MARK: THAT'S NOT CORRECT!!!
                         geoType: .country,
                         transportType: TransportType(rawValue: data.name.rawValue)!,
                         datesStr: data.values.map { $0.date },
@@ -212,10 +135,10 @@ extension Store {
     }
     
     private func saveSources() {
-        guard trend.sourses.isNotEmpty else { return }
+        guard trend.sources.isNotEmpty else { return }
         
         DispatchQueue.main.async {
-            saveJSONToDocDir(data: self.trend.sourses, filename: self.filename)
+            saveJSONToDocDir(data: self.trend.sources, filename: self.filename)
         }
     }
 }
@@ -224,7 +147,7 @@ extension Store {
 extension Store {
     
     //  get Sources From Local JSON
-    private func loadSourcesFromLocalJSON() {
+    private func loadSourcesFromBundle() {
         Bundle.main.fetch("applemobilitysources.json", type: Mobility.self)
             .map { self.convertMobilityToSources($0) }
             .subscribe(on: DispatchQueue.global())
@@ -245,7 +168,7 @@ extension Store {
                 
                 print("fetched on-empty data")
                 
-                self?.trend.sourses = value
+                self?.trend.sources = value
                 
                 if self != nil {
                     self!.saveSources()
@@ -306,7 +229,7 @@ extension Store {
             
             print("fetched on-empty data")
             
-            self?.trend.sourses = value
+            self?.trend.sources = value
             
             if self != nil {
                 self!.saveSources()
