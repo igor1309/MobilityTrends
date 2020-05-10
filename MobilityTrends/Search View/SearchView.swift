@@ -11,12 +11,12 @@ import SwiftPI
 
 struct SearchView: View {
     @Environment(\.presentationMode) var presentation
-    @EnvironmentObject var regions: Regions
+    @EnvironmentObject var territories: Territories
     
     @Binding var selection: String
     
     var geoTypePicker: some View {
-        Picker(selection: $regions.selectedGeoType, label: Text("Geo Type")) {
+        Picker(selection: $territories.selectedGeoType, label: Text("Geo Type")) {
             ForEach(GeoType.allCases, id: \.self) { type in
                 Text(type.id).tag(type)
             }
@@ -30,11 +30,11 @@ struct SearchView: View {
                 .imageScale(.small)
                 .foregroundColor(.tertiary)
             
-            TextField("Search \(regions.selectedGeoType.rawValue.capitalized)", text: $regions.query)
+            TextField("Search \(territories.selectedGeoType.rawValue.capitalized)", text: $territories.query)
             
-            if regions.query.isNotEmpty {
+            if territories.query.isNotEmpty {
                 Button(action: {
-                    self.regions.query = ""
+                    self.territories.query = ""
                 }) {
                     Image(systemName: "xmark.circle.fill")
                         .imageScale(.small)
@@ -61,14 +61,14 @@ struct SearchView: View {
                     .padding(.horizontal)
                 
                 List {
-                    ForEach(regions.queryResult, id: \.self) { item in
+                    ForEach(territories.queryResult) { region in
                         HStack {
-                            Text(item)
+                            Text(region.name)
                             Spacer()
                         }
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            self.selection = item
+                            self.selection = region.name
                             self.presentation.wrappedValue.dismiss()
                         }
                     }
@@ -76,7 +76,7 @@ struct SearchView: View {
             }
             .navigationBarTitle(Text("Select Region"), displayMode: .inline)
             .navigationBarItems(trailing: TrailingButtonSFSymbol("arrow.2.circlepath") {
-                self.regions.fetch()
+                self.territories.fetch()
             })
         }
     }
@@ -93,7 +93,7 @@ struct SearchViewTesting: View {
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         SearchViewTesting()
-            .environmentObject(Regions())
+            .environmentObject(Territories())
             .environment(\.colorScheme, .dark)
     }
 }

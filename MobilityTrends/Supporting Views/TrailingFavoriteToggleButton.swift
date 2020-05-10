@@ -10,25 +10,25 @@ import SwiftUI
 import SwiftPI
 
 struct TrailingFavoriteToggleButton: View {
-    @EnvironmentObject var regions: Regions
+    @EnvironmentObject var territories: Territories
     
     @Binding var region: String
     
     var body: some View {
-        TrailingButtonSFSymbol(regions.isFavorite(region: region) ? "star.fill" : "star") {
-            if self.regions.isFavorite(region: self.region) {
-                self.regions.delete(region: self.region)
+        TrailingButtonSFSymbol(territories.isFavorite(region: region) ? "star.fill" : "star") {
+            if self.territories.isFavorite(region: self.region) {
+                self.territories.delete(region: self.region)
             } else {
-                self.regions.add(region: self.region)
+                self.territories.add(region: self.region)
             }
         }
-        .foregroundColor(regions.isFavorite(region: region) ? .systemOrange : .secondary)
+        .foregroundColor(territories.isFavorite(region: region) ? .systemOrange : .secondary)
     }
 }
 
 struct TrailingFavoriteToggleButton_Previews: PreviewProvider {
     static var previews: some View {
         TrailingFavoriteToggleButton(region: .constant("Moscow"))
-            .environmentObject(Regions())
+            .environmentObject(Territories())
     }
 }

@@ -1,5 +1,5 @@
 //
-//  Regions.swift
+//  Territories.swift
 //  MobilityTrends
 //
 //  Created by Igor Malyarov on 07.05.2020.
@@ -10,18 +10,18 @@ import SwiftUI
 import SwiftPI
 import Combine
 
-final class Regions: ObservableObject {
+final class Territories: ObservableObject {
     private let mobilityTrendsAPI: MobilityTrendsAPI
     
-    private let favoritesFilename = "favorite-regions.json"
+    private let favoritesFilename = "favorites.json"
     private let localesFilename = "locales.json"
-    private let regionsFilename = "regions.json"
+    private let regionsFilename = "territories.json"
     
     @Published private(set) var favorites = [String]()
     
     @Published var query: String = ""
     @Published var selectedGeoType = GeoType.country
-    @Published var queryResult = [String]()
+    @Published var queryResult = [Region]()
     
     /// source - locale-names.json
     @Published var locales = [String]()
@@ -32,9 +32,9 @@ final class Regions: ObservableObject {
             updateRegionLists()
         }
     }
-    @Published var countries = [String]()
-    @Published var cities = [String]()
-    @Published var subRegions = [String]()
+    @Published var countries = [Region]()
+    @Published var cities = [Region]()
+    @Published var subRegions = [Region]()
     
     var updateRequested = PassthroughSubject<String, Never>()
     
@@ -67,16 +67,16 @@ final class Regions: ObservableObject {
 }
 
 //  MARK: - Update stored properties (cheaper than computed properties)
-extension Regions {
+extension Territories {
     private func updateRegionLists() {
-        countries =  allRegions.filter { $0.type == .country }.map { $0.name }
-        cities =     allRegions.filter { $0.type == .city }.map { $0.name }
-        subRegions = allRegions.filter { $0.type == .subRegion }.map { $0.name }
+        countries =  allRegions.filter { $0.type == .country }
+        cities =     allRegions.filter { $0.type == .city }
+        subRegions = allRegions.filter { $0.type == .subRegion }
     }
 }
 
 //  MARK: - Fetch and Subcsriptions
-extension Regions {
+extension Territories {
     func fetch() {
         updateRequested.send("update")
     }
@@ -129,7 +129,7 @@ extension Regions {
             self?.allRegions = $0
             if self != nil {
                 print("updated regions from csv")
-                self!.saveAllRegions()
+                self!.saveAllTerritories()
             }
         }
         .store(in: &cancellables)
@@ -155,12 +155,12 @@ extension Regions {
         .store(in: &cancellables)
     }
     
-    private func queryList(for query: String, with type: GeoType) -> [String] {
-        let array: [String]
+    private func queryList(for query: String, with type: GeoType) -> [Region] {
+        let array: [Region]
         
         switch type {
         case .all:
-            array = locales
+            array = locales.map { Region(name: $0, type: .all) }
         case .country:
             array = countries
         case .city:
@@ -171,7 +171,7 @@ extension Regions {
         
         let result = array.filter {
             query.isNotEmpty
-                ? $0.lowercased().contains(query.lowercased())
+                ? $0.name.lowercased().contains(query.lowercased())
                 : true
         }
         
@@ -180,7 +180,7 @@ extension Regions {
 }
 
 //  MARK: - Handling favorites
-extension Regions {
+extension Territories {
     func isFavorite(region: String) -> Bool {
         favorites.contains(region)
     }
@@ -217,7 +217,7 @@ extension Regions {
 }
 
 //  MARK: - Load and Save
-extension Regions {
+extension Territories {
     private func loadAllRegions(_ filename: String) -> [Region] {
         //  load regions from JSON
         guard let saved: [Region] = loadJSONFromDocDir(filename) else {
@@ -227,7 +227,7 @@ extension Regions {
         return saved
     }
     
-    private func saveAllRegions() {
+    private func saveAllTerritories() {
         DispatchQueue.global().async {
             guard self.allRegions.isNotEmpty else { return }
             saveJSONToDocDir(data: self.allRegions, filename: self.regionsFilename)

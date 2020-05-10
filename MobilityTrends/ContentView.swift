@@ -21,7 +21,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .environmentObject(Store())
-            .environmentObject(Regions())
+            .environmentObject(Territories())
             .environment(\.colorScheme, .dark)
     }
 }

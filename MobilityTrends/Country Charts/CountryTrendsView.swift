@@ -27,7 +27,7 @@ struct CountryTreRndsHeader: View {
 
 struct CountryTrendsView: View {
     @EnvironmentObject var store: Store
-    @EnvironmentObject var regions: Regions
+    @EnvironmentObject var territories: Territories
     
     var body: some View {
         
@@ -136,7 +136,7 @@ struct CountryTrendsView_Previews: PreviewProvider {
             CountryTrendsView()
         }
         .environmentObject(Store())
-        .environmentObject(Regions())
+        .environmentObject(Territories())
         .environment(\.colorScheme, .dark)
     }
 }

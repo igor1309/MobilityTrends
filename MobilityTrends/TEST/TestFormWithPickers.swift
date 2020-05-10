@@ -11,7 +11,7 @@ import SwiftPI
 
 struct TestFormWithPickers: View {
     @EnvironmentObject var store: Store
-    @EnvironmentObject var regions: Regions
+    @EnvironmentObject var territories: Territories
     
     @State private var region: String = ""
     @State private var country: String = ""
@@ -25,33 +25,33 @@ struct TestFormWithPickers: View {
                     .foregroundColor(.systemRed)
                 
                 Picker("Region", selection: $region) {
-                    ForEach(regions.allRegions.map { $0.name }, id: \.self) { item in
+                    ForEach(territories.allRegions.map { $0.name }, id: \.self) { item in
                         Text(item)
                     }
                 }
                 
                 Picker("Country", selection: $country) {
-                    ForEach(regions.countries, id: \.self) { item in
-                        Text(item)
+                    ForEach(territories.countries, id: \.self) { region in
+                        Text(region.name)
                     }
                 }
                 
                 Picker("City", selection: $city) {
-                    ForEach(regions.cities, id: \.self) { item in
-                        Text(item)
+                    ForEach(territories.cities, id: \.self) { region in
+                        Text(region.name)
                     }
                 }
                 
                 Picker("Sub-Region", selection: $subRegion) {
-                    ForEach(regions.subRegions, id: \.self) { item in
-                        Text(item)
+                    ForEach(territories.subRegions, id: \.self) { region in
+                        Text(region.name)
                     }
                 }
             }
             .navigationBarTitle(Text("Mobility Trends"), displayMode: .automatic)
             .navigationBarItems(trailing: TrailingButtonSFSymbol("arrow.2.circlepath") {
                 self.store.fetch()
-                self.regions.fetch()
+                self.territories.fetch()
             })
         }
     }
