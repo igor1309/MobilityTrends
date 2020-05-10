@@ -12,10 +12,25 @@ import Combine
 
 final class Store: ObservableObject {
     private let mobilityTrendsAPI: MobilityTrendsAPI
-
+    
     private let filename: String = "apple-mobility.json"
-
+    
     let baseline: Double = 100
+    
+    
+    @Published private(set) var tide: Tide = Tide(
+    sources: [], selectedRegion: "") {
+        didSet {
+            print("\n- - - - - - Tide didSet - - - - - -\n")
+        }
+    }
+    private var sources = [Source]() {
+        didSet {
+            print("\n- - - - - - sources didSet - - - - - -\n")
+            sourcesUpdated.send("updated")
+        }
+    }
+    private var sourcesUpdated = PassthroughSubject<String, Never>()
     
     @Published var trend = Trend(sources: [])
     @Published var selectedRegion = "Moscow"
@@ -25,10 +40,21 @@ final class Store: ObservableObject {
     
     init(api: MobilityTrendsAPI = .shared) {
         self.mobilityTrendsAPI = api
+
+        //  create subscriptions
+        createSubscriptions()
+        //  not used anymore
+        //        createCSVSubscription()
         
         //  MARK: load dataSet from JSON
         //        self.trend.sources = loadSources(filename)
         self.trend = Trend(sources: loadSources(filename))
+        self.sources = loadSources(filename)
+        // Note how we need to manually call our handling
+        // method within our initializer, since property
+        // observers aren't triggered until after a value
+        // has been fully initialized.
+        self.sourcesUpdated.send("updated")
         
         //  MARK: TESTING
         //  get Sources from remote JSON ans save to Document Directory
@@ -36,10 +62,6 @@ final class Store: ObservableObject {
         //          get local JSON
         //        loadSourcesFromBundle()
         
-        //  create subscriptions
-        createUpdateSubscription()
-        //  not used anymore
-        //        createCSVSubscription()
     }
     
     private var cancellables = Set<AnyCancellable>()
@@ -57,8 +79,30 @@ extension Store {
         updateRequested.send("update")
     }
     
-    ///  create update (fetch) subscription
-    private func createUpdateSubscription() {
+    private func createSubscriptions() {
+
+
+        Publishers.CombineLatest3(
+            sourcesUpdated
+            ,
+            $selectedRegion
+            ,
+            $transportType
+        )
+            .receive(on: DispatchQueue.main)
+            .sink {
+                [weak self] in
+                print($0)
+                print(self?.sources.count ?? 0 > 0 ? "sources not empty" : "sources EMPTY")
+                if self != nil {
+                    self!.tide = Tide(sources: self!.sources,
+                                      selectedRegion: self!.selectedRegion)
+                }
+        }
+        .store(in: &cancellables)
+        
+        
+        
         updateRequested
             .setFailureType(to: Error.self)
             .flatMap { _ -> AnyPublisher<Mobility, Error> in
@@ -84,6 +128,7 @@ extension Store {
             print("fetched on-empty data")
             
             self?.trend = Trend(sources: sources)
+            self?.sources = sources
             
             if self != nil {
                 self!.saveSources()
@@ -171,6 +216,7 @@ extension Store {
                 print("fetched on-empty data")
                 
                 self?.trend = Trend(sources: sources)
+                self?.sources = sources
                 
                 if self != nil {
                     self!.saveSources()
@@ -232,6 +278,7 @@ extension Store {
             print("fetched on-empty data")
             
             self?.trend = Trend(sources: sources)
+            self?.sources = sources
             
             if self != nil {
                 self!.saveSources()

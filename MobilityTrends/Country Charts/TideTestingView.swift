@@ -1,38 +1,49 @@
 //
-//  CountryTrendsView.swift
+//  TideTestingView.swift
 //  MobilityTrends
 //
-//  Created by Igor Malyarov on 08.05.2020.
+//  Created by Igor Malyarov on 10.05.2020.
 //  Copyright © 2020 Igor Malyarov. All rights reserved.
 //
 
 import SwiftUI
-import SwiftPI
 
-struct CountryTrendsView: View {
+struct TideTestingView: View {
     @EnvironmentObject var store: Store
     @EnvironmentObject var territories: Territories
     
+    @State private var isUsingMovingAverage = true
+    
     var body: some View {
         
-        let minY = self.store.trend.selectedRegionMinY(for: self.store.selectedRegion)
-        let maxY = self.store.trend.selectedRegionMaxY(for: self.store.selectedRegion)
-        let maAvg: Double = store.trend.lastMovingAverageAverage(for: store.selectedRegion)
-        
-        func lineGraph(transportType: TransportType) -> LineGraphShape {
-            LineGraphShape(
-                series: self.store.trend.movingAverageSeries(
-                    for: self.store.selectedRegion,
-                    with: transportType),
-                minY: minY,
-                maxY: maxY)
+        let series: [TransportType : [Double]]
+        if isUsingMovingAverage {
+            series = store.tide.movingAverageForSelected
+        } else {
+            series = store.tide.trendsForSelected
         }
         
-        func yScale(originalLast: Double, maLast: Double) -> some View {
+        
+        let minY = store.tide.selectedRegionMinY
+        let maxY = store.tide.selectedRegionMaxY
+        let maAvg = store.tide.lastMovingAverageAverage
+        
+        func lineGraph(series: [Double], transport: TransportType) -> some View {
+            Group {
+                if series.isNotEmpty {
+                    LineGraphShape(series: series, minY: minY, maxY: maxY)
+                        .stroke(transport.color, lineWidth: 2)
+                } else {
+                    EmptyView()
+                }
+            }
+        }
+        
+        var yScale: some View {
             
             var legend: some View {
                 VStack(alignment: .trailing) {
-                    ForEach(store.trend.lastMovingAveragesForSelectedRegion(for: store.selectedRegion), id: \.self) { tail in
+                    ForEach(store.tide.lastMovingAveragesForSelectedRegion, id: \.self) { tail in
                         Text((tail.last/100).formattedPercentage)
                             .foregroundColor(tail.type.color)
                             .font(.footnote)
@@ -66,11 +77,25 @@ struct CountryTrendsView: View {
             .frame(width: 60)
         }
         
+        
         return VStack {
             CountryTrendsHeader()
             
-            if store.trend.isNotEmpty {
-                VStack {
+            if store.tide.isNotEmpty {
+                
+                ZStack(alignment: .topTrailing) {
+                    
+                    Button(action : {
+                        self.isUsingMovingAverage.toggle()
+                    }) {
+                        Image(systemName: isUsingMovingAverage ? "waveform.path" : "waveform.path.ecg")
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color.quaternarySystemFill)
+                        )
+                            .padding(.top)
+                    }
                     
                     ZStack(alignment: .topLeading) {
                         
@@ -89,17 +114,14 @@ struct CountryTrendsView: View {
                         BaseLineShape(series: [100], minY: minY, maxY: maxY)
                             .stroke(Color.systemGray3)
                         
-                        
                         HStack(spacing: -20) {
                             ZStack {
-                                ForEach(TransportType.allCases, id: \.self) { transportType in
-                                    
-                                    lineGraph(transportType: transportType)
-                                        .stroke(transportType.color, lineWidth: 2)
+                                ForEach(TransportType.allCases, id: \.self) { transport in
+                                    lineGraph(series: series[transport] ?? [], transport: transport)
                                 }
                             }
                             
-                            yScale(originalLast: 10, maLast: 12)
+                            yScale
                         }
                     }
                 }
@@ -112,15 +134,15 @@ struct CountryTrendsView: View {
     }
 }
 
-struct CountryTrendsView_Previews: PreviewProvider {
+struct TideTestingView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
-            
-            CountryTrendsView()
+            TideTestingView()
         }
         .environmentObject(Store())
         .environmentObject(Territories())
         .environment(\.colorScheme, .dark)
     }
 }
+//

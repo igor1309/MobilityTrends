@@ -46,6 +46,8 @@
 		2AC582C524681FC0002E2FBD /* Trend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC582C424681FC0002E2FBD /* Trend.swift */; };
 		2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF4360824649CEC00212222 /* BaseLineShape.swift */; };
 		2AF6243924687BD4007CCF62 /* Tide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF6243824687BD4007CCF62 /* Tide.swift */; };
+		2AF6243B2468A22A007CCF62 /* TideTestingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF6243A2468A22A007CCF62 /* TideTestingView.swift */; };
+		2AF6243D2468A909007CCF62 /* CountryTrendsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,6 +91,8 @@
 		2AC582C424681FC0002E2FBD /* Trend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trend.swift; sourceTree = "<group>"; };
 		2AF4360824649CEC00212222 /* BaseLineShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseLineShape.swift; sourceTree = "<group>"; };
 		2AF6243824687BD4007CCF62 /* Tide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tide.swift; sourceTree = "<group>"; };
+		2AF6243A2468A22A007CCF62 /* TideTestingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TideTestingView.swift; sourceTree = "<group>"; };
+		2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryTrendsHeader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,6 +253,8 @@
 			isa = PBXGroup;
 			children = (
 				2A28BB1D24656AC20041EDD5 /* CountryTrendsView.swift */,
+				2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */,
+				2AF6243A2468A22A007CCF62 /* TideTestingView.swift */,
 			);
 			path = "Country Charts";
 			sourceTree = "<group>";
@@ -355,6 +361,7 @@
 				2AC582C324674E04002E2FBD /* Region.swift in Sources */,
 				2A09EE03246382500021FC7D /* SearchView.swift in Sources */,
 				2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */,
+				2AF6243D2468A909007CCF62 /* CountryTrendsHeader.swift in Sources */,
 				2A09EDF3246357510021FC7D /* Store.swift in Sources */,
 				2A09EDDD246356900021FC7D /* AppDelegate.swift in Sources */,
 				2A09EDDF246356900021FC7D /* SceneDelegate.swift in Sources */,
@@ -363,6 +370,7 @@
 				2A28BB2724657BA90041EDD5 /* FavoriteToggleButton.swift in Sources */,
 				2A0BD5C0246435B800D98C96 /* DotGraphShape.swift in Sources */,
 				2A28BB2B246582470041EDD5 /* TransportType.swift in Sources */,
+				2AF6243B2468A22A007CCF62 /* TideTestingView.swift in Sources */,
 				2A28BB24246573130041EDD5 /* FetchDataButton.swift in Sources */,
 				2A09EE052463FEBD0021FC7D /* CSVParser.swift in Sources */,
 				2A09EDF12463571B0021FC7D /* Source.swift in Sources */,

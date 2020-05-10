@@ -26,7 +26,7 @@ struct Tide {
 
 extension Tide {
     
-    init(sources: [Source], selectedTerritory territory: Region) {
+    init(sources: [Source], selectedRegion region: String) {
         
         func movingAverageSeries(for original: [Double]) -> [Double] {
             
@@ -41,11 +41,13 @@ extension Tide {
             return maSeries
         }
         
-        let name = territory.name
+        let allSeriesForSelected = sources.filter { $0.region == region }
         
-        let allSeriesForSelected = sources.filter { $0.region == name }
-        
-        xLabelsForSelected = allSeriesForSelected[0].datesStr
+        if allSeriesForSelected.count > 0 {
+            xLabelsForSelected = allSeriesForSelected[0].datesStr
+        } else {
+            xLabelsForSelected = []
+        }
         
         trendsForSelected =
             allSeriesForSelected.reduce(into: [TransportType: [Double]]()) {
