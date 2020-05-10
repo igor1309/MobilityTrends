@@ -11,13 +11,11 @@ import SwiftPI
 import Combine
 
 final class Regions: ObservableObject {
+    private let favoritesFilename = "favorite-regions.json"
     private let localesFilename = "locales.json"
     private let regionsFilename = "regions.json"
-    private let favoritesFilename = "favorite-regions.json"
     private let mobilityTrendsAPI: MobilityTrendsAPI
 
-    var updateRequested = PassthroughSubject<String, Never>()
-    
     @Published private(set) var favorites = [String]()
     
     @Published var query: String = ""
@@ -29,6 +27,8 @@ final class Regions: ObservableObject {
     
     /// source - applemobilitytrends-2020-xx-xx.csv
     @Published var allRegions = [Region]()
+    
+    var updateRequested = PassthroughSubject<String, Never>()
     
     var countries: [String] {
         allRegions

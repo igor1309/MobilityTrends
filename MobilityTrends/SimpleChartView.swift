@@ -19,7 +19,7 @@ struct SimpleChartView: View {
     var body: some View {
         NavigationView {
             VStack {
-                TransportTypePicker(selection: $store.transportation)
+                TransportTypePicker(selection: $store.transportType)
                 
                 if store.originalSeries.isNotEmpty {
                     OneLineChartView(original: store.originalSeries,
@@ -30,7 +30,7 @@ struct SimpleChartView: View {
                         .padding(.top)
                 } else {
                     VStack {
-                        Text("No data for \(store.transportation.rawValue) in \(store.selectedRegion)")
+                        Text("No data for \(store.transportType.rawValue) in \(store.selectedRegion)")
                             .padding(.top)
                             .foregroundColor(.systemRed)
                             .opacity(0.6)

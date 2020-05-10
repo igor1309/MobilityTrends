@@ -11,16 +11,16 @@ import SwiftPI
 import Combine
 
 final class Store: ObservableObject {
-    let baseline: Double = 100
-    private let filename: String = "apple-mobility.json"
     private let mobilityTrendsAPI: MobilityTrendsAPI
+    private let filename: String = "apple-mobility.json"
+    let baseline: Double = 100
     
-    var updateRequested = PassthroughSubject<String, Never>()
-    
-    private var trends = [Trend]()
+    @Published private(set) var trends = [Trend]()
     
     @Published var selectedRegion = "Moscow"
-    @Published var transportation = TransportType.driving
+    @Published var transportType = TransportType.driving
+    
+    var updateRequested = PassthroughSubject<String, Never>()
     
     init(api: MobilityTrendsAPI = .shared) {
         self.mobilityTrendsAPI = api
@@ -97,14 +97,14 @@ extension Store {
     var isNotEmpty: Bool { !trends.isEmpty }
     
     var originalSeries: [Double] {
-        series(for: selectedRegion, transportType: transportation)
+        series(for: selectedRegion, transportType: transportType)
     }
     
     var movingAverageSeries: [Double] {
-        movingAverageSeries(for: selectedRegion, transportType: transportation)
+        movingAverageSeries(for: selectedRegion, transportType: transportType)
     }
     
-    var lastMovingAverageForSelectedRegion: [Tail] {
+    var lastMovingAveragesForSelectedRegion: [Tail] {
         var lastMAs = [Tail]()
         
         for type in TransportType.allCases {
@@ -116,10 +116,10 @@ extension Store {
     }
     
     var lastMovingAverageAverage: Double {
-        guard lastMovingAverageForSelectedRegion.isNotEmpty else { return 0 }
-        return lastMovingAverageForSelectedRegion
+        guard lastMovingAveragesForSelectedRegion.isNotEmpty else { return 0 }
+        return lastMovingAveragesForSelectedRegion
             .map { $0.last }
-            .reduce(0, { $0 + $1 }) / Double(lastMovingAverageForSelectedRegion.count)
+            .reduce(0, { $0 + $1 }) / Double(lastMovingAveragesForSelectedRegion.count)
     }
     
     //  MARK: - FINISH WITH THIS - IT SHOULD BE SMART!!
@@ -143,11 +143,11 @@ extension Store {
     }
     
     func series(for region: String, transportType: TransportType) -> [Double] {
-        guard let slice = trends.first(where: { $0.region == region && $0.transportType == transportType }) else {
+        guard let trend = trends.first(where: { $0.region == region && $0.transportType == transportType }) else {
             return []
         }
         
-        return slice.series
+        return trend.series
     }
     
     func movingAverageSeries(for region: String, transportType: TransportType) -> [Double] {

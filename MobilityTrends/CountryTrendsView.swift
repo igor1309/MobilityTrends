@@ -48,7 +48,7 @@ struct CountryTrendsView: View {
             
             var legend: some View {
                 VStack(alignment: .trailing) {
-                    ForEach(store.lastMovingAverageForSelectedRegion, id: \.self) { tail in
+                    ForEach(store.lastMovingAveragesForSelectedRegion, id: \.self) { tail in
                         Text((tail.last/100).formattedPercentage)
                             .foregroundColor(tail.type.color)
                             .font(.footnote)
