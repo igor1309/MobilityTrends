@@ -46,7 +46,7 @@ extension Trend {
             .flatMap { $0.series }
             .min()
         
-        return min ?? 1
+        return ((min ?? 1) / 10).rounded(.down) * 10
     }
     
     func selectedRegionMaxY(for selectedRegion: String) -> Double {
@@ -55,7 +55,7 @@ extension Trend {
             .flatMap { $0.series }
             .max()
         
-        return max ?? 1
+        return ((max ?? 1) / 10).rounded(.up) * 10
     }
     
     func series(for region: String, with transportType: TransportType) -> [Double] {

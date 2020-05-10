@@ -15,7 +15,7 @@ final class Regions: ObservableObject {
     private let localesFilename = "locales.json"
     private let regionsFilename = "regions.json"
     private let mobilityTrendsAPI: MobilityTrendsAPI
-
+    
     @Published private(set) var favorites = [String]()
     
     @Published var query: String = ""
@@ -50,12 +50,12 @@ final class Regions: ObservableObject {
     
     init(api: MobilityTrendsAPI = .shared) {
         self.mobilityTrendsAPI = api
-
+        
         //  load regions from JSON
         self.locales = loadLocales(localesFilename)
         self.allRegions = loadAllRegions(regionsFilename)
         self.favorites = loadFavorites(favoritesFilename)
-                
+        
         //  create subscriptions
         createUpdateJSONSubscription()
         createUpdateCSVSubscription()
@@ -132,7 +132,7 @@ extension Regions {
         }
         .store(in: &cancellables)
     }
-
+    
     
     ///  create search query subscription
     private func createSearchSubscription() {
@@ -226,9 +226,8 @@ extension Regions {
     }
     
     private func saveAllRegions() {
-        guard allRegions.isNotEmpty else { return }
-        
-        DispatchQueue.main.async {
+        DispatchQueue.global().async {
+            guard self.allRegions.isNotEmpty else { return }
             saveJSONToDocDir(data: self.allRegions, filename: self.regionsFilename)
         }
     }
@@ -243,9 +242,8 @@ extension Regions {
     }
     
     private func saveLocales() {
-        guard locales.isNotEmpty else { return }
-        
-        DispatchQueue.main.async {
+        DispatchQueue.global().async {
+            guard self.locales.isNotEmpty else { return }
             saveJSONToDocDir(data: self.locales, filename: self.localesFilename)
         }
     }
@@ -260,9 +258,8 @@ extension Regions {
     }
     
     private func saveFavorites() {
-        guard favorites.isNotEmpty else { return }
-        
-        DispatchQueue.main.async {
+        DispatchQueue.global().async {
+            guard self.favorites.isNotEmpty else { return }
             saveJSONToDocDir(data: self.favorites, filename: self.favoritesFilename)
         }
     }

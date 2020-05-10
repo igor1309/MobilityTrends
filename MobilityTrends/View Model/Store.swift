@@ -25,7 +25,8 @@ final class Store: ObservableObject {
         self.mobilityTrendsAPI = api
         
         //  MARK: load dataSet from JSON
-        self.trend.sources = loadSources(filename)
+        //        self.trend.sources = loadSources(filename)
+        self.trend = Trend(sources: loadSources(filename))
         
         //  MARK: TESTING
         //  get Sources from remote JSON ans save to Document Directory
@@ -72,15 +73,15 @@ extension Store {
                 case .finished:
                     print("converting Mobility from fetched JSON to Sources ok")
                 }
-        }) { [weak self] value in
-            guard value.isNotEmpty else {
+        }) { [weak self] sources in
+            guard sources.isNotEmpty else {
                 print("returned empty Sources array, no new data")
                 return
             }
             
             print("fetched on-empty data")
             
-            self?.trend.sources = value
+            self?.trend = Trend(sources: sources)
             
             if self != nil {
                 self!.saveSources()
@@ -90,7 +91,7 @@ extension Store {
     }
 }
 
-//  MARK: - Mobility to Sources Conversion
+//  MARK: - Convert Mobility to Sources
 extension Store {
     private func convertMobilityToSources(_ mobility: Mobility) -> [Source] {
         var sources = [Source]()
@@ -135,9 +136,8 @@ extension Store {
     }
     
     private func saveSources() {
-        guard trend.sources.isNotEmpty else { return }
-        
-        DispatchQueue.main.async {
+        DispatchQueue.global().async {
+            guard self.trend.sources.isNotEmpty else { return }
             saveJSONToDocDir(data: self.trend.sources, filename: self.filename)
         }
     }
@@ -160,15 +160,15 @@ extension Store {
                     case .finished:
                         print("converting Mobility from JSON in Bundle to Sources ok")
                     }
-            }) { [weak self] value in
-                guard value.isNotEmpty else {
+            }) { [weak self] sources in
+                guard sources.isNotEmpty else {
                     print("returned empty sources array, no new data")
                     return
                 }
                 
                 print("fetched on-empty data")
                 
-                self?.trend.sources = value
+                self?.trend = Trend(sources: sources)
                 
                 if self != nil {
                     self!.saveSources()
@@ -221,15 +221,15 @@ extension Store {
         .catch { _ in Just([]) }
         .subscribe(on: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
-        .sink { [weak self] value in
-            guard value.isNotEmpty else {
+        .sink { [weak self] sources in
+            guard sources.isNotEmpty else {
                 print("parser returned empty array, no new data")
                 return
             }
             
             print("fetched on-empty data")
             
-            self?.trend.sources = value
+            self?.trend = Trend(sources: sources)
             
             if self != nil {
                 self!.saveSources()

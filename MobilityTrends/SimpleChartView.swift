@@ -23,7 +23,7 @@ struct SimpleChartView: View {
                 
                 if store.trend.isNotEmpty {
                     OneLineChartView(
-                        original: store.trend.originalSeries(for: store.selectedRegion, with: store.transportType),
+                        original: store.trend.series(for: store.selectedRegion, with: store.transportType),
                         movingAverage: store.trend.movingAverageSeries(for: store.selectedRegion, with: store.transportType),
                         baseline: store.baseline,
                         minY: store.trend.selectedRegionMinY(for: store.selectedRegion),
