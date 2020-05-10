@@ -19,7 +19,7 @@ struct FavoriteToggleButton: View {
         return Button(action: {
             self.territories.toggleFavorite(region: self.region)
         }) {
-            Image(systemName: isFavorite ? "star.fill" : "star")
+            Image(systemName: isFavorite ? "star" : "star")
                 .foregroundColor(isFavorite ? .systemOrange : .secondary)
         }
     }

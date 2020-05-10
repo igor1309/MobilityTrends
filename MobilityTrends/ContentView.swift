@@ -12,9 +12,10 @@ import SwiftPI
 struct ContentView: View {
     var body: some View {
 //        CountryTrendsView()
-        TideTestingView()
+//        TideTestingView()
 //                SearchViewTesting()
 //                SimpleChartView()
+        SimpleChartViewWithTide()
     }
 }
 

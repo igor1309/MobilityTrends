@@ -21,12 +21,12 @@ final class Store: ObservableObject {
     @Published private(set) var tide: Tide = Tide(
     sources: [], selectedRegion: "") {
         didSet {
-            print("\n- - - - - - Tide didSet - - - - - -\n")
+//            print("\n- - - - - - Tide didSet - - - - - -\n")
         }
     }
     private var sources = [Source]() {
         didSet {
-            print("\n- - - - - - sources didSet - - - - - -\n")
+//            print("\n- - - - - - sources didSet - - - - - -\n")
             sourcesUpdated.send("updated")
         }
     }
@@ -91,9 +91,9 @@ extension Store {
         )
             .receive(on: DispatchQueue.main)
             .sink {
-                [weak self] in
-                print($0)
-                print(self?.sources.count ?? 0 > 0 ? "sources not empty" : "sources EMPTY")
+                [weak self] _ in
+//                print($0)
+//                print(self?.sources.count ?? 0 > 0 ? "sources not empty" : "sources EMPTY")
                 if self != nil {
                     self!.tide = Tide(sources: self!.sources,
                                       selectedRegion: self!.selectedRegion)
