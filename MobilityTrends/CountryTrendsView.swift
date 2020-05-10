@@ -31,15 +31,15 @@ struct CountryTrendsView: View {
     
     var body: some View {
         
-        let minY = self.store.selectedRegionMinY
-        let maxY = self.store.selectedRegionMaxY
-        let maAvg: Double = store.lastMovingAverageAverage
+        let minY = self.store.trend.selectedRegionMinY(for: self.store.selectedRegion)
+        let maxY = self.store.trend.selectedRegionMaxY(for: self.store.selectedRegion)
+        let maAvg: Double = store.trend.lastMovingAverageAverage(for: store.selectedRegion)
         
         func lineGraph(transportType: TransportType) -> LineGraphShape {
             LineGraphShape(
-                series: self.store.movingAverageSeries(
+                series: self.store.trend.movingAverageSeries(
                     for: self.store.selectedRegion,
-                    transportType: transportType),
+                    with: transportType),
                 minY: minY,
                 maxY: maxY)
         }
@@ -48,7 +48,7 @@ struct CountryTrendsView: View {
             
             var legend: some View {
                 VStack(alignment: .trailing) {
-                    ForEach(store.lastMovingAveragesForSelectedRegion, id: \.self) { tail in
+                    ForEach(store.trend.lastMovingAveragesForSelectedRegion(for: store.selectedRegion), id: \.self) { tail in
                         Text((tail.last/100).formattedPercentage)
                             .foregroundColor(tail.type.color)
                             .font(.footnote)
@@ -85,7 +85,7 @@ struct CountryTrendsView: View {
         return VStack {
             CountryTreRndsHeader()
             
-            if store.isNotEmpty {
+            if store.trend.isNotEmpty {
                 VStack {
                     
                     ZStack(alignment: .topLeading) {
