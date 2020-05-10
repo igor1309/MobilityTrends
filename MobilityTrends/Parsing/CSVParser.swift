@@ -11,7 +11,7 @@ import SwiftPI
 enum CSVParser {
     enum ParserError: Error { case general }
     
-    static func parseCSVToTrends(csv: String) throws -> [Trend] {
+    static func parseCSVToSources(csv: String) throws -> [Source] {
         guard csv.isNotEmpty else {
             print("empty csv")
             return []
@@ -26,22 +26,22 @@ enum CSVParser {
         
         let x = table[0].dropFirst(4)
         
-        var trends = [Trend]()
+        var sources = [Source]()
         
         for i in 1..<table.count-1 {
             let row = table[i]
             
             guard let geoType:GeoType = GeoType(rawValue: row[0]) else { throw ParserError.general }
             
-            trends.append(Trend(region: row[1],
+            sources.append(Source(region: row[1],
                                 geoType: geoType,
                                 transportType: TransportType(rawValue: row[2])!,
                                 datesStr: Array(x),
                                 series: row.dropFirst(4).map { Double($0) ?? -1 }))
         }
-        print(trends)
+        print(sources)
         
-        return trends
+        return sources
     }
     
     static func parseCSVToRegions(csv: String) throws -> [Region] {

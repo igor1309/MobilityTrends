@@ -9,7 +9,7 @@
 import SwiftUI
 import SwiftPI
 
-struct CountryTrendsHeader: View {
+struct CountryTreRndsHeader: View {
     @EnvironmentObject var store: Store
     
     var body: some View {
@@ -83,7 +83,7 @@ struct CountryTrendsView: View {
         }
         
         return VStack {
-            CountryTrendsHeader()
+            CountryTreRndsHeader()
             
             if store.isNotEmpty {
                 VStack {

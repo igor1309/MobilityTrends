@@ -1,5 +1,5 @@
 //
-//  Trend.swift
+//  Source.swift
 //  MobilityTrends
 //
 //  Created by Igor Malyarov on 06.05.2020.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Trend: Identifiable, Codable {
+struct Source: Identifiable, Codable {
     let id = UUID()
     var region: String
     var geoType: GeoType

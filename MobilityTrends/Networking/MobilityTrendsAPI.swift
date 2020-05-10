@@ -113,10 +113,10 @@ class MobilityTrendsAPI {
     
     //  MARK: - old urls for reference
     //  JSON (data, no GeoType)
-    private static let urlMobilityJSON = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev51/v2/en-us/applemobilitytrends.json")!
+    private static let urlMobilityJSON = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev51/v2/en-us/applemobilitysources.json")!
     //  JSON locale names (plain string array, no GeoType)
     private static let urlLocaleNamesJSON = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev51/v2/en-us/locale-names.json")!
     
     //  CSV (everything, but date in filename makes uptade tricky)
-    private static let urlMobilityCSV = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev53/v2/en-us/applemobilitytrends-2020-05-08.csv")!
+    private static let urlMobilityCSV = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/2007HotfixDev53/v2/en-us/applemobilitysources-2020-05-08.csv")!
 }
