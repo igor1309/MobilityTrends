@@ -13,36 +13,29 @@ struct SimpleChartViewWithTide: View {
     @EnvironmentObject var territories: Territories
     
     var body: some View {
-        
-        func chart(transport: TransportType) -> some View {
-            Group {
-                if store.tide.trendsForSelected[transport] != nil {
-                    OneLineChartView(
-                        original: store.tide.trendsForSelected[transport]!,
-                        movingAverage: store.tide.movingAverageForSelected[transport]!,
-                        baseline: store.baseline,
-                        minY: store.tide.selectedRegionMinY,
-                        maxY: store.tide.selectedRegionMaxY
-                    )
-                } else {
-                    VStack {
-                        Text("No data for \(store.transportType.rawValue) in \(store.selectedRegion)")
-                            .padding(.top)
-                            .foregroundColor(.systemRed)
-                            .opacity(0.6)
-                        Spacer()
-                    }
-                }
-            }
-        }
-        
-        return VStack {
+        VStack {
             CountryTrendsHeader()
             
             TransportTypePicker(selection: $store.transportType)
             
-            chart(transport: store.transportType)
-                .padding(.top)
+            if store.tide.trendsForSelected[store.transportType] != nil {
+                OneLineChartView(
+                    original: store.tide.trendsForSelected[store.transportType]!,
+                    movingAverage: store.tide.movingAverageForSelected[store.transportType]!,
+                    baseline: store.baseline,
+                    minY: store.tide.selectedRegionMinY,
+                    maxY: store.tide.selectedRegionMaxY
+                )
+                    .padding(.top)
+            } else {
+                VStack {
+                    Text("No data for \(store.transportType.rawValue) in \(store.selectedRegion)")
+                        .padding(.top)
+                        .foregroundColor(.systemRed)
+                        .opacity(0.6)
+                    Spacer()
+                }
+            }
         }
         .padding(.horizontal)
     }
