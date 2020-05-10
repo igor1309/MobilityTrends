@@ -10,12 +10,31 @@ import SwiftUI
 import SwiftPI
 
 struct ContentView: View {
+    @State private var selectedTab: Int = 0
     var body: some View {
-//        CountryTrendsView()
-//        TideTestingView()
-//                SearchViewTesting()
-//                SimpleChartView()
-        SimpleChartViewWithTide()
+        TabView(selection: $selectedTab) {
+            
+            CountryTrendsView()
+                .tabItem {
+                    Image(systemName: "1.circle")
+                    Text("one")
+            }
+            .tag(0)
+            
+            SimpleChartView()
+                .tabItem {
+                    Image(systemName: "2.circle")
+                    Text("two")
+            }
+            .tag(1)
+            
+            SearchViewTesting()
+                .tabItem {
+                    Image(systemName: "magnifyingglass")
+                    Text("Search")
+            }
+            .tag(2)
+        }
     }
 }
 

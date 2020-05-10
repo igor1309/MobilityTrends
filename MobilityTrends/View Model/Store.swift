@@ -18,21 +18,12 @@ final class Store: ObservableObject {
     let baseline: Double = 100
     
     
-    @Published private(set) var tide: Tide = Tide(
-    sources: [], selectedRegion: "") {
-        didSet {
-//            print("\n- - - - - - Tide didSet - - - - - -\n")
-        }
-    }
-    private var sources = [Source]() {
-        didSet {
-//            print("\n- - - - - - sources didSet - - - - - -\n")
-            sourcesUpdated.send("updated")
-        }
-    }
+    @Published private(set) var trend = Trend(
+        sources: [], selectedRegion: "")
+    
+    private var sources = [Source]()
     private var sourcesUpdated = PassthroughSubject<String, Never>()
     
-    @Published var trend = Trend(sources: [])
     @Published var selectedRegion = "Moscow"
     @Published var transportType = TransportType.driving
     
@@ -40,7 +31,7 @@ final class Store: ObservableObject {
     
     init(api: MobilityTrendsAPI = .shared) {
         self.mobilityTrendsAPI = api
-
+        
         //  create subscriptions
         createSubscriptions()
         //  not used anymore
@@ -48,7 +39,7 @@ final class Store: ObservableObject {
         
         //  MARK: load dataSet from JSON
         //        self.trend.sources = loadSources(filename)
-        self.trend = Trend(sources: loadSources(filename))
+        //        self.trend = Trend(sources: loadSources(filename))
         self.sources = loadSources(filename)
         // Note how we need to manually call our handling
         // method within our initializer, since property
@@ -75,27 +66,21 @@ final class Store: ObservableObject {
 
 //  MARK: - Fetch and Subcsriptions
 extension Store {
-    func fetch() {
-        updateRequested.send("update")
-    }
+    
+    func fetch() { updateRequested.send("update") }
     
     private func createSubscriptions() {
-
-
+        
         Publishers.CombineLatest3(
-            sourcesUpdated
-            ,
-            $selectedRegion
-            ,
+            sourcesUpdated,
+            $selectedRegion,
             $transportType
         )
             .receive(on: DispatchQueue.main)
             .sink {
                 [weak self] _ in
-//                print($0)
-//                print(self?.sources.count ?? 0 > 0 ? "sources not empty" : "sources EMPTY")
                 if self != nil {
-                    self!.tide = Tide(sources: self!.sources,
+                    self!.trend = Trend(sources: self!.sources,
                                       selectedRegion: self!.selectedRegion)
                 }
         }
@@ -124,15 +109,9 @@ extension Store {
                 print("returned empty Sources array, no new data")
                 return
             }
-            
             print("fetched on-empty data")
-            
-            self?.trend = Trend(sources: sources)
             self?.sources = sources
-            
-            if self != nil {
-                self!.saveSources()
-            }
+            if self != nil { self!.saveSources() }
         }
         .store(in: &cancellables)
     }
@@ -184,8 +163,8 @@ extension Store {
     
     private func saveSources() {
         DispatchQueue.global().async {
-            guard self.trend.sources.isNotEmpty else { return }
-            saveJSONToDocDir(data: self.trend.sources, filename: self.filename)
+            guard self.sources.isNotEmpty else { return }
+            saveJSONToDocDir(data: self.sources, filename: self.filename)
         }
     }
 }
@@ -212,15 +191,10 @@ extension Store {
                     print("returned empty sources array, no new data")
                     return
                 }
-                
                 print("fetched on-empty data")
-                
-                self?.trend = Trend(sources: sources)
                 self?.sources = sources
                 
-                if self != nil {
-                    self!.saveSources()
-                }
+                if self != nil { self!.saveSources() }
         }
         .store(in: &cancellables)
     }
@@ -234,9 +208,6 @@ extension Store {
     private func fetchSourcesFromRemoteJSONAndSave() {
         
         self.mobilityTrendsAPI.fetchMobilityJSON()
-            //        URLSession.shared.fetchData(url: url)
-            //            .decode(type: Mobility.self, decoder: JSONDecoder())
-            //            .subscribe(on: DispatchQueue.global())
             //  this functiona just saves JSON
             //  there is no UI update so no need in DispatchQueue.main
             // .receive(on: DispatchQueue.main)
@@ -274,15 +245,9 @@ extension Store {
                 print("parser returned empty array, no new data")
                 return
             }
-            
             print("fetched on-empty data")
-            
-            self?.trend = Trend(sources: sources)
             self?.sources = sources
-            
-            if self != nil {
-                self!.saveSources()
-            }
+            if self != nil { self!.saveSources() }
         }
         .store(in: &cancellables)
     }

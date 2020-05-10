@@ -9,77 +9,71 @@
 import Foundation
 
 struct Trend {
-    var sources: [Source]
+    
+    let xLabelsForSelected: [String]
+    let trendsForSelected: [TransportType: [Double]]
+    let movingAverageForSelected: [TransportType: [Double]]
+    
+    let isEmpty: Bool
+    let isNotEmpty: Bool
+    
+    let selectedRegionMinY: Double
+    let selectedRegionMaxY: Double
+    
+    let lastMovingAveragesForSelectedRegion: [Tail]
+    let lastMovingAverageAverage: Double
 }
 
-//  MARK: - Series and other properties and methods
 extension Trend {
-    var isEmpty: Bool { sources.isEmpty }
-    var isNotEmpty: Bool { !sources.isEmpty }
     
-    func lastMovingAveragesForSelectedRegion(for selectedRegion: String) -> [Tail] {
-        var lastMAs = [Tail]()
+    init(sources: [Source], selectedRegion region: String) {
         
-        for type in TransportType.allCases {
-            guard let last = movingAverageSeries(for: selectedRegion, with: type).last else { continue }
-            lastMAs.append(Tail(type: type, last: last))
+        func movingAverageSeries(for original: [Double]) -> [Double] {
+            
+            guard original.isNotEmpty else { return [] }
+            
+            var maSeries = [Double]()
+            for i in 0..<original.count {
+                let slice = original.prefix(i + 1).suffix(7)
+                let avg = slice.reduce(0, { $0 + $1 }) / Double(slice.count)
+                maSeries.append(avg)
+            }
+            return maSeries
         }
         
-        return lastMAs.sorted(by: { $0.last > $1.last })
-    }
-    
-    func lastMovingAverageAverage(for selectedRegion: String) -> Double {
-        guard lastMovingAveragesForSelectedRegion(for: selectedRegion).isNotEmpty else {
-            return 0
+        let allSeriesForSelected = sources.filter { $0.region == region }
+        
+        if allSeriesForSelected.count > 0 {
+            xLabelsForSelected = allSeriesForSelected[0].datesStr
+        } else {
+            xLabelsForSelected = []
         }
-        return lastMovingAveragesForSelectedRegion(for: selectedRegion)
+        
+        trendsForSelected =
+            allSeriesForSelected.reduce(into: [TransportType: [Double]]()) {
+                $0[$1.transportType] = $1.series
+        }
+        movingAverageForSelected = trendsForSelected.mapValues { movingAverageSeries(for: $0) }
+        
+        isEmpty = sources.isEmpty
+        isNotEmpty = !sources.isEmpty
+        
+        lastMovingAveragesForSelectedRegion = allSeriesForSelected
+            .compactMap {
+                Tail(type: $0.transportType, last:
+                    movingAverageSeries(for: $0.series).last!)
+        }
+        
+        lastMovingAverageAverage = lastMovingAveragesForSelectedRegion
             .map { $0.last }
-            .reduce(0, { $0 + $1 }) / Double(lastMovingAveragesForSelectedRegion(for: selectedRegion).count)
-    }
-    
-    //  MARK: - FINISH WITH THIS - IT SHOULD BE SMART!!
-    //  - to define Y Ssale
-    //  - to use moving average (how?)
-    func selectedRegionMinY(for selectedRegion: String) -> Double {
-        let min = sources
-            .filter { $0.region == selectedRegion }
-            .flatMap { $0.series }
-            .min()
+            .reduce(0, { $0 + $1 }) / Double(lastMovingAveragesForSelectedRegion.count)
         
-        return ((min ?? 1) / 10).rounded(.down) * 10
-    }
-    
-    func selectedRegionMaxY(for selectedRegion: String) -> Double {
-        let max = sources
-            .filter { $0.region == selectedRegion }
-            .flatMap { $0.series }
-            .max()
-        
-        return ((max ?? 1) / 10).rounded(.up) * 10
-    }
-    
-    func series(for region: String, with transportType: TransportType) -> [Double] {
-        guard let trend = sources.first(where: { $0.region == region && $0.transportType == transportType }) else {
-            return []
-        }
-        
-        return trend.series
-    }
-    
-    func movingAverageSeries(for region: String, with type: TransportType) -> [Double] {
-        let original = series(for: region, with: type)
-        
-        guard original.isNotEmpty else { return [] }
-        
-        var maSeries = [Double]()
-        
-        for i in 0..<original.count {
-            let slice = original.prefix(i + 1).suffix(7)
-            let avg = slice.reduce(0, { $0 + $1 }) / Double(slice.count)
-            maSeries.append(avg)
-        }
-        
-        return maSeries
+        //  MARK: - FINISH WITH THIS - IT SHOULD BE SMART!!
+        //  - to define Y Ssale
+        //  - to use moving average (how?)
+        let allSeriesFlat = allSeriesForSelected.flatMap { $0.series }
+        selectedRegionMinY = ((allSeriesFlat.min() ?? 1) / 10).rounded(.down) * 10
+        selectedRegionMaxY = ((allSeriesFlat.max() ?? 1) / 10).rounded(.up) * 10
     }
 }
 

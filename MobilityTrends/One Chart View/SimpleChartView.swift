@@ -19,13 +19,13 @@ struct SimpleChartView: View {
             
             TransportTypePicker(selection: $store.transportType)
             
-            if store.tide.trendsForSelected[store.transportType] != nil {
+            if store.trend.trendsForSelected[store.transportType] != nil {
                 OneLineChartView(
-                    original: store.tide.trendsForSelected[store.transportType]!,
-                    movingAverage: store.tide.movingAverageForSelected[store.transportType]!,
+                    original: store.trend.trendsForSelected[store.transportType]!,
+                    movingAverage: store.trend.movingAverageForSelected[store.transportType]!,
                     baseline: store.baseline,
-                    minY: store.tide.selectedRegionMinY,
-                    maxY: store.tide.selectedRegionMaxY
+                    minY: store.trend.selectedRegionMinY,
+                    maxY: store.trend.selectedRegionMaxY
                 )
                     .padding(.top)
             } else {
