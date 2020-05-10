@@ -21,12 +21,13 @@ struct SimpleChartView: View {
             VStack {
                 TransportTypePicker(selection: $store.transportType)
                 
-                if store.originalSeries.isNotEmpty {
-                    OneLineChartView(original: store.originalSeries,
-                                     movingAverage: store.movingAverageSeries,
-                                     baseline: store.baseline,
-                                     minY: store.originalSeries.min()!,
-                                     maxY: store.originalSeries.max()!)
+                if store.trend.isNotEmpty {
+                    OneLineChartView(
+                        original: store.trend.originalSeries(for: store.selectedRegion, with: store.transportType),
+                        movingAverage: store.trend.movingAverageSeries(for: store.selectedRegion, with: store.transportType),
+                        baseline: store.baseline,
+                        minY: store.trend.selectedRegionMinY(for: store.selectedRegion),
+                        maxY: store.trend.selectedRegionMaxY(for: store.selectedRegion))
                         .padding(.top)
                 } else {
                     VStack {

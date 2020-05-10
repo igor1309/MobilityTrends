@@ -13,7 +13,7 @@
 		2A09EDE3246356910021FC7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A09EDE2246356910021FC7D /* Assets.xcassets */; };
 		2A09EDE6246356910021FC7D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A09EDE5246356910021FC7D /* Preview Assets.xcassets */; };
 		2A09EDE9246356910021FC7D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A09EDE7246356910021FC7D /* LaunchScreen.storyboard */; };
-		2A09EDF12463571B0021FC7D /* Sources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EDF02463571B0021FC7D /* Sources.swift */; };
+		2A09EDF12463571B0021FC7D /* Source.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EDF02463571B0021FC7D /* Source.swift */; };
 		2A09EDF3246357510021FC7D /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EDF2246357510021FC7D /* Store.swift */; };
 		2A09EDF62463593E0021FC7D /* SwiftPI in Frameworks */ = {isa = PBXBuildFile; productRef = 2A09EDF52463593E0021FC7D /* SwiftPI */; };
 		2A09EDF9246366EC0021FC7D /* MobilityTrendsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A09EDF8246366EC0021FC7D /* MobilityTrendsAPI.swift */; };
@@ -43,6 +43,7 @@
 		2AC582BE24669446002E2FBD /* Ext+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC582BD24669446002E2FBD /* Ext+Bundle.swift */; };
 		2AC582C12466DB9E002E2FBD /* applemobilitytrends.json in Resources */ = {isa = PBXBuildFile; fileRef = 2AC582C02466D8BD002E2FBD /* applemobilitytrends.json */; };
 		2AC582C324674E04002E2FBD /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC582C224674E04002E2FBD /* Region.swift */; };
+		2AC582C524681FC0002E2FBD /* Trend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC582C424681FC0002E2FBD /* Trend.swift */; };
 		2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF4360824649CEC00212222 /* BaseLineShape.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,7 +56,7 @@
 		2A09EDE5246356910021FC7D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2A09EDE8246356910021FC7D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2A09EDEA246356910021FC7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2A09EDF02463571B0021FC7D /* Sources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources.swift; sourceTree = "<group>"; };
+		2A09EDF02463571B0021FC7D /* Source.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Source.swift; sourceTree = "<group>"; };
 		2A09EDF2246357510021FC7D /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		2A09EDF8246366EC0021FC7D /* MobilityTrendsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobilityTrendsAPI.swift; sourceTree = "<group>"; };
 		2A09EDFB24636BDF0021FC7D /* Ext+URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+URLSession.swift"; sourceTree = "<group>"; };
@@ -84,6 +85,7 @@
 		2AC582BD24669446002E2FBD /* Ext+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+Bundle.swift"; sourceTree = "<group>"; };
 		2AC582C02466D8BD002E2FBD /* applemobilitytrends.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = applemobilitytrends.json; sourceTree = "<group>"; };
 		2AC582C224674E04002E2FBD /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
+		2AC582C424681FC0002E2FBD /* Trend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trend.swift; sourceTree = "<group>"; };
 		2AF4360824649CEC00212222 /* BaseLineShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseLineShape.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,7 +155,8 @@
 		2A09EDF7246364BB0021FC7D /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				2A09EDF02463571B0021FC7D /* Sources.swift */,
+				2AC582C424681FC0002E2FBD /* Trend.swift */,
+				2A09EDF02463571B0021FC7D /* Source.swift */,
 				2A28BB28246582320041EDD5 /* GeoType.swift */,
 				2A28BB2A246582470041EDD5 /* TransportType.swift */,
 				2A89C2E2246607A400D8D113 /* Tail.swift */,
@@ -313,6 +316,7 @@
 				2A09EDFC24636BDF0021FC7D /* Ext+URLSession.swift in Sources */,
 				2AC582BE24669446002E2FBD /* Ext+Bundle.swift in Sources */,
 				2A28BB092464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift in Sources */,
+				2AC582C524681FC0002E2FBD /* Trend.swift in Sources */,
 				2AC582C324674E04002E2FBD /* Region.swift in Sources */,
 				2A09EE03246382500021FC7D /* SearchView.swift in Sources */,
 				2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */,
@@ -326,7 +330,7 @@
 				2A28BB2B246582470041EDD5 /* TransportType.swift in Sources */,
 				2A28BB24246573130041EDD5 /* FetchDataButton.swift in Sources */,
 				2A09EE052463FEBD0021FC7D /* CSVParser.swift in Sources */,
-				2A09EDF12463571B0021FC7D /* Sources.swift in Sources */,
+				2A09EDF12463571B0021FC7D /* Source.swift in Sources */,
 				2A09EE01246380900021FC7D /* TestFormWithPickers.swift in Sources */,
 				2A09EDE1246356900021FC7D /* ContentView.swift in Sources */,
 				2A28BB1E24656AC30041EDD5 /* CountryTrendsView.swift in Sources */,
