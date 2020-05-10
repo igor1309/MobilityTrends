@@ -8,6 +8,6 @@
 
 struct Region: Identifiable, Hashable, Codable {
     var id: String { name }
-    var name: String
-    var type: GeoType
+    let name: String
+    let type: GeoType
 }

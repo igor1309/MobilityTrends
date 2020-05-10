@@ -124,11 +124,10 @@
 				2A09EDDE246356900021FC7D /* SceneDelegate.swift */,
 				2A09EDE0246356900021FC7D /* ContentView.swift */,
 				2A28BB2524657ABA0041EDD5 /* Supporting Views */,
-				2A28BB1D24656AC20041EDD5 /* CountryTrendsView.swift */,
-				2A0BD5BB246420BB00D98C96 /* SimpleChartView.swift */,
-				2A28BB0E2464AC9A0041EDD5 /* OneLineChartView.swift */,
-				2A09EE02246382500021FC7D /* SearchView.swift */,
-				2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */,
+				2AF62435246848A5007CCF62 /* Country Charts */,
+				2AF6243424684898007CCF62 /* One Chart View */,
+				2AF62436246848AF007CCF62 /* Search View */,
+				2AF62437246848B8007CCF62 /* Favorites View */,
 				2AF4360524649C8200212222 /* Graph Shapes */,
 				2A28BB2C2465F25C0041EDD5 /* View Model */,
 				2A09EDF7246364BB0021FC7D /* Model */,
@@ -232,6 +231,39 @@
 				2A28BB0C2464A47F0041EDD5 /* GraphGridShape.swift */,
 			);
 			path = "Graph Shapes";
+			sourceTree = "<group>";
+		};
+		2AF6243424684898007CCF62 /* One Chart View */ = {
+			isa = PBXGroup;
+			children = (
+				2A0BD5BB246420BB00D98C96 /* SimpleChartView.swift */,
+				2A28BB0E2464AC9A0041EDD5 /* OneLineChartView.swift */,
+			);
+			path = "One Chart View";
+			sourceTree = "<group>";
+		};
+		2AF62435246848A5007CCF62 /* Country Charts */ = {
+			isa = PBXGroup;
+			children = (
+				2A28BB1D24656AC20041EDD5 /* CountryTrendsView.swift */,
+			);
+			path = "Country Charts";
+			sourceTree = "<group>";
+		};
+		2AF62436246848AF007CCF62 /* Search View */ = {
+			isa = PBXGroup;
+			children = (
+				2A09EE02246382500021FC7D /* SearchView.swift */,
+			);
+			path = "Search View";
+			sourceTree = "<group>";
+		};
+		2AF62437246848B8007CCF62 /* Favorites View */ = {
+			isa = PBXGroup;
+			children = (
+				2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */,
+			);
+			path = "Favorites View";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -12,7 +12,9 @@ import Combine
 
 final class Store: ObservableObject {
     private let mobilityTrendsAPI: MobilityTrendsAPI
+
     private let filename: String = "apple-mobility.json"
+
     let baseline: Double = 100
     
     @Published var trend = Trend(sources: [])
@@ -49,7 +51,7 @@ final class Store: ObservableObject {
     }
 }
 
-//  MARK: - Fetch ans Subcsriptions
+//  MARK: - Fetch and Subcsriptions
 extension Store {
     func fetch() {
         updateRequested.send("update")

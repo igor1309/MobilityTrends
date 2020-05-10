@@ -11,10 +11,11 @@ import SwiftPI
 import Combine
 
 final class Regions: ObservableObject {
+    private let mobilityTrendsAPI: MobilityTrendsAPI
+    
     private let favoritesFilename = "favorite-regions.json"
     private let localesFilename = "locales.json"
     private let regionsFilename = "regions.json"
-    private let mobilityTrendsAPI: MobilityTrendsAPI
     
     @Published private(set) var favorites = [String]()
     
@@ -26,27 +27,16 @@ final class Regions: ObservableObject {
     @Published var locales = [String]()
     
     /// source - applemobilitytrends-2020-xx-xx.csv
-    @Published var allRegions = [Region]()
+    @Published var allRegions = [Region]() {
+        didSet {
+            updateRegionLists()
+        }
+    }
+    @Published var countries = [String]()
+    @Published var cities = [String]()
+    @Published var subRegions = [String]()
     
     var updateRequested = PassthroughSubject<String, Never>()
-    
-    var countries: [String] {
-        allRegions
-            .filter { $0.type == .country }
-            .map { $0.name }
-    }
-    
-    var cities: [String] {
-        allRegions
-            .filter { $0.type == .city }
-            .map { $0.name }
-    }
-    
-    var subRegions: [String] {
-        allRegions
-            .filter { $0.type == .subRegion }
-            .map { $0.name }
-    }
     
     init(api: MobilityTrendsAPI = .shared) {
         self.mobilityTrendsAPI = api
@@ -56,10 +46,13 @@ final class Regions: ObservableObject {
         self.allRegions = loadAllRegions(regionsFilename)
         self.favorites = loadFavorites(favoritesFilename)
         
+        //  Update Region Lists (since observer didSet is not called at init)
+        self.updateRegionLists()
+        
         //  create subscriptions
-        createUpdateJSONSubscription()
-        createUpdateCSVSubscription()
-        createSearchSubscription()
+        self.createUpdateJSONSubscription()
+        self.createUpdateCSVSubscription()
+        self.createSearchSubscription()
         //  not used anymore
         //        createCSVSubscription()
     }
@@ -73,7 +66,16 @@ final class Regions: ObservableObject {
     }
 }
 
-//  MARK: - Fetch ans Subcsriptions
+//  MARK: - Update stored properties (cheaper than computed properties)
+extension Regions {
+    private func updateRegionLists() {
+        countries =  allRegions.filter { $0.type == .country }.map { $0.name }
+        cities =     allRegions.filter { $0.type == .city }.map { $0.name }
+        subRegions = allRegions.filter { $0.type == .subRegion }.map { $0.name }
+    }
+}
+
+//  MARK: - Fetch and Subcsriptions
 extension Regions {
     func fetch() {
         updateRequested.send("update")

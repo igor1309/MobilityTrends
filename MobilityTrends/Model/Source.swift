@@ -10,10 +10,10 @@ import Foundation
 
 struct Source: Identifiable, Codable {
     let id = UUID()
-    var region: String
-    var geoType: GeoType
-    var transportType: TransportType
+    let region: String
+    let geoType: GeoType
+    let transportType: TransportType
     //  MARK: for simplicity at first dates as strings
-    var datesStr: [String]
-    var series: [Double]
+    let datesStr: [String]
+    let series: [Double]
 }
