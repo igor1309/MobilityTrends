@@ -48,7 +48,6 @@
 		2AF6243924687BD4007CCF62 /* Tide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF6243824687BD4007CCF62 /* Tide.swift */; };
 		2AF6243B2468A22A007CCF62 /* TideTestingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF6243A2468A22A007CCF62 /* TideTestingView.swift */; };
 		2AF6243D2468A909007CCF62 /* CountryTrendsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */; };
-		2AF6243F2468B235007CCF62 /* SimpleChartViewWithTide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF6243E2468B235007CCF62 /* SimpleChartViewWithTide.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,7 +93,6 @@
 		2AF6243824687BD4007CCF62 /* Tide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tide.swift; sourceTree = "<group>"; };
 		2AF6243A2468A22A007CCF62 /* TideTestingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TideTestingView.swift; sourceTree = "<group>"; };
 		2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryTrendsHeader.swift; sourceTree = "<group>"; };
-		2AF6243E2468B235007CCF62 /* SimpleChartViewWithTide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleChartViewWithTide.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,7 +244,6 @@
 			isa = PBXGroup;
 			children = (
 				2A0BD5BB246420BB00D98C96 /* SimpleChartView.swift */,
-				2AF6243E2468B235007CCF62 /* SimpleChartViewWithTide.swift */,
 				2A28BB0E2464AC9A0041EDD5 /* OneLineChartView.swift */,
 			);
 			path = "One Chart View";
@@ -386,7 +383,6 @@
 				2A28BB29246582320041EDD5 /* GeoType.swift in Sources */,
 				2A0BD5BC246420BB00D98C96 /* SimpleChartView.swift in Sources */,
 				2A0BD5BE2464325200D98C96 /* LineGraphShape.swift in Sources */,
-				2AF6243F2468B235007CCF62 /* SimpleChartViewWithTide.swift in Sources */,
 				2A28BB0F2464AC9A0041EDD5 /* OneLineChartView.swift in Sources */,
 				2A28BB0D2464A47F0041EDD5 /* GraphGridShape.swift in Sources */,
 				2A28BB2224656F130041EDD5 /* FavoriteRegionPicker.swift in Sources */,
