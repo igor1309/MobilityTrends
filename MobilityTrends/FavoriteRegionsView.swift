@@ -37,7 +37,7 @@ struct RegionsView: View {
                 .onDelete(perform: delete)
                 .onMove(perform: move)
             }
-            .navigationBarTitle("Favorites")
+            .navigationBarTitle(Text("Favorites"), displayMode: .inline)
             .navigationBarItems(
                 leading: EditButton(),
                 trailing: TrailingButtonSFSymbol("plus") {

@@ -85,7 +85,7 @@ struct CountryTrendsView: View {
         return VStack {
             CountryTrendsHeader()
             
-            if store.trends.isNotEmpty {
+            if store.isNotEmpty {
                 VStack {
                     
                     ZStack(alignment: .topLeading) {

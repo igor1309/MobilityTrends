@@ -16,7 +16,7 @@ final class Store: ObservableObject {
     
     var updateRequested = PassthroughSubject<String, Never>()
     
-    @Published private(set) var trends = [Trend]()
+    private var trends = [Trend]()
     
     @Published var selectedRegion = "Moscow"
     @Published var transportation = TransportType.driving
@@ -90,6 +90,9 @@ extension Store {
 
 //  MARK: - Series and other properties and methods
 extension Store {
+    var isEmpty: Bool { trends.isEmpty }
+    var isNotEmpty: Bool { !trends.isEmpty }
+    
     var originalSeries: [Double] {
         series(for: selectedRegion, transportType: transportation)
     }
