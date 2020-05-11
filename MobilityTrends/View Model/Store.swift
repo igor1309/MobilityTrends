@@ -41,7 +41,7 @@ final class Store: ObservableObject {
         //  not used anymore
         //        createJSONSubscription()
         
-        //  load dataSet from JSON
+        //  load saved data from local JSON
         self.sources = loadSources()
         
         // Note how we need to manually call our handling

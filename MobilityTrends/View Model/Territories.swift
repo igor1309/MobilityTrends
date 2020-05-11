@@ -23,9 +23,6 @@ final class Territories: ObservableObject {
     @Published var selectedGeoType = GeoType.country
     @Published var queryResult = [Region]()
     
-    /// source - locale-names.json
-    @Published var locales = [String]()
-    
     /// source - applemobilitytrends-2020-xx-xx.csv
     var allRegions = [Region]() {
         didSet {
@@ -42,8 +39,7 @@ final class Territories: ObservableObject {
     init(api: MobilityTrendsAPI = .shared) {
         self.mobilityTrendsAPI = api
         
-        //  load regions from JSON
-        self.locales = loadLocales()
+        //  load saved data from local JSON
         self.allRegions = loadAllRegions()
         self.favorites = loadFavorites()
         
@@ -54,7 +50,6 @@ final class Territories: ObservableObject {
         self.updateRegionLists()
         
         //  create subscriptions
-        self.createUpdateJSONSubscription()
         self.createUpdateCSVSubscription()
         self.createSearchSubscription()
     }
@@ -83,40 +78,6 @@ extension Territories {
         updateRequested.send("update")
     }
     
-    ///  create update (fetch) subscription | source locale-names.json
-    private func createUpdateJSONSubscription() {
-        updateRequested
-            .setFailureType(to: Error.self)
-            .flatMap { _ -> AnyPublisher<[String], Error> in
-                self.mobilityTrendsAPI.fetchLocaleNamesJSON()
-        }
-        .subscribe(on: DispatchQueue.global())
-        .receive(on: DispatchQueue.main)
-        .sink(
-            receiveCompletion: { completion in
-                switch completion {
-                case .failure(_):
-                    print("error getting regions from JSON in Bundle")
-                case .finished:
-                    print("getting regions from JSON in Bundle ok")
-                }
-        }) { [weak self] value in
-            guard value.isNotEmpty else {
-                print("returned empty trends array, no new data")
-                return
-            }
-            
-            print("fetched on-empty data")
-            
-            self?.locales = value
-            
-            if self != nil {
-                self!.saveLocales()
-            }
-        }
-        .store(in: &cancellables)
-    }
-    
     private func createUpdateCSVSubscription() {
         updateRequested
             .flatMap { _ -> AnyPublisher<String, Never> in
@@ -142,7 +103,7 @@ extension Territories {
             
             switch type {
             case .all:
-                array = locales.map { Region(name: $0, type: .all) }
+                array = allRegions
             case .country:
                 array = countries
             case .city:
@@ -239,22 +200,6 @@ extension Territories {
         DispatchQueue.global().async {
             guard self.allRegions.isNotEmpty else { return }
             saveJSONToDocDir(data: self.allRegions, filename: self.regionsFilename)
-        }
-    }
-    
-    private func loadLocales() -> [String] {
-        //  load regions from JSON
-        guard let saved: [String] = loadJSONFromDocDir(localesFilename) else {
-            return []
-        }
-        
-        return saved
-    }
-    
-    private func saveLocales() {
-        DispatchQueue.global().async {
-            guard self.locales.isNotEmpty else { return }
-            saveJSONToDocDir(data: self.locales, filename: self.localesFilename)
         }
     }
     
