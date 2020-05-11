@@ -17,7 +17,11 @@ final class Territories: ObservableObject {
     private let localesFilename = "locales.json"
     private let regionsFilename = "regions.json"
     
-    @Published private(set) var favorites = [String]()
+    @Published private(set) var favorites = [String]() {
+        didSet {
+            saveFavorites()
+        }
+    }
     
     @Published var query: String = ""
     @Published var selectedGeoType = GeoType.country
@@ -156,14 +160,11 @@ extension Territories {
     
     func add(region: String) {
         guard !favorites.contains(region) else { return }
-        
         favorites.append(region)
-        saveFavorites()
     }
     
     func delete(region: String) {
         favorites.removeAll { $0 == region }
-        saveFavorites()
     }
     
     func toggleFavorite(region: String) {
@@ -176,12 +177,10 @@ extension Territories {
     
     func move(from source: IndexSet, to destination: Int) {
         favorites.move(fromOffsets: source, toOffset: destination)
-        saveFavorites()
     }
     
     func delete(at offsets: IndexSet) {
         favorites.remove(atOffsets: offsets)
-        saveFavorites()
     }
 }
 
@@ -208,7 +207,6 @@ extension Territories {
         guard let saved: [String] = loadJSONFromDocDir(favoritesFilename) else {
             return ["Moscow", "Russia", "Rome", "Italy", "France"]
         }
-        
         return saved
     }
     
