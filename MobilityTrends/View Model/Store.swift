@@ -18,6 +18,8 @@ final class Store: ObservableObject {
     let baseline: Double = 100
     
     @Published private(set) var trend = Trend()
+    @Published var selectedRegion = "Moscow"
+    @Published var transportType = TransportType.driving
     
     private var sources = [Source]() {
         didSet {
@@ -27,8 +29,6 @@ final class Store: ObservableObject {
     }
     private var sourcesUpdated = PassthroughSubject<String, Never>()
     
-    @Published var selectedRegion = "Moscow"
-    @Published var transportType = TransportType.driving
     
     var updateRequested = PassthroughSubject<String, Never>()
     
