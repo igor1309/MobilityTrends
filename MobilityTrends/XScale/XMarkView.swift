@@ -39,7 +39,8 @@ struct XMarkView: View {
         GeometryReader { geo in
             VStack(alignment: .leading, spacing: 0) {
                 TickMark()
-                    .strokeBorder(Color.tertiary, lineWidth: 1)
+                    .strokeBorder(Color.secondary, lineWidth: 0.5)
+                    .opacity(0.8)
                 
                 Text(verbatim: self.reverseStringDate(self.label))
                     .foregroundColor(.secondary)

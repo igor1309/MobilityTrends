@@ -27,12 +27,12 @@ struct GraphGridShape: InsettableShape {
     
     func inset(by amount: CGFloat) -> some InsettableShape {
         var graphGridShape = self
-        graphGridShape.insetAmount += amount
+        graphGridShape.insetAmount -= amount
         return graphGridShape
     }
     
-func path(in rect: CGRect) -> Path {
-//        let stepY: CGFloat = rect.height / (maxY - minY)
+    func path(in rect: CGRect) -> Path {
+        //        let stepY: CGFloat = rect.height / (maxY - minY)
         
         return Path { path in
             path.addLines([

@@ -99,7 +99,6 @@ struct CountryTrendsView: View {
                         ZStack(alignment: .trailing) {
                             GraphGridShape(series: [100], minY: minY, maxY: maxY)
                                 .strokeBorder(Color.systemGray3, lineWidth: 0.5)
-                            //                                .offset(x: -3)
                             
                             BaseLineShape(series: [100], minY: minY, maxY: maxY)
                                 .stroke(Color.systemGray3)

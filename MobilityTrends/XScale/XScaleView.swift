@@ -46,8 +46,9 @@ struct XScaleView: View {
                     }
                 }
         }
-        .opacity(0.7)
+        .opacity(0.8)
         .frame(height: 23)
+        .offset(y: -4)
     }
 }
 

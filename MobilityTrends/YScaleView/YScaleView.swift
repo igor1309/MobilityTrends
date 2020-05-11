@@ -42,13 +42,13 @@ struct YScaleView<Content: View>: View {
                         .offset(y: geo.size.height / CGFloat(self.maxY - self.minY) * CGFloat((self.maxY + self.minY) / 2 - self.baseline) - 9)
                     
                 }
-                .opacity(0.7)
+                .foregroundColor(.secondary)
+                .opacity(0.8)
                 
                 /// legend
                 self.legend()
                     .offset(y: geo.size.height / CGFloat(self.maxY - self.minY) * CGFloat((self.maxY + self.minY) / 2 - self.maLast) - 9)
             }
-            .foregroundColor(.secondary)
             .font(.caption)
         }
         .frame(width: 60)
