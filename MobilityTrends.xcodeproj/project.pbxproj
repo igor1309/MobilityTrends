@@ -134,6 +134,7 @@
 				2AF6244224693FAD007CCF62 /* TESTING NEW IDEAS */,
 				2A28BB2524657ABA0041EDD5 /* Supporting Views */,
 				2AC960B32469FF140080D930 /* XScale */,
+				2AC960B6246A06510080D930 /* YScaleView */,
 				2AF62435246848A5007CCF62 /* Country Charts */,
 				2AF6243424684898007CCF62 /* One Chart View */,
 				2AF62436246848AF007CCF62 /* Search View */,
@@ -228,9 +229,16 @@
 			children = (
 				2AF62445246973D4007CCF62 /* XScaleView.swift */,
 				2AF624472469816A007CCF62 /* XMarkView.swift */,
-				2AC960B42469FF370080D930 /* YScaleView.swift */,
 			);
 			path = XScale;
+			sourceTree = "<group>";
+		};
+		2AC960B6246A06510080D930 /* YScaleView */ = {
+			isa = PBXGroup;
+			children = (
+				2AC960B42469FF370080D930 /* YScaleView.swift */,
+			);
+			path = YScaleView;
 			sourceTree = "<group>";
 		};
 		2AF4360524649C8200212222 /* Graph Shapes */ = {

@@ -66,6 +66,17 @@ struct YScaleViewTesting: View {
 
 struct YScaleView_Previews: PreviewProvider {
     static var previews: some View {
-        YScaleViewTesting()
+        ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
+            
+            HStack {
+                Rectangle()
+                    .fill()
+                    .opacity(0.1)
+                
+                YScaleViewTesting()
+            }
+        }
+        .environment(\.colorScheme, .dark)
     }
 }
