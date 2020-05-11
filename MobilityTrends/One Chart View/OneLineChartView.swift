@@ -12,7 +12,8 @@ import SwiftPI
 //  FOR NON-EMPTY SERIES ONLY!!!
 //  don't use with series that could be empty, always check before
 struct OneLineChartView: View {
-
+    
+    var xLabels: [String]
     var original: [Double]
     var movingAverage: [Double]
     var baseline: Double
@@ -82,22 +83,29 @@ struct OneLineChartView: View {
             .frame(width: 60)
         }
         
-        return ZStack {
-            GraphGridShape(series: original, minY: minY, maxY: maxY)
-                .stroke(Color.systemGray3, lineWidth: 0.5)
-            
-            BaseLineShape(series: original, minY: minY, maxY: maxY)
-                .stroke(Color.systemGray3)
-            
-            HStack(spacing: -20) {
+        return
+            VStack(spacing: 0) {
+                ZStack {
+                    GraphGridShape(series: original, minY: minY, maxY: maxY)
+                        .stroke(Color.systemGray3, lineWidth: 0.5)
+                    
+                    BaseLineShape(series: original, minY: minY, maxY: maxY)
+                        .stroke(Color.systemGray3)
+                    
+                    HStack(spacing: -20) {
+                        
+                        originalAndMovingAverageGraph(original: original,
+                                                      movingAverage: movingAverage,
+                                                      minY: minY,
+                                                      maxY: maxY)
+                        
+                        yScale(originalLast: original.last!, maLast: movingAverage.last!)
+                    }
+                }
                 
-                originalAndMovingAverageGraph(original: original,
-                                              movingAverage: movingAverage,
-                                              minY: minY,
-                                              maxY: maxY)
-                
-                yScale(originalLast: original.last!, maLast: movingAverage.last!)
-            }
+                XScaleView(labels: xLabels)
+                    .opacity(0.8)
+                    .frame(height: 24)
         }
     }
 }
@@ -107,6 +115,6 @@ struct OneLineChartView_Previews: PreviewProvider {
     static var movingAverage: [Double] = [100.0, 101.84, 102.44333333333334, 104.055, 106.516, 108.25166666666667, 108.03857142857143, 109.14857142857143, 110.62, 112.24000000000001, 112.53571428571429, 113.16428571428571, 113.06285714285715, 113.58142857142857, 114.86999999999999, 115.29999999999998, 114.90714285714286, 115.66571428571429, 115.63, 115.2314285714286, 114.8, 113.63285714285715, 112.88714285714285, 113.3157142857143, 113.31857142857143, 113.13285714285713, 114.10000000000001, 115.03142857142858, 116.77, 118.11285714285714, 119.47142857142856, 120.64142857142858, 123.05857142857143, 123.9857142857143, 124.23, 123.75714285714287, 124.11, 124.14, 125.25285714285714, 126.86285714285714, 127.53714285714284, 125.00857142857141, 125.2642857142857, 124.43714285714285, 124.43714285714286, 124.07285714285716, 121.67285714285715, 120.53428571428572, 122.75999999999999, 121.69571428571427, 122.10142857142857, 121.46428571428571, 121.54142857142857, 122.88142857142859, 123.30571428571429, 120.9542857142857, 122.34857142857142, 121.84714285714287, 122.21142857142857, 121.00285714285712, 118.17142857142856, 116.69714285714285, 116.74857142857142, 114.33000000000001, 113.21428571428571, 110.31857142857142, 107.24857142857142, 104.65714285714284, 99.85428571428572, 97.15428571428572, 94.04142857142858, 91.07142857142858, 89.17714285714285, 88.49857142857142, 89.46714285714286, 87.20714285714284, 83.59, 77.79142857142857, 70.52142857142856, 63.00142857142856, 54.715714285714284, 44.89142857142857, 40.40857142857143, 38.057142857142864, 38.04, 39.04571428571428, 40.25857142857143, 41.80571428571428, 42.86, 43.855714285714285, 44.755714285714284, 44.651428571428575, 44.33571428571428, 42.76714285714285, 40.730000000000004, 38.94, 37.27428571428571, 35.64857142857143, 35.03142857142857, 34.42285714285715, 34.74857142857143, 35.371428571428574, 35.955714285714286, 36.699999999999996, 37.660000000000004, 38.31714285714286, 39.144285714285715, 40.48142857142857, 42.511428571428574, 43.144285714285715, 43.951428571428565, 44.34285714285715, 44.00285714285714, 44.021428571428565]
     
     static var previews: some View {
-        OneLineChartView(original: original, movingAverage: movingAverage, baseline: 100, minY: original.min()!, maxY: original.max()!)
+        OneLineChartView(xLabels: [], original: original, movingAverage: movingAverage, baseline: 100, minY: original.min()!, maxY: original.max()!)
     }
 }

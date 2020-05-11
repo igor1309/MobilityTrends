@@ -46,6 +46,8 @@
 		2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF4360824649CEC00212222 /* BaseLineShape.swift */; };
 		2AF6243D2468A909007CCF62 /* CountryTrendsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */; };
 		2AF624412468C3F9007CCF62 /* HomeSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF624402468C3F9007CCF62 /* HomeSearchView.swift */; };
+		2AF62446246973D4007CCF62 /* XScaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF62445246973D4007CCF62 /* XScaleView.swift */; };
+		2AF624482469816A007CCF62 /* XMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF624472469816A007CCF62 /* XMarkView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,6 +91,8 @@
 		2AF4360824649CEC00212222 /* BaseLineShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseLineShape.swift; sourceTree = "<group>"; };
 		2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryTrendsHeader.swift; sourceTree = "<group>"; };
 		2AF624402468C3F9007CCF62 /* HomeSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchView.swift; sourceTree = "<group>"; };
+		2AF62445246973D4007CCF62 /* XScaleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XScaleView.swift; sourceTree = "<group>"; };
+		2AF624472469816A007CCF62 /* XMarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMarkView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +245,8 @@
 			children = (
 				2A28BB1D24656AC20041EDD5 /* CountryTrendsView.swift */,
 				2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */,
+				2AF62445246973D4007CCF62 /* XScaleView.swift */,
+				2AF624472469816A007CCF62 /* XMarkView.swift */,
 			);
 			path = "Country Charts";
 			sourceTree = "<group>";
@@ -348,12 +354,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2AF62446246973D4007CCF62 /* XScaleView.swift in Sources */,
 				2A09EDFC24636BDF0021FC7D /* Ext+URLSession.swift in Sources */,
 				2AC582BE24669446002E2FBD /* Ext+Bundle.swift in Sources */,
 				2A28BB092464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift in Sources */,
 				2AC582C524681FC0002E2FBD /* Trend.swift in Sources */,
 				2AC582C324674E04002E2FBD /* Region.swift in Sources */,
 				2A09EE03246382500021FC7D /* SearchView.swift in Sources */,
+				2AF624482469816A007CCF62 /* XMarkView.swift in Sources */,
 				2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */,
 				2AF6243D2468A909007CCF62 /* CountryTrendsHeader.swift in Sources */,
 				2A09EDF3246357510021FC7D /* Store.swift in Sources */,

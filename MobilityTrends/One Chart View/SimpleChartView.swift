@@ -21,6 +21,7 @@ struct SimpleChartView: View {
             
             if store.trend.trendsForSelected[store.transportType] != nil {
                 OneLineChartView(
+                    xLabels: store.trend.xLabelsForSelected,
                     original: store.trend.trendsForSelected[store.transportType]!,
                     movingAverage: store.trend.movingAverageForSelected[store.transportType]!,
                     baseline: store.baseline,
@@ -39,6 +40,7 @@ struct SimpleChartView: View {
             }
         }
         .padding(.horizontal)
+        .padding(.bottom, 8)
     }
 }
 

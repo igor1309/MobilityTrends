@@ -78,52 +78,67 @@ struct CountryTrendsView: View {
             .frame(width: 60)
         }
         
+        var sourceToggleButton: some View {
+            Button(action : {
+                self.isUsingMovingAverage.toggle()
+            }) {
+                Image(systemName: isUsingMovingAverage ? "waveform.path" : "waveform.path.ecg")
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.quaternarySystemFill)
+                )
+                    .padding(.top)
+            }
+        }
+        
+        var transportLegend: some View {
+            VStack(alignment: .leading) {
+                ForEach(TransportType.allCases, id: \.self) { transportType in
+                    Text(transportType.rawValue)
+                        .foregroundColor(transportType.color)
+                        .font(.footnote)
+                }
+            }
+            .padding([.top])//, .leading])
+        }
         
         return VStack {
             CountryTrendsHeader()
-            
+
             if store.trend.isNotEmpty {
                 
                 ZStack(alignment: .topTrailing) {
                     
-                    Button(action : {
-                        self.isUsingMovingAverage.toggle()
-                    }) {
-                        Image(systemName: isUsingMovingAverage ? "waveform.path" : "waveform.path.ecg")
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.quaternarySystemFill)
-                        )
-                            .padding(.top)
+                    HStack(alignment: .top) {
+                        transportLegend
+                        Spacer()
+                        sourceToggleButton
                     }
                     
-                    ZStack(alignment: .topLeading) {
-                        
-                        VStack(alignment: .leading) {
-                            ForEach(TransportType.allCases, id: \.self) { transportType in
-                                Text(transportType.rawValue)
-                                    .foregroundColor(transportType.color)
-                                    .font(.footnote)
-                            }
-                        }
-                        .padding()
-                        
-                        GraphGridShape(series: [100], minY: minY, maxY: maxY)
-                            .stroke(Color.systemGray3, lineWidth: 0.5)
-                        
-                        BaseLineShape(series: [100], minY: minY, maxY: maxY)
-                            .stroke(Color.systemGray3)
-                        
-                        HStack(spacing: -20) {
-                            ZStack {
-                                ForEach(TransportType.allCases, id: \.self) { transport in
-                                    lineGraph(series: series[transport] ?? [], transport: transport)
-                                }
-                            }
+                    VStack(spacing: 0) {
+                        ZStack(alignment: .trailing) {
+                            GraphGridShape(series: [100], minY: minY, maxY: maxY)
+                                .strokeBorder(Color.systemGray3, lineWidth: 0.5)
+//                                .offset(x: -3)
                             
-                            yScale
+                            BaseLineShape(series: [100], minY: minY, maxY: maxY)
+                                .stroke(Color.systemGray3)
+                            
+                            HStack(spacing: -20) {
+                                ZStack {
+                                    ForEach(TransportType.allCases, id: \.self) { transport in
+                                        lineGraph(series: series[transport] ?? [], transport: transport)
+                                    }
+                                }
+                                
+                                yScale
+                            }
                         }
+                        
+                        XScaleView(labels: store.trend.xLabelsForSelected)
+                            .opacity(0.8)
+                            .frame(height: 24)
                     }
                 }
             } else {
@@ -132,6 +147,7 @@ struct CountryTrendsView: View {
             }
         }
         .padding(.horizontal)
+        .padding(.bottom, 8)
     }
 }
 

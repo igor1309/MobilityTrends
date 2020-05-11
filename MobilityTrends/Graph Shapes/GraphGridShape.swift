@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct GraphGridShape: Shape {
+struct GraphGridShape: InsettableShape {
     let minY: CGFloat
     let maxY: CGFloat
     
@@ -22,21 +22,30 @@ struct GraphGridShape: Shape {
         }
     }
     
-    func path(in rect: CGRect) -> Path {
-        let stepY: CGFloat = rect.height / (maxY - minY)
+    //  https://www.hackingwithswift.com/books/ios-swiftui/adding-strokeborder-support-with-insettableshape
+    var insetAmount: CGFloat = 0
+    
+    func inset(by amount: CGFloat) -> some InsettableShape {
+        var graphGridShape = self
+        graphGridShape.insetAmount += amount
+        return graphGridShape
+    }
+    
+func path(in rect: CGRect) -> Path {
+//        let stepY: CGFloat = rect.height / (maxY - minY)
         
         return Path { path in
             path.addLines([
                 CGPoint(x: 0,
-                        y: 0),
+                        y: 0 + insetAmount),
                 CGPoint(x: rect.width,
-                        y: 0)
+                        y: 0 + insetAmount)
             ])
             path.addLines([
                 CGPoint(x: 0,
-                        y: rect.height),
+                        y: rect.height + insetAmount),
                 CGPoint(x: rect.width,
-                        y: rect.height)
+                        y: rect.height + insetAmount)
             ])
         }
     }
