@@ -22,6 +22,7 @@ final class Store: ObservableObject {
     private var sources = [Source]() {
         didSet {
             sourcesUpdated.send("updated")
+            saveSources()
         }
     }
     private var sourcesUpdated = PassthroughSubject<String, Never>()
@@ -110,7 +111,7 @@ extension Store {
             }
             print("fetched on-empty data")
             self?.sources = sources
-            if self != nil { self!.saveSources() }
+            if self != nil { print("sources updated") }
         }
         .store(in: &cancellables)
     }
@@ -166,7 +167,7 @@ extension Store {
             }
             print("fetched on-empty data")
             self?.sources = sources
-            if self != nil { self!.saveSources() }
+            if self != nil { print("sources updated") }
         }
         .store(in: &cancellables)
     }
@@ -228,8 +229,7 @@ extension Store {
                 }
                 print("fetched on-empty data")
                 self?.sources = sources
-                
-                if self != nil { self!.saveSources() }
+                if self != nil { print("sources updated") }
         }
         .store(in: &cancellables)
     }

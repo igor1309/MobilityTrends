@@ -30,6 +30,7 @@ final class Territories: ObservableObject {
     var allRegions = [Region]() {
         didSet {
             updateRegionLists()
+            saveAllRegions()
         }
     }
     @Published var countries = [Region]()
@@ -128,10 +129,7 @@ extension Territories {
         .sink {
             [weak self] in
             self?.allRegions = $0
-            if self != nil {
-                print("updated regions from csv")
-                self!.saveAllTerritories()
-            }
+            if self != nil { print("updated regions from csv") }
         }
         .store(in: &cancellables)
     }
@@ -237,7 +235,7 @@ extension Territories {
         return saved
     }
     
-    private func saveAllTerritories() {
+    private func saveAllRegions() {
         DispatchQueue.global().async {
             guard self.allRegions.isNotEmpty else { return }
             saveJSONToDocDir(data: self.allRegions, filename: self.regionsFilename)
