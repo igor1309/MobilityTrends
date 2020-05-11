@@ -39,7 +39,7 @@ enum CSVParser {
                                 datesStr: Array(x),
                                 series: row.dropFirst(4).map { Double($0) ?? -1 }))
         }
-        print(sources)
+//        print(sources)
         
         return sources
     }

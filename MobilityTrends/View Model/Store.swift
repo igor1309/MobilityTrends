@@ -13,13 +13,11 @@ import Combine
 final class Store: ObservableObject {
     private let mobilityTrendsAPI: MobilityTrendsAPI
     
-    private let filename: String = "apple-mobility.json"
+    private let sourcesFilename: String = "sources.json"
     
     let baseline: Double = 100
     
-    
-    @Published private(set) var trend = Trend(
-        sources: [], selectedRegion: "")
+    @Published private(set) var trend = Trend()
     
     private var sources = [Source]()
     private var sourcesUpdated = PassthroughSubject<String, Never>()
@@ -39,7 +37,7 @@ final class Store: ObservableObject {
         //        createJSONSubscription()
         
         //  load dataSet from JSON
-        self.sources = loadSources(filename)
+        self.sources = loadSources()
         
         // Note how we need to manually call our handling
         // method within our initializer, since property
@@ -114,8 +112,8 @@ extension Store {
 
 //  MARK: - Load and Save
 extension Store {
-    private func loadSources(_ filename: String) -> [Source] {
-        guard let savedDataSet: [Source] = loadJSONFromDocDir(filename) else {
+    private func loadSources() -> [Source] {
+        guard let savedDataSet: [Source] = loadJSONFromDocDir(sourcesFilename) else {
             return []
         }
         return savedDataSet
@@ -124,7 +122,7 @@ extension Store {
     private func saveSources() {
         DispatchQueue.global().async {
             guard self.sources.isNotEmpty else { return }
-            saveJSONToDocDir(data: self.sources, filename: self.filename)
+            saveJSONToDocDir(data: self.sources, filename: self.sourcesFilename)
         }
     }
 }

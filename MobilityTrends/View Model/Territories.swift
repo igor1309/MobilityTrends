@@ -15,7 +15,7 @@ final class Territories: ObservableObject {
     
     private let favoritesFilename = "favorites.json"
     private let localesFilename = "locales.json"
-    private let regionsFilename = "territories.json"
+    private let regionsFilename = "regions.json"
     
     @Published private(set) var favorites = [String]()
     
@@ -42,9 +42,9 @@ final class Territories: ObservableObject {
         self.mobilityTrendsAPI = api
         
         //  load regions from JSON
-        self.locales = loadLocales(localesFilename)
-        self.allRegions = loadAllRegions(regionsFilename)
-        self.favorites = loadFavorites(favoritesFilename)
+        self.locales = loadLocales()
+        self.allRegions = loadAllRegions()
+        self.favorites = loadFavorites()
         
         //  Update Region Lists (since observer didSet is not called at init)
         self.updateRegionLists()
@@ -218,9 +218,9 @@ extension Territories {
 
 //  MARK: - Load and Save
 extension Territories {
-    private func loadAllRegions(_ filename: String) -> [Region] {
+    private func loadAllRegions() -> [Region] {
         //  load regions from JSON
-        guard let saved: [Region] = loadJSONFromDocDir(filename) else {
+        guard let saved: [Region] = loadJSONFromDocDir(regionsFilename) else {
             return []
         }
         
@@ -234,9 +234,9 @@ extension Territories {
         }
     }
     
-    private func loadLocales(_ filename: String) -> [String] {
+    private func loadLocales() -> [String] {
         //  load regions from JSON
-        guard let saved: [String] = loadJSONFromDocDir(filename) else {
+        guard let saved: [String] = loadJSONFromDocDir(localesFilename) else {
             return []
         }
         
@@ -250,9 +250,9 @@ extension Territories {
         }
     }
     
-    private func loadFavorites(_ filename: String) -> [String] {
+    private func loadFavorites() -> [String] {
         //  load regions from JSON
-        guard let saved: [String] = loadJSONFromDocDir(filename) else {
+        guard let saved: [String] = loadJSONFromDocDir(favoritesFilename) else {
             return ["Moscow", "Russia", "Rome", "Italy", "France"]
         }
         

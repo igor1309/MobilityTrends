@@ -14,8 +14,7 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             
-            HomeSearchView()
-//            CountryTrendsView()
+            CountryTrendsView()
                 .tabItem {
                     Image(systemName: "1.circle")
                     Text("one")
@@ -32,6 +31,13 @@ struct ContentView: View {
             SearchViewTesting()
                 .tabItem {
                     Image(systemName: "magnifyingglass")
+                    Text("Search")
+            }
+            .tag(2)
+            
+             HomeSearchView()
+            .tabItem {
+                    Image(systemName: "magnifyingglass.circle")
                     Text("Search")
             }
             .tag(2)

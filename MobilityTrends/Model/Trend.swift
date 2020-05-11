@@ -25,6 +25,9 @@ struct Trend {
 }
 
 extension Trend {
+    init() {
+        self.init(sources: [], selectedRegion: "")
+    }
     
     init(sources: [Source], selectedRegion region: String) {
         

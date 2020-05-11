@@ -14,39 +14,24 @@ import Combine
 class MobilityTrendsAPI {
     static let shared = MobilityTrendsAPI()
     
-    private func getURL(for endpoint: Endpoint) -> AnyPublisher<URL, Error> {
+    private func fetchURL(for endpoint: Endpoint) -> AnyPublisher<URL, Error> {
         let url = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/current/v2/index.json")!
         
         return URLSession.shared.fetchData(url: url)
             .decode(type: Piece.self, decoder: JSONDecoder())
-            .map { $0.url(for: endpoint) }
+            .map {
+                let url = $0.url(for: endpoint)
+                print("fetchURL: \(url)")
+                return url
+        }
             .eraseToAnyPublisher()
     }
     
     //  MARK: - fetch()
     
-    ///  JSON with Mobility Trends data but without GeoType (less info than in CSV)
-    func fetchMobilityJSON() -> AnyPublisher<Mobility, Error> {
-        getURL(for: Endpoint.jsonPath)
-            .flatMap { URLSession.shared.fetchData(url: $0) }
-            .decode(type: Mobility.self, decoder: JSONDecoder())
-            .subscribe(on: DispatchQueue.global())
-            .eraseToAnyPublisher()
-    }
-    
-    ///  JSON locale names (plain string array, no GeoType)
-    func fetchLocaleNamesJSON() -> AnyPublisher<[String], Error> {
-        getURL(for: Endpoint.localeNamesPath)
-            .flatMap { URLSession.shared.fetchData(url: $0) }
-            .decode(type: [String].self, decoder: JSONDecoder())
-            .map { $0.sorted() }
-            .subscribe(on: DispatchQueue.global())
-            .eraseToAnyPublisher()
-    }
-    
     //  CSV (everything, but date in filename makes update tricky)
     func fetchMobilityCSV() -> AnyPublisher<String, Never> {
-        getURL(for: Endpoint.csvPath)
+        fetchURL(for: Endpoint.csvPath)
             .flatMap {
                 URLSession.shared.dataTaskPublisher(for: $0)
                     .mapError { $0 as Error }
@@ -55,6 +40,25 @@ class MobilityTrendsAPI {
         .catch { _ in Just("") }
         .subscribe(on: DispatchQueue.global())
         .eraseToAnyPublisher()
+    }
+    
+    ///  JSON with Mobility Trends data but without GeoType (less info than in CSV)
+    func fetchMobilityJSON() -> AnyPublisher<Mobility, Error> {
+        fetchURL(for: Endpoint.jsonPath)
+            .flatMap { URLSession.shared.fetchData(url: $0) }
+            .decode(type: Mobility.self, decoder: JSONDecoder())
+            .subscribe(on: DispatchQueue.global())
+            .eraseToAnyPublisher()
+    }
+    
+    ///  JSON locale names (plain string array, no GeoType)
+    func fetchLocaleNamesJSON() -> AnyPublisher<[String], Error> {
+        fetchURL(for: Endpoint.localeNamesPath)
+            .flatMap { URLSession.shared.fetchData(url: $0) }
+            .decode(type: [String].self, decoder: JSONDecoder())
+            .map { $0.sorted() }
+            .subscribe(on: DispatchQueue.global())
+            .eraseToAnyPublisher()
     }
     
     // MARK: - Piece
@@ -90,7 +94,6 @@ class MobilityTrendsAPI {
             components.host = "covid19-static.cdn-apple.com"
             components.path = self.basePath + self.lang.enUs.csvPath
             
-            
             switch endpoint {
             case .csvPath:
                 components.path = self.basePath + self.lang.enUs.csvPath
@@ -110,6 +113,10 @@ class MobilityTrendsAPI {
     private enum Endpoint {
         case jsonPath, localeNamesPath, csvPath, initialPath
     }
+    
+    
+    
+    
     
     //  MARK: - old urls for reference
     //  JSON (data, no GeoType)
