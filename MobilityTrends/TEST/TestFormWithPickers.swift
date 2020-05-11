@@ -25,7 +25,7 @@ struct TestFormWithPickers: View {
                     .foregroundColor(.systemRed)
                 
                 Picker("Region", selection: $region) {
-                    ForEach(territories.allRegions.map { $0.name }, id: \.self) { item in
+                    ForEach(territories.locales, id: \.self) { item in
                         Text(item)
                     }
                 }

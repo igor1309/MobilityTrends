@@ -127,7 +127,7 @@ struct CountryTrendsView: View {
                     }
                 }
             } else {
-                Text("No date, please update")
+                Text("No data, please update")
                 Spacer()
             }
         }

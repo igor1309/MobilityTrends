@@ -27,7 +27,7 @@ final class Territories: ObservableObject {
     @Published var locales = [String]()
     
     /// source - applemobilitytrends-2020-xx-xx.csv
-    @Published var allRegions = [Region]() {
+    var allRegions = [Region]() {
         didSet {
             updateRegionLists()
         }
@@ -46,15 +46,16 @@ final class Territories: ObservableObject {
         self.allRegions = loadAllRegions()
         self.favorites = loadFavorites()
         
-        //  Update Region Lists (since observer didSet is not called at init)
+        // Note how we need to manually call our handling
+        // method within our initializer, since property
+        // observers aren't triggered until after a value
+        // has been fully initialized.
         self.updateRegionLists()
         
         //  create subscriptions
         self.createUpdateJSONSubscription()
         self.createUpdateCSVSubscription()
         self.createSearchSubscription()
-        //  not used anymore
-        //        createCSVSubscription()
     }
     
     private var cancellables = Set<AnyCancellable>()
@@ -138,13 +139,45 @@ extension Territories {
     
     ///  create search query subscription
     private func createSearchSubscription() {
+        func queryList(for query: String, with type: GeoType) -> [Region] {
+            let array: [Region]
+            
+            switch type {
+            case .all:
+                array = locales.map { Region(name: $0, type: .all) }
+            case .country:
+                array = countries
+            case .city:
+                array = cities
+            case .subRegion:
+                array = subRegions
+            }
+            
+            let result = array.filter {
+                query.isNotEmpty
+                    ? $0.name.lowercased().contains(query.lowercased())
+                    : true
+            }
+            
+            return result
+        }
+        
         Publishers.CombineLatest3(
             $query
-                .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main),
+                .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
+                .removeDuplicates(),
             $selectedGeoType,
-            $allRegions)
+            Publishers.CombineLatest3(
+                $countries
+                    .removeDuplicates(),
+                $cities
+                    .removeDuplicates(),
+                $subRegions
+                    .removeDuplicates()
+            )
+        )
             .map { query, type, _ in
-                self.queryList(for: query, with: type)
+                queryList(for: query, with: type)
         }
         .subscribe(on: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
@@ -153,29 +186,6 @@ extension Territories {
             self?.queryResult = $0
         }
         .store(in: &cancellables)
-    }
-    
-    private func queryList(for query: String, with type: GeoType) -> [Region] {
-        let array: [Region]
-        
-        switch type {
-        case .all:
-            array = locales.map { Region(name: $0, type: .all) }
-        case .country:
-            array = countries
-        case .city:
-            array = cities
-        case .subRegion:
-            array = subRegions
-        }
-        
-        let result = array.filter {
-            query.isNotEmpty
-                ? $0.name.lowercased().contains(query.lowercased())
-                : true
-        }
-        
-        return result
     }
 }
 

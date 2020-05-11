@@ -19,7 +19,11 @@ final class Store: ObservableObject {
     
     @Published private(set) var trend = Trend()
     
-    private var sources = [Source]()
+    private var sources = [Source]() {
+        didSet {
+            sourcesUpdated.send("updated")
+        }
+    }
     private var sourcesUpdated = PassthroughSubject<String, Never>()
     
     @Published var selectedRegion = "Moscow"
@@ -31,8 +35,8 @@ final class Store: ObservableObject {
         self.mobilityTrendsAPI = api
         
         //  create subscriptions
-        createUpdateTrendSubscriptions()
-        createCSVSubscription()
+        self.createUpdateTrendSubscriptions()
+        self.createCSVSubscription()
         //  not used anymore
         //        createJSONSubscription()
         
@@ -71,9 +75,11 @@ extension Store {
         
         Publishers.CombineLatest3(
             sourcesUpdated,
-            $selectedRegion,
+            $selectedRegion
+                .removeDuplicates(),
             $transportType
         )
+            .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .sink {
                 [weak self] _ in

@@ -21,7 +21,7 @@ class MobilityTrendsAPI {
             .decode(type: Piece.self, decoder: JSONDecoder())
             .map {
                 let url = $0.url(for: endpoint)
-                print("fetchURL: \(url)")
+//                print("fetchURL: \(url)")
                 return url
         }
             .eraseToAnyPublisher()
