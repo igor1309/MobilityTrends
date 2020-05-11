@@ -24,7 +24,6 @@ struct CountryTrendsView: View {
             series = store.trend.trendsForSelected
         }
         
-        
         let minY = store.trend.selectedRegionMinY
         let maxY = store.trend.selectedRegionMaxY
         let maAvg = store.trend.lastMovingAverageAverage
@@ -53,29 +52,9 @@ struct CountryTrendsView: View {
                 .font(.caption)
             }
             
-            return GeometryReader { geo in
-                ZStack(alignment: .trailing) {
-                    /// min
-                    Text(minY.formattedGrouped)
-                        .offset(y: geo.size.height / 2 - 9)
-                    
-                    /// max
-                    Text(maxY.formattedGrouped)
-                        .offset(y: -geo.size.height / 2 - 9)
-                    
-                    /// baseline
-                    Text("Baseline")
-                        .fixedSize()
-                        .offset(y: geo.size.height / CGFloat(maxY - minY) * CGFloat((maxY + minY) / 2 - self.store.baseline) - 9)
-                    //
-                    /// legend
-                    legend
-                        .offset(y: geo.size.height / CGFloat(maxY - minY) * CGFloat((maxY + minY) / 2 - maAvg) - 9)
-                }
-                .foregroundColor(.tertiary)
-                .font(.caption)
+            return YScaleView(minY: minY, maxY: maxY, baseline: self.store.baseline, maLast: maAvg) {
+                legend
             }
-            .frame(width: 60)
         }
         
         var sourceToggleButton: some View {
@@ -100,12 +79,12 @@ struct CountryTrendsView: View {
                         .font(.footnote)
                 }
             }
-            .padding([.top])//, .leading])
+                .padding([.top])//, .leading])
         }
         
         return VStack {
             CountryTrendsHeader()
-
+            
             if store.trend.isNotEmpty {
                 
                 ZStack(alignment: .topTrailing) {
@@ -120,7 +99,7 @@ struct CountryTrendsView: View {
                         ZStack(alignment: .trailing) {
                             GraphGridShape(series: [100], minY: minY, maxY: maxY)
                                 .strokeBorder(Color.systemGray3, lineWidth: 0.5)
-//                                .offset(x: -3)
+                            //                                .offset(x: -3)
                             
                             BaseLineShape(series: [100], minY: minY, maxY: maxY)
                                 .stroke(Color.systemGray3)
@@ -137,8 +116,6 @@ struct CountryTrendsView: View {
                         }
                         
                         XScaleView(labels: store.trend.xLabelsForSelected)
-                            .opacity(0.8)
-                            .frame(height: 24)
                     }
                 }
             } else {

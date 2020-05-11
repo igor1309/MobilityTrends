@@ -43,6 +43,7 @@
 		2AC582C12466DB9E002E2FBD /* applemobilitytrends.json in Resources */ = {isa = PBXBuildFile; fileRef = 2AC582C02466D8BD002E2FBD /* applemobilitytrends.json */; };
 		2AC582C324674E04002E2FBD /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC582C224674E04002E2FBD /* Region.swift */; };
 		2AC582C524681FC0002E2FBD /* Trend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC582C424681FC0002E2FBD /* Trend.swift */; };
+		2AC960B52469FF370080D930 /* YScaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC960B42469FF370080D930 /* YScaleView.swift */; };
 		2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF4360824649CEC00212222 /* BaseLineShape.swift */; };
 		2AF6243D2468A909007CCF62 /* CountryTrendsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */; };
 		2AF624412468C3F9007CCF62 /* HomeSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF624402468C3F9007CCF62 /* HomeSearchView.swift */; };
@@ -88,6 +89,7 @@
 		2AC582C02466D8BD002E2FBD /* applemobilitytrends.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = applemobilitytrends.json; sourceTree = "<group>"; };
 		2AC582C224674E04002E2FBD /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
 		2AC582C424681FC0002E2FBD /* Trend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trend.swift; sourceTree = "<group>"; };
+		2AC960B42469FF370080D930 /* YScaleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YScaleView.swift; sourceTree = "<group>"; };
 		2AF4360824649CEC00212222 /* BaseLineShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseLineShape.swift; sourceTree = "<group>"; };
 		2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryTrendsHeader.swift; sourceTree = "<group>"; };
 		2AF624402468C3F9007CCF62 /* HomeSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchView.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				2A09EDE0246356900021FC7D /* ContentView.swift */,
 				2AF6244224693FAD007CCF62 /* TESTING NEW IDEAS */,
 				2A28BB2524657ABA0041EDD5 /* Supporting Views */,
+				2AC960B32469FF140080D930 /* XScale */,
 				2AF62435246848A5007CCF62 /* Country Charts */,
 				2AF6243424684898007CCF62 /* One Chart View */,
 				2AF62436246848AF007CCF62 /* Search View */,
@@ -220,6 +223,16 @@
 			path = Parsing;
 			sourceTree = "<group>";
 		};
+		2AC960B32469FF140080D930 /* XScale */ = {
+			isa = PBXGroup;
+			children = (
+				2AF62445246973D4007CCF62 /* XScaleView.swift */,
+				2AF624472469816A007CCF62 /* XMarkView.swift */,
+				2AC960B42469FF370080D930 /* YScaleView.swift */,
+			);
+			path = XScale;
+			sourceTree = "<group>";
+		};
 		2AF4360524649C8200212222 /* Graph Shapes */ = {
 			isa = PBXGroup;
 			children = (
@@ -245,8 +258,6 @@
 			children = (
 				2A28BB1D24656AC20041EDD5 /* CountryTrendsView.swift */,
 				2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */,
-				2AF62445246973D4007CCF62 /* XScaleView.swift */,
-				2AF624472469816A007CCF62 /* XMarkView.swift */,
 			);
 			path = "Country Charts";
 			sourceTree = "<group>";
@@ -373,6 +384,7 @@
 				2A0BD5C0246435B800D98C96 /* DotGraphShape.swift in Sources */,
 				2AF624412468C3F9007CCF62 /* HomeSearchView.swift in Sources */,
 				2A28BB2B246582470041EDD5 /* TransportType.swift in Sources */,
+				2AC960B52469FF370080D930 /* YScaleView.swift in Sources */,
 				2A28BB24246573130041EDD5 /* FetchDataButton.swift in Sources */,
 				2A09EE052463FEBD0021FC7D /* CSVParser.swift in Sources */,
 				2A09EDF12463571B0021FC7D /* Source.swift in Sources */,

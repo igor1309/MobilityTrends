@@ -42,7 +42,7 @@ struct XMarkView: View {
                     .strokeBorder(Color.tertiary, lineWidth: 1)
                 
                 Text(verbatim: self.reverseStringDate(self.label))
-                    .foregroundColor(.tertiary)
+                    .foregroundColor(.secondary)
                     .font(.caption)
             }
         }

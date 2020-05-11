@@ -58,33 +58,12 @@ struct OneLineChartView: View {
                 .font(.caption)
             }
             
-            return GeometryReader { geo in
-                ZStack(alignment: .trailing) {
-                    /// min
-                    Text(self.minY.formattedGrouped)
-                        .offset(y: geo.size.height / 2 - 9)
-                    
-                    /// max
-                    Text(self.maxY.formattedGrouped)
-                        .offset(y: -geo.size.height / 2 - 9)
-                    
-                    /// baseline
-                    Text("Baseline")
-                        .fixedSize()
-                        .offset(y: geo.size.height / CGFloat(self.maxY - self.minY) * CGFloat((self.maxY + self.minY) / 2 - self.baseline) - 9)
-                    
-                    /// legend
-                    legend
-                        .offset(y: geo.size.height / CGFloat(self.maxY - self.minY) * CGFloat((self.maxY + self.minY) / 2 - maLast))
-                }
-                .foregroundColor(.tertiary)
-                .font(.caption)
+            return YScaleView(minY: self.minY, maxY: self.maxY, baseline: self.baseline, maLast: maLast) {
+                legend
             }
-            .frame(width: 60)
         }
-        
-        return
-            VStack(spacing: 0) {
+                
+        return VStack(spacing: 0) {
                 ZStack {
                     GraphGridShape(series: original, minY: minY, maxY: maxY)
                         .stroke(Color.systemGray3, lineWidth: 0.5)
@@ -104,8 +83,6 @@ struct OneLineChartView: View {
                 }
                 
                 XScaleView(labels: xLabels)
-                    .opacity(0.8)
-                    .frame(height: 24)
         }
     }
 }
