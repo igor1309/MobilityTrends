@@ -14,7 +14,8 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             
-            CountryTrendsView()
+            HomeSearchView()
+//            CountryTrendsView()
                 .tabItem {
                     Image(systemName: "1.circle")
                     Text("one")

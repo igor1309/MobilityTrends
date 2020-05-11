@@ -33,26 +33,25 @@ final class Store: ObservableObject {
         self.mobilityTrendsAPI = api
         
         //  create subscriptions
-        createSubscriptions()
+        createUpdateTrendSubscriptions()
+        createCSVSubscription()
         //  not used anymore
-        //        createCSVSubscription()
+        //        createJSONSubscription()
         
-        //  MARK: load dataSet from JSON
-        //        self.trend.sources = loadSources(filename)
-        //        self.trend = Trend(sources: loadSources(filename))
+        //  load dataSet from JSON
         self.sources = loadSources(filename)
+        
         // Note how we need to manually call our handling
         // method within our initializer, since property
         // observers aren't triggered until after a value
         // has been fully initialized.
         self.sourcesUpdated.send("updated")
         
-        //  MARK: TESTING
-        //  get Sources from remote JSON ans save to Document Directory
+        //  MARK: TESTING/DEBUGGING ONLY
+        //  get Sources from remote JSON and save to Document Directory
         //        getSourcesFromRemoteJSONAndSave()
         //          get local JSON
         //        loadSourcesFromBundle()
-        
     }
     
     private var cancellables = Set<AnyCancellable>()
@@ -69,7 +68,8 @@ extension Store {
     
     func fetch() { updateRequested.send("update") }
     
-    private func createSubscriptions() {
+    //  MARK: subscription to update Trend when user changes selections or sources are updated
+    private func createUpdateTrendSubscriptions() {
         
         Publishers.CombineLatest3(
             sourcesUpdated,
@@ -81,13 +81,64 @@ extension Store {
                 [weak self] _ in
                 if self != nil {
                     self!.trend = Trend(sources: self!.sources,
-                                      selectedRegion: self!.selectedRegion)
+                                        selectedRegion: self!.selectedRegion)
                 }
         }
         .store(in: &cancellables)
-        
-        
-        
+    }
+    
+    
+    //  MARK: subscription to update sources from CSV
+    private func createCSVSubscription() {
+        //  create update (fetch) subscription
+        updateRequested
+            .flatMap { _ in
+                self.mobilityTrendsAPI.fetchMobilityCSV()
+        }
+        .tryMap { try CSVParser.parseCSVToSources(csv: $0) }
+        .catch { _ in Just([]) }
+        .subscribe(on: DispatchQueue.global())
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] sources in
+            guard sources.isNotEmpty else {
+                print("parser returned empty array, no new data")
+                return
+            }
+            print("fetched on-empty data")
+            self?.sources = sources
+            if self != nil { self!.saveSources() }
+        }
+        .store(in: &cancellables)
+    }
+}
+
+//  MARK: - Load and Save
+extension Store {
+    private func loadSources(_ filename: String) -> [Source] {
+        guard let savedDataSet: [Source] = loadJSONFromDocDir(filename) else {
+            return []
+        }
+        return savedDataSet
+    }
+    
+    private func saveSources() {
+        DispatchQueue.global().async {
+            guard self.sources.isNotEmpty else { return }
+            saveJSONToDocDir(data: self.sources, filename: self.filename)
+        }
+    }
+}
+
+
+
+
+
+
+
+//  MARK: - handling JSON data source NOT USED
+extension Store {
+    //  MARK: sources from JSON
+    private func createJSONSubscription() {
         updateRequested
             .setFailureType(to: Error.self)
             .flatMap { _ -> AnyPublisher<Mobility, Error> in
@@ -115,10 +166,8 @@ extension Store {
         }
         .store(in: &cancellables)
     }
-}
-
-//  MARK: - Convert Mobility to Sources
-extension Store {
+    
+    //  MARK: Convert Mobility to Sources
     private func convertMobilityToSources(_ mobility: Mobility) -> [Source] {
         var sources = [Source]()
         
@@ -140,8 +189,11 @@ extension Store {
                 
                 sources.append(
                     Source(region: region,
-                           //    MARK: THAT'S NOT CORRECT!!!
+                           //   -----------------------------------------------
+                        //    MARK: THAT'S NOT CORRECT!!!
+                        //  but JSON does not have GeoType info!
                         geoType: .country,
+                        //   -----------------------------------------------
                         transportType: TransportType(rawValue: data.name.rawValue)!,
                         datesStr: data.values.map { $0.date },
                         series:  series)
@@ -150,29 +202,8 @@ extension Store {
         }
         return sources
     }
-}
-
-//  MARK: - Load and Save
-extension Store {
-    private func loadSources(_ filename: String) -> [Source] {
-        guard let savedDataSet: [Source] = loadJSONFromDocDir(filename) else {
-            return []
-        }
-        return savedDataSet
-    }
     
-    private func saveSources() {
-        DispatchQueue.global().async {
-            guard self.sources.isNotEmpty else { return }
-            saveJSONToDocDir(data: self.sources, filename: self.filename)
-        }
-    }
-}
-
-//  MARK: - Sources From Local JSON
-extension Store {
-    
-    //  get Sources From Local JSON
+    //  MARK: load Sources From JSON in Bundle
     private func loadSourcesFromBundle() {
         Bundle.main.fetch("applemobilitysources.json", type: Mobility.self)
             .map { self.convertMobilityToSources($0) }
@@ -227,28 +258,3 @@ extension Store {
     }
 }
 
-//  MARK: - OLD (CSV, not used anymore)
-extension Store {
-    //  not used anymore
-    private func createCSVSubscription() {
-        //  create update (fetch) subscription
-        updateRequested
-            .flatMap { _ in
-                self.mobilityTrendsAPI.fetchMobilityCSV()
-        }
-        .tryMap { try CSVParser.parseCSVToSources(csv: $0) }
-        .catch { _ in Just([]) }
-        .subscribe(on: DispatchQueue.global())
-        .receive(on: DispatchQueue.main)
-        .sink { [weak self] sources in
-            guard sources.isNotEmpty else {
-                print("parser returned empty array, no new data")
-                return
-            }
-            print("fetched on-empty data")
-            self?.sources = sources
-            if self != nil { self!.saveSources() }
-        }
-        .store(in: &cancellables)
-    }
-}
