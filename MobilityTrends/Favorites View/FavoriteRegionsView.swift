@@ -41,8 +41,6 @@ struct RegionsView: View {
             .navigationBarItems(
                 leading: EditButton(),
                 trailing: TrailingButtonSFSymbol("plus") {
-                    //  MARK: FINISH THIS
-                    //
                     self.showSearch = true
                 }
                 .sheet(isPresented: $showSearch, onDismiss: {
@@ -50,7 +48,6 @@ struct RegionsView: View {
                         self.territories.add(region: self.draft)
                     }
                 }) {
-                    //  MARK: THAT'S NOT COREECT!!!!!
                     SearchView(selection: self.$draft)
                         .environmentObject(self.store)
                         .environmentObject(self.territories)

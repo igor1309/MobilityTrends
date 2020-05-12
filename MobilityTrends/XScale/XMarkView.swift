@@ -37,7 +37,7 @@ struct XMarkView: View {
     
     var body: some View {
         GeometryReader { geo in
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 3) {
                 TickMark()
                     .strokeBorder(Color.secondary, lineWidth: 0.5)
                     .opacity(0.8)
