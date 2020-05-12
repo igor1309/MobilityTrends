@@ -29,19 +29,44 @@ class MobilityTrendsAPI {
     
     //  MARK: - fetch()
     
-    //  CSV (everything, but date in filename makes update tricky)
-    func fetchMobilityCSV() -> AnyPublisher<String, Never> {
+    //  MARK: CSV
+    
+    /// emits non-empty [Source]
+    func fetchMobility() -> AnyPublisher<[Source], Never> {
         fetchURL(for: Endpoint.csvPath)
             .flatMap {
                 URLSession.shared.dataTaskPublisher(for: $0)
                     .mapError { $0 as Error }
         }
         .map { String(data: $0.data, encoding: .utf8)! }
-        .catch { _ in Just("") }
+        .tryMap { try CSVParser.parseCSVToSources(csv: $0) }
+        .filter { $0.isNotEmpty }
+        .catch { _ in
+            Empty(completeImmediately: true)
+        }
         .subscribe(on: DispatchQueue.global())
         .eraseToAnyPublisher()
     }
     
+    /// emits non-empty [Region]
+    func fetchTerritories() -> AnyPublisher<[Region], Never> {
+        fetchURL(for: Endpoint.csvPath)
+            .flatMap {
+                URLSession.shared.dataTaskPublisher(for: $0)
+                    .mapError { $0 as Error }
+        }
+        .map { String(data: $0.data, encoding: .utf8)! }
+        .tryMap { try CSVParser.parseCSVToRegions(csv: $0) }
+        .filter { $0.isNotEmpty }
+        .catch { _ in
+            Empty(completeImmediately: true)
+        }
+        .subscribe(on: DispatchQueue.global())
+        .eraseToAnyPublisher()
+    }
+    
+    
+    //  MARK: - JSON
     ///  JSON with Mobility Trends data but without GeoType (less info than in CSV)
     func fetchMobilityJSON() -> AnyPublisher<Mobility, Error> {
         fetchURL(for: Endpoint.jsonPath)

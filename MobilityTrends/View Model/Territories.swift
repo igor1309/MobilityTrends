@@ -84,21 +84,16 @@ extension Territories {
     
     private func createUpdateCSVSubscription() {
         updateRequested
-            .flatMap { _ -> AnyPublisher<String, Never> in
-                self.mobilityTrendsAPI.fetchMobilityCSV()
-        }
-        .tryMap { try CSVParser.parseCSVToRegions(csv: $0) }
-        .catch { _ in Just([]) }
-        .subscribe(on: DispatchQueue.global())
-        .receive(on: DispatchQueue.main)
-        .sink {
-            [weak self] in
-            self?.allRegions = $0
-            if self != nil { print("updated regions from csv") }
+            .flatMap { _ in self.mobilityTrendsAPI.fetchTerritories() }
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink {
+                [weak self] in
+                self?.allRegions = $0
+                if self != nil { print("updated regions from csv") }
         }
         .store(in: &cancellables)
     }
-    
     
     ///  create search query subscription
     private func createSearchSubscription() {

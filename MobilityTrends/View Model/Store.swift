@@ -23,6 +23,7 @@ final class Store: ObservableObject {
     
     private var sources = [Source]() {
         didSet {
+            print("sources updated")
             sourcesUpdated.send("updated")
             saveSources()
         }
@@ -98,20 +99,12 @@ extension Store {
         //  create update (fetch) subscription
         updateRequested
             .flatMap { _ in
-                self.mobilityTrendsAPI.fetchMobilityCSV()
+                self.mobilityTrendsAPI.fetchMobility()
         }
-        .tryMap { try CSVParser.parseCSVToSources(csv: $0) }
-        .catch { _ in Just([]) }
         .subscribe(on: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
         .sink { [weak self] sources in
-            guard sources.isNotEmpty else {
-                print("parser returned empty array, no new data")
-                return
-            }
-            print("fetched on-empty data")
             self?.sources = sources
-            if self != nil { print("sources updated") }
         }
         .store(in: &cancellables)
     }
@@ -161,7 +154,6 @@ extension Store {
             }
             print("fetched on-empty data")
             self?.sources = sources
-            if self != nil { print("sources updated") }
         }
         .store(in: &cancellables)
     }
@@ -223,7 +215,6 @@ extension Store {
                 }
                 print("fetched on-empty data")
                 self?.sources = sources
-                if self != nil { print("sources updated") }
         }
         .store(in: &cancellables)
     }
