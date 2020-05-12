@@ -92,7 +92,15 @@ struct CountryTrendsView: View {
                     HStack(alignment: .top) {
                         transportLegend
                         Spacer()
-                        sourceToggleButton
+                        VStack(alignment: .trailing, spacing: 6) {
+                            sourceToggleButton
+                            
+                            if isUsingMovingAverage {
+                                Text("moving average")
+                                    .foregroundColor(.systemOrange)
+                                    .font(.caption)
+                            }
+                        }
                     }
                     
                     VStack(spacing: 0) {
