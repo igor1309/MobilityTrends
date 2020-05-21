@@ -35,12 +35,12 @@ struct ContentView: View {
             }
             .tag(2)
             
-             HomeSearchView()
-            .tabItem {
-                    Image(systemName: "magnifyingglass.circle")
-                    Text("Search")
+            SettingsView()
+                .tabItem {
+                    Image(systemName: "checkmark.circle")
+                    Text("Check")
             }
-            .tag(2)
+            .tag(3)
         }
     }
 }
@@ -50,6 +50,7 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
             .environmentObject(Store())
             .environmentObject(Territories())
+            .environmentObject(Settings())
             .environment(\.colorScheme, .dark)
     }
 }

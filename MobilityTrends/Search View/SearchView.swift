@@ -12,6 +12,7 @@ import SwiftPI
 struct SearchView: View {
     @Environment(\.presentationMode) var presentation
     @EnvironmentObject var territories: Territories
+    @EnvironmentObject var settings: Settings
     
     @Binding var selection: String
     
@@ -76,7 +77,7 @@ struct SearchView: View {
             }
             .navigationBarTitle(Text("Select Region"), displayMode: .inline)
             .navigationBarItems(trailing: TrailingButtonSFSymbol("arrow.2.circlepath") {
-                self.territories.fetch()
+                self.territories.fetch(version: self.settings.version)
             })
         }
     }
@@ -94,6 +95,7 @@ struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         SearchViewTesting()
             .environmentObject(Territories())
+            .environmentObject(Settings())
             .environment(\.colorScheme, .dark)
     }
 }

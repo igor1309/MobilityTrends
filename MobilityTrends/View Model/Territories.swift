@@ -37,8 +37,9 @@ final class Territories: ObservableObject {
     @Published var countries = [Region]()
     @Published var cities = [Region]()
     @Published var subRegions = [Region]()
-    
-    var updateRequested = PassthroughSubject<String, Never>()
+    @Published var counties = [Region]()
+
+    private let updateRequested = PassthroughSubject<Int, Never>()
     
     init(api: MobilityTrendsAPI = .shared) {
         self.mobilityTrendsAPI = api
@@ -73,18 +74,19 @@ extension Territories {
         countries =  allRegions.filter { $0.type == .country }
         cities =     allRegions.filter { $0.type == .city }
         subRegions = allRegions.filter { $0.type == .subRegion }
+        counties   = allRegions.filter { $0.type == .county }
     }
 }
 
 //  MARK: - Fetch and Subcsriptions
 extension Territories {
-    func fetch() {
-        updateRequested.send("update")
+    func fetch(version: Int) {
+        updateRequested.send(version)
     }
     
     private func createUpdateCSVSubscription() {
         updateRequested
-            .flatMap { _ in self.mobilityTrendsAPI.fetchTerritories() }
+            .flatMap { version in self.mobilityTrendsAPI.fetchTerritories(version: version) }
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .sink {
@@ -109,6 +111,8 @@ extension Territories {
                 array = cities
             case .subRegion:
                 array = subRegions
+            case .county:
+                array = counties
             }
             
             let result = array.filter {

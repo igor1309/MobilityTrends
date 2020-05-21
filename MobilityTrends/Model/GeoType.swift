@@ -11,11 +11,12 @@ enum GeoType: String, CaseIterable, Codable {
     case country = "country/region"
     case city = "city"
     case subRegion = "sub-region"
+    case county
     
     var id: String {
         switch self {
         case .country:
-            return "terr"
+            return "country"
         case .subRegion:
             return "sub-reg"
         default:
@@ -23,3 +24,8 @@ enum GeoType: String, CaseIterable, Codable {
         }
     }
 }
+
+/// country/region
+/// city
+/// sub-region
+/// county

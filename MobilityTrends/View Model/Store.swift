@@ -21,17 +21,19 @@ final class Store: ObservableObject {
     @Published var selectedRegion = "Moscow"
     @Published var transportType = TransportType.driving
     
+    private var version: Int = 3
+    
     private var sources = [Source]() {
         didSet {
             print("sources updated")
-            sourcesUpdated.send("updated")
+            sourcesUpdated.send(version)
             saveSources()
         }
     }
-    private var sourcesUpdated = PassthroughSubject<String, Never>()
     
-    
-    var updateRequested = PassthroughSubject<String, Never>()
+    private var sourcesUpdated = PassthroughSubject<Int, Never>()
+   
+    private var updateRequested = PassthroughSubject<Int, Never>()
     
     init(api: MobilityTrendsAPI = .shared) {
         self.mobilityTrendsAPI = api
@@ -49,7 +51,7 @@ final class Store: ObservableObject {
         // method within our initializer, since property
         // observers aren't triggered until after a value
         // has been fully initialized.
-        self.sourcesUpdated.send("updated")
+        self.sourcesUpdated.send(version)
         
         //  MARK: TESTING/DEBUGGING ONLY
         //  get Sources from remote JSON and save to Document Directory
@@ -70,7 +72,7 @@ final class Store: ObservableObject {
 //  MARK: - Fetch and Subcsriptions
 extension Store {
     
-    func fetch() { updateRequested.send("update") }
+    func fetch(version: Int) { updateRequested.send(version) }
     
     //  MARK: subscription to update Trend when user changes selections or sources are updated
     private func createUpdateTrendSubscriptions() {
@@ -83,14 +85,14 @@ extension Store {
         )
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
-            .sink {
+            .sink(receiveCompletion: { completion in
+                print("completion recieved: \(completion)")
+            }) {
                 [weak self] _ in
-                if self != nil {
-                    self!.trend = Trend(sources: self!.sources,
-                                        selectedRegion: self!.selectedRegion)
-                }
+                self?.trend = Trend(sources: self!.sources,
+                                    selectedRegion: self!.selectedRegion)
         }
-        .store(in: &cancellables)
+            .store(in: &cancellables)
     }
     
     
@@ -99,11 +101,12 @@ extension Store {
         //  create update (fetch) subscription
         updateRequested
             .flatMap { _ in
-                self.mobilityTrendsAPI.fetchMobility()
+                self.mobilityTrendsAPI.fetchMobility(version: self.version)
         }
         .subscribe(on: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
-        .sink { [weak self] sources in
+        .sink {
+            [weak self] sources in
             self?.sources = sources
         }
         .store(in: &cancellables)
@@ -127,14 +130,14 @@ extension Store {
     }
 }
 
-//  MARK: - handling JSON data source NOT USED
+//  MARK: - handling JSON data source NOT USED (LESS DATA THAN IN CSV)
 extension Store {
     //  MARK: sources from JSON
     private func createJSONSubscription() {
         updateRequested
             .setFailureType(to: Error.self)
             .flatMap { _ -> AnyPublisher<Mobility, Error> in
-                self.mobilityTrendsAPI.fetchMobilityJSON()
+                self.mobilityTrendsAPI.fetchMobilityJSON(version: self.version)
         }
         .map { self.convertMobilityToSources($0) }
         .subscribe(on: DispatchQueue.global())
@@ -227,7 +230,7 @@ extension Store {
     //  fetch Sources from remote JSON ans save to Document Directory
     private func fetchSourcesFromRemoteJSONAndSave() {
         
-        self.mobilityTrendsAPI.fetchMobilityJSON()
+        self.mobilityTrendsAPI.fetchMobilityJSON(version: self.version)
             //  this functiona just saves JSON
             //  there is no UI update so no need in DispatchQueue.main
             // .receive(on: DispatchQueue.main)

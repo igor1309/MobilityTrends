@@ -16,7 +16,7 @@ enum CSVParser {
             print("empty csv")
             return []
         }
-
+        
         let rows = csv.components(separatedBy: "\n")
         var table = [[String]]()
         
@@ -24,22 +24,31 @@ enum CSVParser {
             table.append(row.components(separatedBy: ","))
         }
         
-        let x = table[0].dropFirst(4)
+        let x = table[0].dropFirst(6)
         
         var sources = [Source]()
         
         for i in 1..<table.count-1 {
             let row = table[i]
             
-            guard let geoType:GeoType = GeoType(rawValue: row[0]) else { throw ParserError.general }
+            guard let geoType: GeoType = GeoType(rawValue: row[0]) else {
+                print("GeoType parsing error")
+                throw ParserError.general
+            }
+            
+            guard let transport: TransportType = TransportType(rawValue: row[2]) else {
+                print("TransportType parsing error")
+                throw ParserError.general
+            }
             
             sources.append(Source(region: row[1],
-                                geoType: geoType,
-                                transportType: TransportType(rawValue: row[2])!,
-                                datesStr: Array(x),
-                                series: row.dropFirst(4).map { Double($0) ?? -1 }))
+                                  geoType: geoType,
+                                  transportType: transport,
+                                  datesStr: Array(x),
+                                  series: row.dropFirst(6).map { Double($0) ?? -1 }))
         }
-//        print(sources)
+        
+        //        print(sources)
         
         return sources
     }
@@ -49,7 +58,7 @@ enum CSVParser {
             print("empty csv")
             return []
         }
-
+        
         let rows = csv.components(separatedBy: "\n")
         var table = [[String]]()
         
@@ -65,12 +74,15 @@ enum CSVParser {
             let name = row[1]
             guard !regions.map({ $0.name }).contains(name) else { continue }
             
-            guard let geoType:GeoType = GeoType(rawValue: row[0]) else { throw ParserError.general }
+            guard let geoType: GeoType = GeoType(rawValue: row[0]) else {
+                print("GeoType parsing error")
+                throw ParserError.general
+            }
             
             regions.append(Region(name: row[1],
                                   type: geoType))
         }
-//        print(regions)
+        //        print(regions)
         
         return regions
     }

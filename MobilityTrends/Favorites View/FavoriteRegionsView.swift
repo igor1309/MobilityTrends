@@ -14,6 +14,7 @@ struct RegionsView: View {
     
     @EnvironmentObject var store: Store
     @EnvironmentObject var territories: Territories
+    @EnvironmentObject var settings: Settings
     
     @Binding var selected: String
     
@@ -51,6 +52,7 @@ struct RegionsView: View {
                     SearchView(selection: self.$draft)
                         .environmentObject(self.store)
                         .environmentObject(self.territories)
+                        .environmentObject(self.settings)
                 }
             )
         }
@@ -71,6 +73,7 @@ struct RegionsView_Previews: PreviewProvider {
         RegionsView(selected: .constant("Moscow"))
             .environmentObject(Store())
             .environmentObject(Territories())
+            .environmentObject(Settings())
             .environment(\.colorScheme, .dark)
     }
 }

@@ -25,6 +25,9 @@
 		2A0BD5C0246435B800D98C96 /* DotGraphShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5BF246435B800D98C96 /* DotGraphShape.swift */; };
 		2A0BD5C22464529D00D98C96 /* FavoriteRegionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */; };
 		2A0BD5C4246452B300D98C96 /* Territories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5C3246452B300D98C96 /* Territories.swift */; };
+		2A1788A324771B11007D1340 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1788A224771B11007D1340 /* Settings.swift */; };
+		2A1788A524771D3A007D1340 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1788A424771D3A007D1340 /* SettingsView.swift */; };
+		2A1788A724772B2F007D1340 /* applemobilitytrends-2020-05-19.csv in Resources */ = {isa = PBXBuildFile; fileRef = 2A1788A624772B2F007D1340 /* applemobilitytrends-2020-05-19.csv */; };
 		2A28BB092464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB082464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift */; };
 		2A28BB0B2464A2F70041EDD5 /* TransportTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB0A2464A2F70041EDD5 /* TransportTypePicker.swift */; };
 		2A28BB0D2464A47F0041EDD5 /* GraphGridShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB0C2464A47F0041EDD5 /* GraphGridShape.swift */; };
@@ -46,7 +49,6 @@
 		2AC960B52469FF370080D930 /* YScaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC960B42469FF370080D930 /* YScaleView.swift */; };
 		2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF4360824649CEC00212222 /* BaseLineShape.swift */; };
 		2AF6243D2468A909007CCF62 /* CountryTrendsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */; };
-		2AF624412468C3F9007CCF62 /* HomeSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF624402468C3F9007CCF62 /* HomeSearchView.swift */; };
 		2AF62446246973D4007CCF62 /* XScaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF62445246973D4007CCF62 /* XScaleView.swift */; };
 		2AF624482469816A007CCF62 /* XMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF624472469816A007CCF62 /* XMarkView.swift */; };
 /* End PBXBuildFile section */
@@ -71,6 +73,9 @@
 		2A0BD5BF246435B800D98C96 /* DotGraphShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotGraphShape.swift; sourceTree = "<group>"; };
 		2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRegionsView.swift; sourceTree = "<group>"; };
 		2A0BD5C3246452B300D98C96 /* Territories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Territories.swift; sourceTree = "<group>"; };
+		2A1788A224771B11007D1340 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		2A1788A424771D3A007D1340 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		2A1788A624772B2F007D1340 /* applemobilitytrends-2020-05-19.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "applemobilitytrends-2020-05-19.csv"; sourceTree = "<group>"; };
 		2A28BB082464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingFavoriteToggleButton.swift; sourceTree = "<group>"; };
 		2A28BB0A2464A2F70041EDD5 /* TransportTypePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportTypePicker.swift; sourceTree = "<group>"; };
 		2A28BB0C2464A47F0041EDD5 /* GraphGridShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphGridShape.swift; sourceTree = "<group>"; };
@@ -92,7 +97,6 @@
 		2AC960B42469FF370080D930 /* YScaleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YScaleView.swift; sourceTree = "<group>"; };
 		2AF4360824649CEC00212222 /* BaseLineShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseLineShape.swift; sourceTree = "<group>"; };
 		2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryTrendsHeader.swift; sourceTree = "<group>"; };
-		2AF624402468C3F9007CCF62 /* HomeSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchView.swift; sourceTree = "<group>"; };
 		2AF62445246973D4007CCF62 /* XScaleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XScaleView.swift; sourceTree = "<group>"; };
 		2AF624472469816A007CCF62 /* XMarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMarkView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,7 +135,7 @@
 				2A09EDDC246356900021FC7D /* AppDelegate.swift */,
 				2A09EDDE246356900021FC7D /* SceneDelegate.swift */,
 				2A09EDE0246356900021FC7D /* ContentView.swift */,
-				2AF6244224693FAD007CCF62 /* TESTING NEW IDEAS */,
+				2A1788A424771D3A007D1340 /* SettingsView.swift */,
 				2A28BB2524657ABA0041EDD5 /* Supporting Views */,
 				2AC960B32469FF140080D930 /* XScale */,
 				2AC960B6246A06510080D930 /* YScaleView */,
@@ -188,9 +192,18 @@
 			isa = PBXGroup;
 			children = (
 				2AC582C02466D8BD002E2FBD /* applemobilitytrends.json */,
-				2A89C2E424660FC700D8D113 /* applemobilitytrends-2020-05-07.csv */,
+				2A1788A824772B43007D1340 /* OLD FORMAT */,
+				2A1788A624772B2F007D1340 /* applemobilitytrends-2020-05-19.csv */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		2A1788A824772B43007D1340 /* OLD FORMAT */ = {
+			isa = PBXGroup;
+			children = (
+				2A89C2E424660FC700D8D113 /* applemobilitytrends-2020-05-07.csv */,
+			);
+			path = "OLD FORMAT";
 			sourceTree = "<group>";
 		};
 		2A28BB2524657ABA0041EDD5 /* Supporting Views */ = {
@@ -211,6 +224,7 @@
 			children = (
 				2A09EDF2246357510021FC7D /* Store.swift */,
 				2A0BD5C3246452B300D98C96 /* Territories.swift */,
+				2A1788A224771B11007D1340 /* Settings.swift */,
 			);
 			path = "View Model";
 			sourceTree = "<group>";
@@ -286,14 +300,6 @@
 			path = "Favorites View";
 			sourceTree = "<group>";
 		};
-		2AF6244224693FAD007CCF62 /* TESTING NEW IDEAS */ = {
-			isa = PBXGroup;
-			children = (
-				2AF624402468C3F9007CCF62 /* HomeSearchView.swift */,
-			);
-			path = "TESTING NEW IDEAS";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -359,6 +365,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AC582C12466DB9E002E2FBD /* applemobilitytrends.json in Resources */,
+				2A1788A724772B2F007D1340 /* applemobilitytrends-2020-05-19.csv in Resources */,
 				2A09EDE9246356910021FC7D /* LaunchScreen.storyboard in Resources */,
 				2A89C2E524660FC700D8D113 /* applemobilitytrends-2020-05-07.csv in Resources */,
 				2A09EDE6246356910021FC7D /* Preview Assets.xcassets in Resources */,
@@ -390,7 +397,7 @@
 				2A89C2E3246607A400D8D113 /* Tail.swift in Sources */,
 				2A28BB2724657BA90041EDD5 /* FavoriteToggleButton.swift in Sources */,
 				2A0BD5C0246435B800D98C96 /* DotGraphShape.swift in Sources */,
-				2AF624412468C3F9007CCF62 /* HomeSearchView.swift in Sources */,
+				2A1788A324771B11007D1340 /* Settings.swift in Sources */,
 				2A28BB2B246582470041EDD5 /* TransportType.swift in Sources */,
 				2AC960B52469FF370080D930 /* YScaleView.swift in Sources */,
 				2A28BB24246573130041EDD5 /* FetchDataButton.swift in Sources */,
@@ -409,6 +416,7 @@
 				2A28BB2024656C1B0041EDD5 /* RegionPicker.swift in Sources */,
 				2A0BD5C4246452B300D98C96 /* Territories.swift in Sources */,
 				2A09EDF9246366EC0021FC7D /* MobilityTrendsAPI.swift in Sources */,
+				2A1788A524771D3A007D1340 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

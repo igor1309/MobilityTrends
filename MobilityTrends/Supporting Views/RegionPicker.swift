@@ -11,6 +11,7 @@ import SwiftUI
 struct RegionPicker: View {
     @EnvironmentObject var store: Store
     @EnvironmentObject var territories: Territories
+    @EnvironmentObject var settings: Settings
     
     @Binding var selectedRegion: String
     
@@ -31,6 +32,7 @@ struct RegionPicker: View {
             SearchView(selection: self.$selectedRegion)
                 .environmentObject(self.store)
                 .environmentObject(self.territories)
+                .environmentObject(self.settings)
         }
     }
 }
@@ -56,5 +58,6 @@ struct RegionPicker_Previews: PreviewProvider {
         RegionPickerTester()
             .environmentObject(Store())
             .environmentObject(Territories())
+            .environmentObject(Settings())
     }
 }

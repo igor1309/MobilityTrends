@@ -14,17 +14,24 @@ import Combine
 class MobilityTrendsAPI {
     static let shared = MobilityTrendsAPI()
     
-    private func fetchURL(for endpoint: Endpoint) -> AnyPublisher<URL, Error> {
-        let url = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/current/v2/index.json")!
+    func ping(version: Int) -> AnyPublisher<String, Never> {
+        fetchURL(for: Endpoint.csvPath, version: version)
+            .map { $0.absoluteString }
+            .replaceError(with: "Error fetching data")
+            .eraseToAnyPublisher()
+    }
+    
+    private func fetchURL(for endpoint: Endpoint, version: Int) -> AnyPublisher<URL, Error> {
+        let url = URL(string: "https://covid19-static.cdn-apple.com/covid19-mobility-data/current/v\(version)/index.json")!
         
         return URLSession.shared.fetchData(url: url)
             .decode(type: Piece.self, decoder: JSONDecoder())
             .map {
                 let url = $0.url(for: endpoint)
-//                print("fetchURL: \(url)")
+                //  print("fetchURL: \(url)")
                 return url
         }
-            .eraseToAnyPublisher()
+        .eraseToAnyPublisher()
     }
     
     //  MARK: - fetch()
@@ -32,8 +39,8 @@ class MobilityTrendsAPI {
     //  MARK: CSV
     
     /// emits non-empty [Source]
-    func fetchMobility() -> AnyPublisher<[Source], Never> {
-        fetchURL(for: Endpoint.csvPath)
+    func fetchMobility(version: Int) -> AnyPublisher<[Source], Never> {
+        fetchURL(for: Endpoint.csvPath, version: version)
             .flatMap {
                 URLSession.shared.dataTaskPublisher(for: $0)
                     .mapError { $0 as Error }
@@ -49,8 +56,8 @@ class MobilityTrendsAPI {
     }
     
     /// emits non-empty [Region]
-    func fetchTerritories() -> AnyPublisher<[Region], Never> {
-        fetchURL(for: Endpoint.csvPath)
+    func fetchTerritories(version: Int) -> AnyPublisher<[Region], Never> {
+        fetchURL(for: Endpoint.csvPath, version: version)
             .flatMap {
                 URLSession.shared.dataTaskPublisher(for: $0)
                     .mapError { $0 as Error }
@@ -68,8 +75,8 @@ class MobilityTrendsAPI {
     
     //  MARK: - JSON
     ///  JSON with Mobility Trends data but without GeoType (less info than in CSV)
-    func fetchMobilityJSON() -> AnyPublisher<Mobility, Error> {
-        fetchURL(for: Endpoint.jsonPath)
+    func fetchMobilityJSON(version: Int) -> AnyPublisher<Mobility, Error> {
+        fetchURL(for: Endpoint.jsonPath, version: version)
             .flatMap { URLSession.shared.fetchData(url: $0) }
             .decode(type: Mobility.self, decoder: JSONDecoder())
             .subscribe(on: DispatchQueue.global())
@@ -77,8 +84,8 @@ class MobilityTrendsAPI {
     }
     
     ///  JSON locale names (plain string array, no GeoType)
-    func fetchLocaleNamesJSON() -> AnyPublisher<[String], Error> {
-        fetchURL(for: Endpoint.localeNamesPath)
+    func fetchLocaleNamesJSON(version: Int) -> AnyPublisher<[String], Error> {
+        fetchURL(for: Endpoint.localeNamesPath, version: version)
             .flatMap { URLSession.shared.fetchData(url: $0) }
             .decode(type: [String].self, decoder: JSONDecoder())
             .map { $0.sorted() }
