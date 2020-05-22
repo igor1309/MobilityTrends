@@ -19,16 +19,22 @@ struct FetchDataButton: View {
             self.store.fetch(version: self.settings.version)
             self.territories.fetch(version: self.settings.version)
         }) {
-            Image(systemName: "arrow.2.circlepath")
+            Image(systemName: store.updateStatus.icon)
+            .foregroundColor(store.updateStatus.color)
+            .rotationEffect(.degrees(store.updateStatus.isUpdating ? 180 : 0))
+            .animation(store.updateStatus.isUpdating ? Animation.linear.repeatForever(autoreverses: false) : .default)
         }
     }
 }
 
 struct FetchDataButton_Previews: PreviewProvider {
     static var previews: some View {
-        FetchDataButton()
-            .environmentObject(Store())
-            .environmentObject(Territories())
-            .environmentObject(Settings())
+        NavigationView {
+            FetchDataButton()
+        }
+        .environmentObject(Store())
+        .environmentObject(Territories())
+        .environmentObject(Settings())
+        .environment(\.colorScheme, .dark)
     }
 }

@@ -55,6 +55,20 @@ class MobilityTrendsAPI {
         .eraseToAnyPublisher()
     }
     
+    /// emits [Source] with empty [] if empty response or Error
+    func fetchMobilityWithEmpty(version: Int) -> AnyPublisher<[Source], Never> {
+        fetchURL(for: Endpoint.csvPath, version: version)
+            .flatMap {
+                URLSession.shared.dataTaskPublisher(for: $0)
+                    .mapError { $0 as Error }
+        }
+        .map { String(data: $0.data, encoding: .utf8)! }
+        .tryMap { try CSVParser.parseCSVToSources(csv: $0) }
+        .catch { _ in Just([]) }
+        .subscribe(on: DispatchQueue.global())
+        .eraseToAnyPublisher()
+    }
+    
     /// emits non-empty  territories: [Region]
     func fetchTerritories(version: Int) -> AnyPublisher<[Region], Never> {
         fetchURL(for: Endpoint.csvPath, version: version)

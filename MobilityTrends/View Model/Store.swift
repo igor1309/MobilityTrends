@@ -37,6 +37,18 @@ final class Store: ObservableObject {
     
     private var sourcesUpdated = PassthroughSubject<Int, Never>()
    
+    @Published private(set) var updateStatus: UpdateStatus = .ready {
+        didSet {
+            switch updateStatus {
+            case .updatedOK, .updateFail:
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.updateStatus = .ready
+                }
+            default:
+                break
+            }
+        }
+    }
     private var updateRequested = PassthroughSubject<Int, Never>()
     
     init(api: MobilityTrendsAPI = .shared) {
@@ -77,8 +89,14 @@ final class Store: ObservableObject {
 extension Store {
     
     func fetch(version: Int) {
-        self.version = version
-        updateRequested.send(version)
+        switch updateStatus {
+        case .updating:
+            break
+        default:
+            updateStatus = .updating
+            self.version = version
+            updateRequested.send(version)
+        }
     }
     
     //  MARK: subscription to update Trend when user changes selections or sources are updated
@@ -108,13 +126,20 @@ extension Store {
         //  create update (fetch) subscription
         updateRequested
             .flatMap { _ in
-                self.mobilityTrendsAPI.fetchMobility(version: self.version)
+                self.mobilityTrendsAPI.fetchMobilityWithEmpty(version: self.version)
         }
         .subscribe(on: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
         .sink {
             [weak self] sources in
-            self?.sources = sources
+            if sources.isEmpty {
+                print("recieved empty sources: empty response or error upstream")
+                self?.updateStatus = .updateFail
+            } else {
+                self?.sources = sources
+                self?.updateStatus = .updatedOK
+                if self != nil { print("updated sources from csv") }
+            }
         }
         .store(in: &cancellables)
     }

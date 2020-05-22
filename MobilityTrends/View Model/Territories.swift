@@ -41,7 +41,6 @@ final class Territories: ObservableObject {
     
     @Published private(set) var updateStatus: UpdateStatus = .ready {
         didSet {
-            print("status: \(updateStatus)")
             switch updateStatus {
             case .updatedOK, .updateFail:
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
