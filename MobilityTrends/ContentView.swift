@@ -10,7 +10,7 @@ import SwiftUI
 import SwiftPI
 
 struct ContentView: View {
-    @EnvironmentObject var territories: Territories
+    @EnvironmentObject var store: Store
     @EnvironmentObject var settings: Settings
     
     var body: some View {
@@ -30,7 +30,7 @@ struct ContentView: View {
             }
             .tag(1)
             
-            SearchView(selection: $territories.query)
+            SearchView(selection: $store.query)
                 .tabItem {
                     Image(systemName: "magnifyingglass")
                     Text("Search")
@@ -51,7 +51,6 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .environmentObject(Store())
-            .environmentObject(Territories())
             .environmentObject(Settings())
             .environment(\.colorScheme, .dark)
     }

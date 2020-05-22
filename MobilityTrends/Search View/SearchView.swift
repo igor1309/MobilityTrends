@@ -11,19 +11,19 @@ import SwiftPI
 
 struct SearchView: View {
     @Environment(\.presentationMode) var presentation
-    @EnvironmentObject var territories: Territories
+    @EnvironmentObject var store: Store
     @EnvironmentObject var settings: Settings
     
     @Binding var selection: String
     
     var updateButton: some View {
         Button(action: {
-            self.territories.fetch(version: self.settings.version)
+            self.store.fetch(version: self.settings.version)
         }) {
-            Image(systemName: territories.updateStatus.icon)
-                .foregroundColor(territories.updateStatus.color)
-                .rotationEffect(.degrees(territories.updateStatus.isUpdating ? 180 : 0))
-                .animation(territories.updateStatus.isUpdating ? Animation.linear.repeatForever(autoreverses: false) : .default)
+            Image(systemName: store.updateStatus.icon)
+                .foregroundColor(store.updateStatus.color)
+                .rotationEffect(.degrees(store.updateStatus.isUpdating ? 180 : 0))
+                .animation(store.updateStatus.isUpdating ? Animation.linear.repeatForever(autoreverses: false) : .default)
         }
     }
     
@@ -33,11 +33,11 @@ struct SearchView: View {
                 .imageScale(.small)
                 .foregroundColor(.tertiary)
             
-            TextField("Search \(territories.selectedGeoType.rawValue.capitalized)", text: $territories.query)
+            TextField("Search \(store.selectedGeoType.rawValue.capitalized)", text: $store.query)
             
-            if territories.query.isNotEmpty {
+            if store.query.isNotEmpty {
                 Button(action: {
-                    self.territories.query = ""
+                    self.store.query = ""
                 }) {
                     Image(systemName: "xmark.circle.fill")
                         .imageScale(.small)
@@ -53,7 +53,7 @@ struct SearchView: View {
     }
     
     var geoTypePicker: some View {
-        Picker(selection: $territories.selectedGeoType, label: Text("Geo Type")) {
+        Picker(selection: $store.selectedGeoType, label: Text("Geo Type")) {
             ForEach(GeoType.allCases, id: \.self) { type in
                 Text(type.id).tag(type)
             }
@@ -73,7 +73,7 @@ struct SearchView: View {
                     .padding(.horizontal)
                 
                 List {
-                    ForEach(territories.queryResult) { region in
+                    ForEach(store.queryResult) { region in
                         HStack {
                             Text(region.name)
                             Spacer()
@@ -103,7 +103,7 @@ struct SearchViewTesting: View {
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         SearchViewTesting()
-            .environmentObject(Territories())
+            .environmentObject(Store())
             .environmentObject(Settings())
             .environment(\.colorScheme, .dark)
     }

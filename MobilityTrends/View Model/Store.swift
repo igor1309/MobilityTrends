@@ -13,7 +13,8 @@ import Combine
 final class Store: ObservableObject {
     private let mobilityTrendsAPI: MobilityTrendsAPI
     
-    private let sourcesFilename: String = "sources.json"
+    private let mobilityDataFilename: String = "sources.json"
+    private let regionsFilename = "regions.json"
     
     let baseline: Double = 100
     
@@ -21,22 +22,28 @@ final class Store: ObservableObject {
     @Published var selectedRegion = "Moscow"
     @Published var transportType = TransportType.driving
     
+    @Published var query: String = ""
+    @Published var selectedGeoType = GeoType.country
+    @Published var queryResult = [Region]()
+    
+    private var regions: [Region] {
+        mobilityData.regions
+    }
+    
     private var version: Int = UserDefaults.standard.integer(forKey: "AppleMobilityVersion") {
         didSet {
             UserDefaults.standard.set(version, forKey: "AppleMobilityVersion")
         }
     }
     
-    private var sources = [Source]() {
+    private var mobilityData = MobilityData() {
         didSet {
-            print("sources updated")
-            sourcesUpdated.send(version)
-            saveSources()
+            mobilityDataUpdated.send(version)
+            saveMobilityData()
         }
     }
+    private let mobilityDataUpdated = PassthroughSubject<Int, Never>()
     
-    private var sourcesUpdated = PassthroughSubject<Int, Never>()
-   
     @Published private(set) var updateStatus: UpdateStatus = .ready {
         didSet {
             switch updateStatus {
@@ -49,25 +56,24 @@ final class Store: ObservableObject {
             }
         }
     }
-    private var updateRequested = PassthroughSubject<Int, Never>()
+    private let updateRequested = PassthroughSubject<Int, Never>()
     
     init(api: MobilityTrendsAPI = .shared) {
         self.mobilityTrendsAPI = api
         
         //  create subscriptions
-        self.createUpdateTrendSubscriptions()
         self.createCSVSubscription()
-        //  not used anymore
-        //        createJSONSubscription()
+        self.createUpdateTrendSubscriptions()
+        self.createSearchSubscription()
         
         //  load saved data from local JSON
-        self.sources = loadSources()
+        self.mobilityData = loadMobilityData()
         
         // Note how we need to manually call our handling
         // method within our initializer, since property
         // observers aren't triggered until after a value
         // has been fully initialized.
-        self.sourcesUpdated.send(version)
+        self.mobilityDataUpdated.send(version)
         
         //  MARK: TESTING/DEBUGGING ONLY
         //  get Sources from remote JSON and save to Document Directory
@@ -103,7 +109,7 @@ extension Store {
     private func createUpdateTrendSubscriptions() {
         
         Publishers.CombineLatest3(
-            sourcesUpdated,
+            mobilityDataUpdated,
             $selectedRegion
                 .removeDuplicates(),
             $transportType
@@ -114,32 +120,80 @@ extension Store {
                 print("completion recieved: \(completion)")
             }) {
                 [weak self] _ in
-                self?.trend = Trend(sources: self!.sources,
-                                    selectedRegion: self!.selectedRegion)
+                if self != nil {
+                    self!.trend = Trend(sources: self!.mobilityData.sources,
+                                        selectedRegion: self!.selectedRegion)
+                }
         }
-            .store(in: &cancellables)
+        .store(in: &cancellables)
     }
     
     
     //  MARK: subscription to update sources from CSV
     private func createCSVSubscription() {
-        //  create update (fetch) subscription
+        
+        //  create update (fetch) subscription for MobilityData
         updateRequested
             .flatMap { _ in
-                self.mobilityTrendsAPI.fetchMobilityWithEmpty(version: self.version)
+                self.mobilityTrendsAPI.fetchMobilityDataWithEmpty(version: self.version)
+        }
+        .subscribe(on: DispatchQueue.global())
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] mobilityData in
+            if mobilityData.sources.isEmpty {
+                print("recieved Mobility Data: empty response, error upstream, or parse error")
+                self?.updateStatus = .updateFail
+            } else {
+                self?.mobilityData = mobilityData
+                self?.updateStatus = .updatedOK
+                if self != nil { print("updated Mobility Data from csv") }
+            }
+        }
+        .store(in: &cancellables)
+    }
+    
+    ///  create search query subscription
+    private func createSearchSubscription() {
+        func queryList(for query: String, with type: GeoType) -> [Region] {
+            let array: [Region]
+            
+            switch type {
+            case .all:
+                array = regions
+            case .country:
+                array = regions.filter { $0.type == .country }
+            case .city:
+                array = regions.filter { $0.type == .city }
+            case .subRegion:
+                array = regions.filter { $0.type == .subRegion }
+            case .county:
+                array = regions.filter { $0.type == .county }
+            }
+            
+            let result = array.filter {
+                query.isNotEmpty
+                    ? $0.name.lowercased().contains(query.lowercased())
+                    : true
+            }
+            
+            return result
+        }
+        
+        Publishers.CombineLatest3(
+            $query
+                .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
+                .removeDuplicates(),
+            $selectedGeoType,
+            mobilityDataUpdated
+        )
+            .map { query, type, _ in
+                queryList(for: query, with: type)
         }
         .subscribe(on: DispatchQueue.global())
         .receive(on: DispatchQueue.main)
         .sink {
-            [weak self] sources in
-            if sources.isEmpty {
-                print("recieved empty sources: empty response or error upstream")
-                self?.updateStatus = .updateFail
-            } else {
-                self?.sources = sources
-                self?.updateStatus = .updatedOK
-                if self != nil { print("updated sources from csv") }
-            }
+            [weak self] in
+            self?.queryResult = $0
         }
         .store(in: &cancellables)
     }
@@ -147,51 +201,26 @@ extension Store {
 
 //  MARK: - Load and Save
 extension Store {
-    private func loadSources() -> [Source] {
-        guard let savedDataSet: [Source] = loadJSONFromDocDir(sourcesFilename) else {
-            return []
+    private func loadMobilityData() -> MobilityData {
+        guard let saved: MobilityData = loadJSONFromDocDir(mobilityDataFilename) else {
+            return MobilityData()
         }
-        return savedDataSet
+        return saved
     }
     
-    private func saveSources() {
+    private func saveMobilityData() {
         DispatchQueue.global().async {
-            guard self.sources.isNotEmpty else { return }
-            saveJSONToDocDir(data: self.sources, filename: self.sourcesFilename)
+            guard self.mobilityData.sources.isNotEmpty else { return }
+            saveJSONToDocDir(data: self.mobilityData, filename: self.mobilityDataFilename)
         }
     }
 }
 
+
+
+//  MARK: -
 //  MARK: - handling JSON data source NOT USED (LESS DATA THAN IN CSV)
 extension Store {
-    //  MARK: sources from JSON
-    private func createJSONSubscription() {
-        updateRequested
-            .setFailureType(to: Error.self)
-            .flatMap { _ -> AnyPublisher<Mobility, Error> in
-                self.mobilityTrendsAPI.fetchMobilityJSON(version: self.version)
-        }
-        .map { self.convertMobilityToSources($0) }
-        .subscribe(on: DispatchQueue.global())
-        .receive(on: DispatchQueue.main)
-        .sink(
-            receiveCompletion: { completion in
-                switch completion {
-                case .failure(_):
-                    print("error converting Mobility from fetched JSON to Sources")
-                case .finished:
-                    print("converting Mobility from fetched JSON to Sources ok")
-                }
-        }) { [weak self] sources in
-            guard sources.isNotEmpty else {
-                print("returned empty Sources array, no new data")
-                return
-            }
-            print("fetched on-empty data")
-            self?.sources = sources
-        }
-        .store(in: &cancellables)
-    }
     
     //  MARK: Convert Mobility to Sources
     private func convertMobilityToSources(_ mobility: Mobility) -> [Source] {
@@ -228,33 +257,12 @@ extension Store {
         }
         return sources
     }
-    
-    //  MARK: load Sources From JSON in Bundle
-    private func loadSourcesFromBundle() {
-        Bundle.main.fetch("applemobilitysources.json", type: Mobility.self)
-            .map { self.convertMobilityToSources($0) }
-            .subscribe(on: DispatchQueue.global())
-            .receive(on: DispatchQueue.main)
-            .sink(
-                receiveCompletion: { completion in
-                    switch completion {
-                    case .failure(_):
-                        print("error converting Mobility from JSON in Bundle to Sources")
-                    case .finished:
-                        print("converting Mobility from JSON in Bundle to Sources ok")
-                    }
-            }) { [weak self] sources in
-                guard sources.isNotEmpty else {
-                    print("returned empty sources array, no new data")
-                    return
-                }
-                print("fetched on-empty data")
-                self?.sources = sources
-        }
-        .store(in: &cancellables)
-    }
 }
 
+
+
+
+//  MARK: -
 //  MARK: - TESTING
 extension Store {
     

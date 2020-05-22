@@ -24,7 +24,6 @@
 		2A0BD5BE2464325200D98C96 /* LineGraphShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5BD2464325200D98C96 /* LineGraphShape.swift */; };
 		2A0BD5C0246435B800D98C96 /* DotGraphShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5BF246435B800D98C96 /* DotGraphShape.swift */; };
 		2A0BD5C22464529D00D98C96 /* FavoriteRegionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */; };
-		2A0BD5C4246452B300D98C96 /* Territories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0BD5C3246452B300D98C96 /* Territories.swift */; };
 		2A1788A324771B11007D1340 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1788A224771B11007D1340 /* Settings.swift */; };
 		2A1788A524771D3A007D1340 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1788A424771D3A007D1340 /* SettingsView.swift */; };
 		2A1788A724772B2F007D1340 /* applemobilitytrends-2020-05-19.csv in Resources */ = {isa = PBXBuildFile; fileRef = 2A1788A624772B2F007D1340 /* applemobilitytrends-2020-05-19.csv */; };
@@ -52,6 +51,7 @@
 		2AF62446246973D4007CCF62 /* XScaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF62445246973D4007CCF62 /* XScaleView.swift */; };
 		2AF624482469816A007CCF62 /* XMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF624472469816A007CCF62 /* XMarkView.swift */; };
 		2AF8C0292477FC1800611252 /* UpdateStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF8C0282477FC1800611252 /* UpdateStatus.swift */; };
+		2AF8C02B24783D6A00611252 /* MobilityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF8C02A24783D6900611252 /* MobilityData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,7 +73,6 @@
 		2A0BD5BD2464325200D98C96 /* LineGraphShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphShape.swift; sourceTree = "<group>"; };
 		2A0BD5BF246435B800D98C96 /* DotGraphShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotGraphShape.swift; sourceTree = "<group>"; };
 		2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRegionsView.swift; sourceTree = "<group>"; };
-		2A0BD5C3246452B300D98C96 /* Territories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Territories.swift; sourceTree = "<group>"; };
 		2A1788A224771B11007D1340 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		2A1788A424771D3A007D1340 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		2A1788A624772B2F007D1340 /* applemobilitytrends-2020-05-19.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "applemobilitytrends-2020-05-19.csv"; sourceTree = "<group>"; };
@@ -101,6 +100,7 @@
 		2AF62445246973D4007CCF62 /* XScaleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XScaleView.swift; sourceTree = "<group>"; };
 		2AF624472469816A007CCF62 /* XMarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMarkView.swift; sourceTree = "<group>"; };
 		2AF8C0282477FC1800611252 /* UpdateStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStatus.swift; sourceTree = "<group>"; };
+		2AF8C02A24783D6900611252 /* MobilityData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobilityData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				2AC582C424681FC0002E2FBD /* Trend.swift */,
+				2AF8C02A24783D6900611252 /* MobilityData.swift */,
 				2A09EDF02463571B0021FC7D /* Source.swift */,
 				2A28BB28246582320041EDD5 /* GeoType.swift */,
 				2A28BB2A246582470041EDD5 /* TransportType.swift */,
@@ -194,8 +195,8 @@
 			isa = PBXGroup;
 			children = (
 				2AC582C02466D8BD002E2FBD /* applemobilitytrends.json */,
-				2A1788A824772B43007D1340 /* OLD FORMAT */,
 				2A1788A624772B2F007D1340 /* applemobilitytrends-2020-05-19.csv */,
+				2A1788A824772B43007D1340 /* OLD FORMAT */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -225,7 +226,6 @@
 			isa = PBXGroup;
 			children = (
 				2A09EDF2246357510021FC7D /* Store.swift */,
-				2A0BD5C3246452B300D98C96 /* Territories.swift */,
 				2A1788A224771B11007D1340 /* Settings.swift */,
 				2AF8C0282477FC1800611252 /* UpdateStatus.swift */,
 			);
@@ -385,6 +385,7 @@
 			files = (
 				2AF62446246973D4007CCF62 /* XScaleView.swift in Sources */,
 				2A09EDFC24636BDF0021FC7D /* Ext+URLSession.swift in Sources */,
+				2AF8C02B24783D6A00611252 /* MobilityData.swift in Sources */,
 				2AC582BE24669446002E2FBD /* Ext+Bundle.swift in Sources */,
 				2A28BB092464A24E0041EDD5 /* TrailingFavoriteToggleButton.swift in Sources */,
 				2AC582C524681FC0002E2FBD /* Trend.swift in Sources */,
@@ -418,7 +419,6 @@
 				2A28BB0D2464A47F0041EDD5 /* GraphGridShape.swift in Sources */,
 				2A28BB2224656F130041EDD5 /* FavoriteRegionPicker.swift in Sources */,
 				2A28BB2024656C1B0041EDD5 /* RegionPicker.swift in Sources */,
-				2A0BD5C4246452B300D98C96 /* Territories.swift in Sources */,
 				2A09EDF9246366EC0021FC7D /* MobilityTrendsAPI.swift in Sources */,
 				2A1788A524771D3A007D1340 /* SettingsView.swift in Sources */,
 			);

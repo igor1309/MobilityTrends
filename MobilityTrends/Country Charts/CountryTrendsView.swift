@@ -11,7 +11,6 @@ import SwiftPI
 
 struct CountryTrendsView: View {
     @EnvironmentObject var store: Store
-    @EnvironmentObject var territories: Territories
     
     @State private var isUsingMovingAverage = true
     
@@ -143,7 +142,6 @@ struct CountryTrendsView_Previews: PreviewProvider {
             CountryTrendsView()
         }
         .environmentObject(Store())
-        .environmentObject(Territories())
         .environmentObject(Settings())
         .environment(\.colorScheme, .dark)
     }

@@ -38,6 +38,21 @@ class MobilityTrendsAPI {
     
     //  MARK: CSV
     
+    /// never fails, emits MobilityData with empty [] sources and regions if empty response or upstream Error (network or parsing)
+    func fetchMobilityDataWithEmpty(version: Int) -> AnyPublisher<MobilityData, Never> {
+        fetchURL(for: Endpoint.csvPath, version: version)
+            .flatMap {
+                URLSession.shared.dataTaskPublisher(for: $0)
+                    .mapError { $0 as Error }
+        }
+        .map { String(data: $0.data, encoding: .utf8)! }
+        .tryMap { try CSVParser.parseCSVToMobilityData(csv: $0) }
+        .catch { _ in Just(MobilityData(sources: [], regions: [])) }
+        .subscribe(on: DispatchQueue.global())
+        .eraseToAnyPublisher()
+    }
+
+    
     /// emits non-empty [Source]
     func fetchMobility(version: Int) -> AnyPublisher<[Source], Never> {
         fetchURL(for: Endpoint.csvPath, version: version)
@@ -101,7 +116,7 @@ class MobilityTrendsAPI {
     }
     
 
-    //  MARK: - JSON
+    //  MARK: - JSON - NOT USED
     ///  JSON with Mobility Trends data but without GeoType (less info than in CSV)
     func fetchMobilityJSON(version: Int) -> AnyPublisher<Mobility, Error> {
         fetchURL(for: Endpoint.jsonPath, version: version)

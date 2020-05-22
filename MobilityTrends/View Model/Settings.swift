@@ -9,9 +9,17 @@
 import Foundation
 import Combine
 import SwiftUI
+import SwiftPI
 
 final class Settings: ObservableObject {
     private let mobilityTrendsAPI: MobilityTrendsAPI
+    
+    @Published private(set) var favorites = [String]() {
+        didSet {
+            saveFavorites()
+        }
+    }
+    private let favoritesFilename = "favorites.json"
     
     @Published var selectedTab: Int = UserDefaults.standard.integer(forKey: "selectedTab") {
         didSet {
@@ -34,6 +42,9 @@ final class Settings: ObservableObject {
         
         //  create subscriptions
         self.createPingSubscription()
+        
+        //  load saved data from local JSON
+        self.favorites = loadFavorites()
     }
     
     private var cancellables = Set<AnyCancellable>()
@@ -67,6 +78,56 @@ extension Settings {
             return .systemRed
         } else {
             return .systemGreen
+        }
+    }
+}
+
+//  MARK: - Handling favorites
+extension Settings {
+    func isFavorite(region: String) -> Bool {
+        favorites.contains(region)
+    }
+    
+    func add(region: String) {
+        guard !favorites.contains(region) else { return }
+        favorites.append(region)
+    }
+    
+    func delete(region: String) {
+        favorites.removeAll { $0 == region }
+    }
+    
+    func toggleFavorite(region: String) {
+        if isFavorite(region: region) {
+            delete(region: region)
+        } else {
+            add(region: region)
+        }
+    }
+    
+    func move(from source: IndexSet, to destination: Int) {
+        favorites.move(fromOffsets: source, toOffset: destination)
+    }
+    
+    func delete(at offsets: IndexSet) {
+        favorites.remove(atOffsets: offsets)
+    }
+}
+
+//  MARK: - Load and Save
+extension Settings {
+    private func loadFavorites() -> [String] {
+        //  load regions from JSON
+        guard let saved: [String] = loadJSONFromDocDir(favoritesFilename) else {
+            return ["Moscow", "Russia", "Rome", "Italy", "France"]
+        }
+        return saved
+    }
+    
+    private func saveFavorites() {
+        DispatchQueue.global().async {
+            guard self.favorites.isNotEmpty else { return }
+            saveJSONToDocDir(data: self.favorites, filename: self.favoritesFilename)
         }
     }
 }

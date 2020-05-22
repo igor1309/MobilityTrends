@@ -10,19 +10,17 @@ import SwiftUI
 
 struct FetchDataButton: View {
     @EnvironmentObject var store: Store
-    @EnvironmentObject var territories: Territories
     @EnvironmentObject var settings: Settings
     
     var body: some View {
         Button(action: {
             print("version: \(self.settings.version)")
             self.store.fetch(version: self.settings.version)
-            self.territories.fetch(version: self.settings.version)
         }) {
             Image(systemName: store.updateStatus.icon)
-            .foregroundColor(store.updateStatus.color)
-            .rotationEffect(.degrees(store.updateStatus.isUpdating ? 180 : 0))
-            .animation(store.updateStatus.isUpdating ? Animation.linear.repeatForever(autoreverses: false) : .default)
+                .foregroundColor(store.updateStatus.color)
+                .rotationEffect(.degrees(store.updateStatus.isUpdating ? 180 : 0))
+                .animation(store.updateStatus.isUpdating ? Animation.linear.repeatForever(autoreverses: false) : .default)
         }
     }
 }
@@ -33,7 +31,6 @@ struct FetchDataButton_Previews: PreviewProvider {
             FetchDataButton()
         }
         .environmentObject(Store())
-        .environmentObject(Territories())
         .environmentObject(Settings())
         .environment(\.colorScheme, .dark)
     }

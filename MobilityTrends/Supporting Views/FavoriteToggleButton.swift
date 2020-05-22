@@ -9,15 +9,15 @@
 import SwiftUI
 
 struct FavoriteToggleButton: View {
-    @EnvironmentObject var territories: Territories
-    
+    @EnvironmentObject var settings: Settings
+
     var region: String
     
     var body: some View {
-        let isFavorite = self.territories.isFavorite(region: self.region)
+        let isFavorite = self.settings.isFavorite(region: self.region)
         
         return Button(action: {
-            self.territories.toggleFavorite(region: self.region)
+            self.settings.toggleFavorite(region: self.region)
         }) {
             Image(systemName: isFavorite ? "star" : "star")
                 .foregroundColor(isFavorite ? .systemOrange : .secondary)
@@ -26,7 +26,7 @@ struct FavoriteToggleButton: View {
 }
 
 struct FavoriteToggleButtonTesting: View {
-    @EnvironmentObject var territories: Territories
+    @EnvironmentObject var settings: Settings
     
     @State private var region = "Moscow"
     
@@ -40,7 +40,7 @@ struct FavoriteToggleButtonTesting: View {
             .padding(.horizontal)
             
             List {
-                ForEach(territories.favorites, id: \.self) { favorite in
+                ForEach(settings.favorites, id: \.self) { favorite in
                     Text(favorite)
                 }
             }
@@ -54,6 +54,6 @@ struct FavoriteToggleButton_Previews: PreviewProvider {
             FavoriteToggleButton(region: "Moscow")
             FavoriteToggleButtonTesting()
         }
-        .environmentObject(Territories())
+        .environmentObject(Settings())
     }
 }

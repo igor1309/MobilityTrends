@@ -13,7 +13,6 @@ struct RegionsView: View {
     @Environment(\.presentationMode) var presentation
     
     @EnvironmentObject var store: Store
-    @EnvironmentObject var territories: Territories
     @EnvironmentObject var settings: Settings
     
     @Binding var selected: String
@@ -24,7 +23,7 @@ struct RegionsView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(territories.favorites, id: \.self) { favorite in
+                ForEach(settings.favorites, id: \.self) { favorite in
                     HStack {
                         Text(favorite)
                         Spacer()
@@ -46,12 +45,11 @@ struct RegionsView: View {
                 }
                 .sheet(isPresented: $showSearch, onDismiss: {
                     if self.draft.isNotEmpty {
-                        self.territories.add(region: self.draft)
+                        self.settings.add(region: self.draft)
                     }
                 }) {
                     SearchView(selection: self.$draft)
                         .environmentObject(self.store)
-                        .environmentObject(self.territories)
                         .environmentObject(self.settings)
                 }
             )
@@ -59,11 +57,11 @@ struct RegionsView: View {
     }
     
     private func delete(at offsets: IndexSet) {
-        territories.delete(at: offsets)
+        settings.delete(at: offsets)
     }
     
     private func move(from source: IndexSet, to destination: Int) {
-        territories.move(from: source, to: destination)
+        settings.move(from: source, to: destination)
     }
 }
 
@@ -72,7 +70,6 @@ struct RegionsView_Previews: PreviewProvider {
     static var previews: some View {
         RegionsView(selected: .constant("Moscow"))
             .environmentObject(Store())
-            .environmentObject(Territories())
             .environmentObject(Settings())
             .environment(\.colorScheme, .dark)
     }

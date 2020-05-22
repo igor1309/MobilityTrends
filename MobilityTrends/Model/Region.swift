@@ -10,4 +10,6 @@ struct Region: Identifiable, Hashable, Codable {
     var id: String { name }
     let name: String
     let type: GeoType
+    let subRegion: String
+    let country: String
 }

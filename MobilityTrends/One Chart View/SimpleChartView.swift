@@ -11,7 +11,6 @@ import SwiftPI
 
 struct SimpleChartView: View {
     @EnvironmentObject var store: Store
-    @EnvironmentObject var territories: Territories
     
     var body: some View {
         VStack(spacing: 0) {
@@ -52,7 +51,6 @@ struct SimpleChartView_Previews: PreviewProvider {
             SimpleChartView()
         }
         .environmentObject(Store())
-        .environmentObject(Territories())
         .environment(\.colorScheme, .dark)
     }
 }
