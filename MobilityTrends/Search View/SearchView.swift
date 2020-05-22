@@ -50,6 +50,17 @@ struct SearchView: View {
         )
     }
     
+    var updateButton: some View {
+        Button(action: {
+            self.territories.fetch(version: self.settings.version)
+        }) {
+            Image(systemName: territories.updateStatus.icon)
+                .foregroundColor(territories.updateStatus.color)
+                .rotationEffect(.degrees(territories.updateStatus.isUpdating ? 180 : 0))
+                .animation(territories.updateStatus.isUpdating ? Animation.linear.repeatForever(autoreverses: false) : .default)
+        }
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -76,9 +87,7 @@ struct SearchView: View {
                 }
             }
             .navigationBarTitle(Text("Select Region"), displayMode: .inline)
-            .navigationBarItems(trailing: TrailingButtonSFSymbol("arrow.2.circlepath") {
-                self.territories.fetch(version: self.settings.version)
-            })
+            .navigationBarItems(trailing: updateButton.padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 0)))
         }
     }
 }

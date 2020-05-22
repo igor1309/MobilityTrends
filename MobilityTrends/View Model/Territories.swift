@@ -38,7 +38,20 @@ final class Territories: ObservableObject {
     @Published var cities = [Region]()
     @Published var subRegions = [Region]()
     @Published var counties = [Region]()
-
+    
+    @Published private(set) var updateStatus: UpdateStatus = .ready {
+        didSet {
+            print("status: \(updateStatus)")
+            switch updateStatus {
+            case .updatedOK, .updateFail:
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.updateStatus = .ready
+                }
+            default:
+                break
+            }
+        }
+    }
     private let updateRequested = PassthroughSubject<Int, Never>()
     
     init(api: MobilityTrendsAPI = .shared) {
@@ -80,19 +93,32 @@ extension Territories {
 
 //  MARK: - Fetch and Subcsriptions
 extension Territories {
+    
     func fetch(version: Int) {
-        updateRequested.send(version)
+        switch updateStatus {
+        case .updating:
+            break
+        default:
+            updateStatus = .updating
+            self.updateRequested.send(version)
+        }
     }
     
     private func createUpdateCSVSubscription() {
         updateRequested
-            .flatMap { version in self.mobilityTrendsAPI.fetchTerritories(version: version) }
+            .flatMap { version in self.mobilityTrendsAPI.fetchTerritoriesWithEmpty(version: version) }
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .sink {
                 [weak self] in
-                self?.allRegions = $0
-                if self != nil { print("updated regions from csv") }
+                if $0.isEmpty {
+                    print("recieved empty territories: empty response or error upstream")
+                    self?.updateStatus = .updateFail
+                } else {
+                    self?.allRegions = $0
+                    self?.updateStatus = .updatedOK
+                    if self != nil { print("updated regions from csv") }
+                }
         }
         .store(in: &cancellables)
     }

@@ -144,6 +144,7 @@ struct CountryTrendsView_Previews: PreviewProvider {
         }
         .environmentObject(Store())
         .environmentObject(Territories())
+        .environmentObject(Settings())
         .environment(\.colorScheme, .dark)
     }
 }

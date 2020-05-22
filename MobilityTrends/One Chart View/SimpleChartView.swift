@@ -14,10 +14,11 @@ struct SimpleChartView: View {
     @EnvironmentObject var territories: Territories
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             CountryTrendsHeader()
             
             TransportTypePicker(selection: $store.transportType)
+                .offset(y: -8)
             
             if store.trend.trendsForSelected[store.transportType] != nil {
                 OneLineChartView(

@@ -51,6 +51,7 @@
 		2AF6243D2468A909007CCF62 /* CountryTrendsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */; };
 		2AF62446246973D4007CCF62 /* XScaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF62445246973D4007CCF62 /* XScaleView.swift */; };
 		2AF624482469816A007CCF62 /* XMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF624472469816A007CCF62 /* XMarkView.swift */; };
+		2AF8C0292477FC1800611252 /* UpdateStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF8C0282477FC1800611252 /* UpdateStatus.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -99,6 +100,7 @@
 		2AF6243C2468A909007CCF62 /* CountryTrendsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryTrendsHeader.swift; sourceTree = "<group>"; };
 		2AF62445246973D4007CCF62 /* XScaleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XScaleView.swift; sourceTree = "<group>"; };
 		2AF624472469816A007CCF62 /* XMarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMarkView.swift; sourceTree = "<group>"; };
+		2AF8C0282477FC1800611252 /* UpdateStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStatus.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +227,7 @@
 				2A09EDF2246357510021FC7D /* Store.swift */,
 				2A0BD5C3246452B300D98C96 /* Territories.swift */,
 				2A1788A224771B11007D1340 /* Settings.swift */,
+				2AF8C0282477FC1800611252 /* UpdateStatus.swift */,
 			);
 			path = "View Model";
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				2A09EE052463FEBD0021FC7D /* CSVParser.swift in Sources */,
 				2A09EDF12463571B0021FC7D /* Source.swift in Sources */,
 				2A09EDE1246356900021FC7D /* ContentView.swift in Sources */,
+				2AF8C0292477FC1800611252 /* UpdateStatus.swift in Sources */,
 				2A28BB1E24656AC30041EDD5 /* CountryTrendsView.swift in Sources */,
 				2A0BD5C22464529D00D98C96 /* FavoriteRegionsView.swift in Sources */,
 				2A28BB0B2464A2F70041EDD5 /* TransportTypePicker.swift in Sources */,

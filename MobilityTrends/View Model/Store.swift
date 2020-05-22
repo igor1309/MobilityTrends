@@ -21,7 +21,11 @@ final class Store: ObservableObject {
     @Published var selectedRegion = "Moscow"
     @Published var transportType = TransportType.driving
     
-    private var version: Int = 3
+    private var version: Int = UserDefaults.standard.integer(forKey: "AppleMobilityVersion") {
+        didSet {
+            UserDefaults.standard.set(version, forKey: "AppleMobilityVersion")
+        }
+    }
     
     private var sources = [Source]() {
         didSet {
@@ -72,7 +76,10 @@ final class Store: ObservableObject {
 //  MARK: - Fetch and Subcsriptions
 extension Store {
     
-    func fetch(version: Int) { updateRequested.send(version) }
+    func fetch(version: Int) {
+        self.version = version
+        updateRequested.send(version)
+    }
     
     //  MARK: subscription to update Trend when user changes selections or sources are updated
     private func createUpdateTrendSubscriptions() {

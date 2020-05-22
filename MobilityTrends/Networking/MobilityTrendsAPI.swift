@@ -55,7 +55,7 @@ class MobilityTrendsAPI {
         .eraseToAnyPublisher()
     }
     
-    /// emits non-empty [Region]
+    /// emits non-empty  territories: [Region]
     func fetchTerritories(version: Int) -> AnyPublisher<[Region], Never> {
         fetchURL(for: Endpoint.csvPath, version: version)
             .flatMap {
@@ -72,7 +72,21 @@ class MobilityTrendsAPI {
         .eraseToAnyPublisher()
     }
     
+    /// emits territories: [Region] - empty id emty response or Error
+    func fetchTerritoriesWithEmpty(version: Int) -> AnyPublisher<[Region], Never> {
+        fetchURL(for: Endpoint.csvPath, version: version)
+            .flatMap {
+                URLSession.shared.dataTaskPublisher(for: $0)
+                    .mapError { $0 as Error }
+        }
+        .map { String(data: $0.data, encoding: .utf8)! }
+        .tryMap { try CSVParser.parseCSVToRegions(csv: $0) }
+        .catch { _ in Just([]) }
+        .subscribe(on: DispatchQueue.global())
+        .eraseToAnyPublisher()
+    }
     
+
     //  MARK: - JSON
     ///  JSON with Mobility Trends data but without GeoType (less info than in CSV)
     func fetchMobilityJSON(version: Int) -> AnyPublisher<Mobility, Error> {
