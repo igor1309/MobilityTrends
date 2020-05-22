@@ -37,12 +37,19 @@ struct ContentView: View {
             }
             .tag(2)
             
+            NowViewTesting()
+                .tabItem {
+                    Image(systemName: "text.alignleft")
+                    Text("Now")
+            }
+            .tag(3)
+            
             SettingsView()
                 .tabItem {
                     Image(systemName: "checkmark.circle")
                     Text("Check")
             }
-            .tag(3)
+            .tag(4)
         }
     }
 }

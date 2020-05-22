@@ -52,6 +52,7 @@
 		2AF624482469816A007CCF62 /* XMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF624472469816A007CCF62 /* XMarkView.swift */; };
 		2AF8C0292477FC1800611252 /* UpdateStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF8C0282477FC1800611252 /* UpdateStatus.swift */; };
 		2AF8C02B24783D6A00611252 /* MobilityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF8C02A24783D6900611252 /* MobilityData.swift */; };
+		2AF8C02F24786CAE00611252 /* NowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF8C02E24786CAE00611252 /* NowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,6 +102,7 @@
 		2AF624472469816A007CCF62 /* XMarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMarkView.swift; sourceTree = "<group>"; };
 		2AF8C0282477FC1800611252 /* UpdateStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStatus.swift; sourceTree = "<group>"; };
 		2AF8C02A24783D6900611252 /* MobilityData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobilityData.swift; sourceTree = "<group>"; };
+		2AF8C02E24786CAE00611252 /* NowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +139,7 @@
 				2A09EDDC246356900021FC7D /* AppDelegate.swift */,
 				2A09EDDE246356900021FC7D /* SceneDelegate.swift */,
 				2A09EDE0246356900021FC7D /* ContentView.swift */,
+				2AF8C02E24786CAE00611252 /* NowView.swift */,
 				2A1788A424771D3A007D1340 /* SettingsView.swift */,
 				2A28BB2524657ABA0041EDD5 /* Supporting Views */,
 				2AC960B32469FF140080D930 /* XScale */,
@@ -394,6 +397,7 @@
 				2AF624482469816A007CCF62 /* XMarkView.swift in Sources */,
 				2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */,
 				2AF6243D2468A909007CCF62 /* CountryTrendsHeader.swift in Sources */,
+				2AF8C02F24786CAE00611252 /* NowView.swift in Sources */,
 				2A09EDF3246357510021FC7D /* Store.swift in Sources */,
 				2A09EDDD246356900021FC7D /* AppDelegate.swift in Sources */,
 				2A09EDDF246356900021FC7D /* SceneDelegate.swift in Sources */,
