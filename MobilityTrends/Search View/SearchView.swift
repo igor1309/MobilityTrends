@@ -16,13 +16,15 @@ struct SearchView: View {
     
     @Binding var selection: String
     
-    var geoTypePicker: some View {
-        Picker(selection: $territories.selectedGeoType, label: Text("Geo Type")) {
-            ForEach(GeoType.allCases, id: \.self) { type in
-                Text(type.id).tag(type)
-            }
+    var updateButton: some View {
+        Button(action: {
+            self.territories.fetch(version: self.settings.version)
+        }) {
+            Image(systemName: territories.updateStatus.icon)
+                .foregroundColor(territories.updateStatus.color)
+                .rotationEffect(.degrees(territories.updateStatus.isUpdating ? 180 : 0))
+                .animation(territories.updateStatus.isUpdating ? Animation.linear.repeatForever(autoreverses: false) : .default)
         }
-        .pickerStyle(SegmentedPickerStyle())
     }
     
     var searchField: some View {
@@ -50,15 +52,13 @@ struct SearchView: View {
         )
     }
     
-    var updateButton: some View {
-        Button(action: {
-            self.territories.fetch(version: self.settings.version)
-        }) {
-            Image(systemName: territories.updateStatus.icon)
-                .foregroundColor(territories.updateStatus.color)
-                .rotationEffect(.degrees(territories.updateStatus.isUpdating ? 180 : 0))
-                .animation(territories.updateStatus.isUpdating ? Animation.linear.repeatForever(autoreverses: false) : .default)
+    var geoTypePicker: some View {
+        Picker(selection: $territories.selectedGeoType, label: Text("Geo Type")) {
+            ForEach(GeoType.allCases, id: \.self) { type in
+                Text(type.id).tag(type)
+            }
         }
+        .pickerStyle(SegmentedPickerStyle())
     }
     
     var body: some View {

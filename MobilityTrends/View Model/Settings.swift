@@ -13,6 +13,12 @@ import SwiftUI
 final class Settings: ObservableObject {
     private let mobilityTrendsAPI: MobilityTrendsAPI
     
+    @Published var selectedTab: Int = UserDefaults.standard.integer(forKey: "selectedTab") {
+        didSet {
+            UserDefaults.standard.set(selectedTab, forKey: "selectedTab")
+        }
+    }
+    
     @Published var version: Int = UserDefaults.standard.integer(forKey: "AppleMobilityVersion") {
         didSet {
             UserDefaults.standard.set(version, forKey: "AppleMobilityVersion")

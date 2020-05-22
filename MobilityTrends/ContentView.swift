@@ -10,9 +10,11 @@ import SwiftUI
 import SwiftPI
 
 struct ContentView: View {
-    @State private var selectedTab: Int = 0
+    @EnvironmentObject var territories: Territories
+    @EnvironmentObject var settings: Settings
+    
     var body: some View {
-        TabView(selection: $selectedTab) {
+        TabView(selection: $settings.selectedTab) {
             
             CountryTrendsView()
                 .tabItem {
@@ -28,7 +30,7 @@ struct ContentView: View {
             }
             .tag(1)
             
-            SearchViewTesting()
+            SearchView(selection: $territories.query)
                 .tabItem {
                     Image(systemName: "magnifyingglass")
                     Text("Search")
