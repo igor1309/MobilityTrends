@@ -50,6 +50,20 @@ struct SearchView: View {
         .pickerStyle(SegmentedPickerStyle())
     }
     
+    func regionRow(region: Region) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(region.name)
+                Spacer()
+            }
+            if region.fullSubRegion.isNotEmpty {
+                Text(region.fullSubRegion)
+                    .foregroundColor(.secondary)
+                    .font(.footnote)
+            }
+        }
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -63,14 +77,11 @@ struct SearchView: View {
                 
                 List {
                     ForEach(store.queryResult) { region in
-                        HStack {
-                            Text(region.name)
-                            Spacer()
-                        }
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            self.selection = region.name
-                            self.presentation.wrappedValue.dismiss()
+                        self.regionRow(region: region)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                self.selection = region.name
+                                self.presentation.wrappedValue.dismiss()
                         }
                     }
                 }

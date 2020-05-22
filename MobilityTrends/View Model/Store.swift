@@ -57,6 +57,8 @@ final class Store: ObservableObject {
     init(api: MobilityTrendsAPI = .shared) {
         self.mobilityTrendsAPI = api
         
+        if version == 0 { version = 3 }
+        
         //  create subscriptions
         self.createCSVSubscription()
         self.createUpdateTrendSubscriptions()

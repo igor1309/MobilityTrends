@@ -12,4 +12,12 @@ struct Region: Identifiable, Hashable, Codable {
     let type: GeoType
     let subRegion: String
     let country: String
+    
+    var fullSubRegion: String {
+        let subRegionStr = subRegion.isEmpty ? "" : "\(subRegion), "
+        let countryStr = country.isEmpty ? "" : country
+        return subRegionStr + countryStr
+    }
+    
+    var fullName: String { name + fullSubRegion }
 }
