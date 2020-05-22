@@ -11,11 +11,6 @@ import SwiftPI
 import Combine
 
 final class Store: ObservableObject {
-    private let mobilityTrendsAPI: MobilityTrendsAPI
-    
-    private let mobilityDataFilename: String = "sources.json"
-    private let regionsFilename = "regions.json"
-    
     let baseline: Double = 100
     
     @Published private(set) var trend = Trend()
@@ -25,10 +20,6 @@ final class Store: ObservableObject {
     @Published var query: String = ""
     @Published var selectedGeoType = GeoType.country
     @Published var queryResult = [Region]()
-    
-    private var regions: [Region] {
-        mobilityData.regions
-    }
     
     private var version: Int = UserDefaults.standard.integer(forKey: "AppleMobilityVersion") {
         didSet {
@@ -57,6 +48,11 @@ final class Store: ObservableObject {
         }
     }
     private let updateRequested = PassthroughSubject<Int, Never>()
+    
+    private let mobilityTrendsAPI: MobilityTrendsAPI
+    
+    private let mobilityDataFilename: String = "sources.json"
+    private let regionsFilename = "regions.json"
     
     init(api: MobilityTrendsAPI = .shared) {
         self.mobilityTrendsAPI = api
@@ -159,15 +155,15 @@ extension Store {
             
             switch type {
             case .all:
-                array = regions
+                array = mobilityData.regions
             case .country:
-                array = regions.filter { $0.type == .country }
+                array = mobilityData.regions.filter { $0.type == .country }
             case .city:
-                array = regions.filter { $0.type == .city }
+                array = mobilityData.regions.filter { $0.type == .city }
             case .subRegion:
-                array = regions.filter { $0.type == .subRegion }
+                array = mobilityData.regions.filter { $0.type == .subRegion }
             case .county:
-                array = regions.filter { $0.type == .county }
+                array = mobilityData.regions.filter { $0.type == .county }
             }
             
             let result = array.filter {

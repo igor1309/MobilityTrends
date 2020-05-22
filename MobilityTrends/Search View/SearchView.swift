@@ -16,17 +16,6 @@ struct SearchView: View {
     
     @Binding var selection: String
     
-    var updateButton: some View {
-        Button(action: {
-            self.store.fetch(version: self.settings.version)
-        }) {
-            Image(systemName: store.updateStatus.icon)
-                .foregroundColor(store.updateStatus.color)
-                .rotationEffect(.degrees(store.updateStatus.isUpdating ? 180 : 0))
-                .animation(store.updateStatus.isUpdating ? Animation.linear.repeatForever(autoreverses: false) : .default)
-        }
-    }
-    
     var searchField: some View {
         HStack {
             Image(systemName: "magnifyingglass")
@@ -87,7 +76,7 @@ struct SearchView: View {
                 }
             }
             .navigationBarTitle(Text("Select Region"), displayMode: .inline)
-            .navigationBarItems(trailing: updateButton.padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 0)))
+            .navigationBarItems(trailing: FetchDataButton().padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 0)))
         }
     }
 }
