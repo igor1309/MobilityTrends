@@ -14,7 +14,6 @@ final class Territories: ObservableObject {
     private let mobilityTrendsAPI: MobilityTrendsAPI
     
     private let favoritesFilename = "favorites.json"
-    private let localesFilename = "locales.json"
     private let regionsFilename = "regions.json"
     
     @Published private(set) var favorites = [String]() {
@@ -28,16 +27,13 @@ final class Territories: ObservableObject {
     @Published var queryResult = [Region]()
     
     /// source - applemobilitytrends-2020-xx-xx.csv
-    var allRegions = [Region]() {
+    private var regions = [Region]() {
         didSet {
-            updateRegionLists()
+            allRegionsUpdated.send()
             saveAllRegions()
         }
     }
-    @Published var countries = [Region]()
-    @Published var cities = [Region]()
-    @Published var subRegions = [Region]()
-    @Published var counties = [Region]()
+    private let allRegionsUpdated = PassthroughSubject<Void, Never>()
     
     @Published private(set) var updateStatus: UpdateStatus = .ready {
         didSet {
@@ -57,14 +53,8 @@ final class Territories: ObservableObject {
         self.mobilityTrendsAPI = api
         
         //  load saved data from local JSON
-        self.allRegions = loadAllRegions()
+        self.regions = loadAllRegions()
         self.favorites = loadFavorites()
-        
-        // Note how we need to manually call our handling
-        // method within our initializer, since property
-        // observers aren't triggered until after a value
-        // has been fully initialized.
-        self.updateRegionLists()
         
         //  create subscriptions
         self.createUpdateCSVSubscription()
@@ -77,16 +67,6 @@ final class Territories: ObservableObject {
         for cancell in cancellables {
             cancell.cancel()
         }
-    }
-}
-
-//  MARK: - Update stored properties (cheaper than computed properties)
-extension Territories {
-    private func updateRegionLists() {
-        countries =  allRegions.filter { $0.type == .country }
-        cities =     allRegions.filter { $0.type == .city }
-        subRegions = allRegions.filter { $0.type == .subRegion }
-        counties   = allRegions.filter { $0.type == .county }
     }
 }
 
@@ -114,7 +94,7 @@ extension Territories {
                     print("recieved empty territories: empty response or error upstream")
                     self?.updateStatus = .updateFail
                 } else {
-                    self?.allRegions = $0
+                    self?.regions = $0
                     self?.updateStatus = .updatedOK
                     if self != nil { print("updated regions from csv") }
                 }
@@ -129,15 +109,15 @@ extension Territories {
             
             switch type {
             case .all:
-                array = allRegions
+                array = regions
             case .country:
-                array = countries
+                array = regions.filter { $0.type == .country }
             case .city:
-                array = cities
+                array = regions.filter { $0.type == .city }
             case .subRegion:
-                array = subRegions
+                array = regions.filter { $0.type == .subRegion }
             case .county:
-                array = counties
+                array = regions.filter { $0.type == .county }
             }
             
             let result = array.filter {
@@ -154,14 +134,7 @@ extension Territories {
                 .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
                 .removeDuplicates(),
             $selectedGeoType,
-            Publishers.CombineLatest3(
-                $countries
-                    .removeDuplicates(),
-                $cities
-                    .removeDuplicates(),
-                $subRegions
-                    .removeDuplicates()
-            )
+            allRegionsUpdated
         )
             .map { query, type, _ in
                 queryList(for: query, with: type)
@@ -221,8 +194,8 @@ extension Territories {
     
     private func saveAllRegions() {
         DispatchQueue.global().async {
-            guard self.allRegions.isNotEmpty else { return }
-            saveJSONToDocDir(data: self.allRegions, filename: self.regionsFilename)
+            guard self.regions.isNotEmpty else { return }
+            saveJSONToDocDir(data: self.regions, filename: self.regionsFilename)
         }
     }
     
