@@ -16,31 +16,31 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $settings.selectedTab) {
             
+            NowView(data: store.currentMobilityIndex)
+                .tabItem {
+                    Image(systemName: "text.alignleft")
+                    Text("Now")
+            }
+            .tag(0)
+            
             CountryTrendsView()
                 .tabItem {
                     Image(systemName: "waveform.path.ecg")
                     Text("one")
             }
-            .tag(0)
+            .tag(1)
             
             SimpleChartView()
                 .tabItem {
                     Image(systemName: "waveform.path")
                     Text("two")
             }
-            .tag(1)
+            .tag(2)
             
             SearchView(selection: $store.query)
                 .tabItem {
                     Image(systemName: "magnifyingglass")
                     Text("Search")
-            }
-            .tag(2)
-            
-            NowView(data: store.currentMobilityIndex)
-                .tabItem {
-                    Image(systemName: "text.alignleft")
-                    Text("Now")
             }
             .tag(3)
             

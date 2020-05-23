@@ -152,7 +152,7 @@ struct NowView: View {
     let gradient = LinearGradient(gradient: Gradient(colors: [.systemBlue, .systemTeal, .green]), startPoint: .leading, endPoint: .trailing)
     
     var sortedData: [(String, CGFloat)] {
-        if sortByName {
+        if settings.sortByName {
             return data.sorted(by: { $0.0 < $1.0 })
         } else {
             return data.sorted(by: { $0.1 > $1.1 })
@@ -248,18 +248,51 @@ struct NowView: View {
                     .environmentObject(self.settings)
             }
             .navigationBarTitle(Text("Current Mobility"), displayMode: .inline)
-            .navigationBarItems(trailing: sortButton)
+            .navigationBarItems(
+                leading: LeadingButtonSFSymbol("wrench") {
+                    self.showIndexOptions = true
+                },
+                trailing: sortButton)
+                .actionSheet(isPresented: $showIndexOptions) {
+                    ActionSheet(
+                        title: Text("Mobility Index Options".uppercased()),
+                        message: Text("Select how to calculate Index"),
+                        buttons: actionButtons)
+            }
         }
     }
     
-    @State private var sortByName = true
+    @State private var showIndexOptions = false
+    
+    var actionButtons: [ActionSheet.Button] {
+        var buttons = Array<ActionSheet.Button>()
+        
+        for transport in [TransportType.driving, .walking] {
+            buttons.append(
+                .default(Text(transport.rawValue.capitalized)) {
+                    if self.store.transportType != transport {
+                        self.store.transportType = transport
+                    }
+                }
+            )
+        }
+        
+        buttons.append(contentsOf: [
+            .default(Text("Mix (driving + walking)")) {
+                print("FIX THIS")
+            },
+            .cancel()
+        ])
+        
+        return buttons
+    }
     
     var sortButton: some View {
         Button(action: {
-            self.sortByName.toggle()
+            self.settings.sortByName.toggle()
         }) {
             Image(systemName: "textformat.size")
-                .foregroundColor(sortByName ? .systemOrange : .accentColor)
+                .foregroundColor(settings.sortByName ? .systemOrange : .accentColor)
         }
     }
 }

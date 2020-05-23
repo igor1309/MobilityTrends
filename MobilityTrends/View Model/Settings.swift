@@ -14,6 +14,12 @@ import SwiftPI
 final class Settings: ObservableObject {
     private let mobilityTrendsAPI: MobilityTrendsAPI
     
+    @Published var sortByName: Bool = UserDefaults.standard.bool(forKey: "sortByName") {
+        didSet {
+            UserDefaults.standard.set(sortByName, forKey: "sortByName")
+        }
+    }
+    
     @Published private(set) var favorites = [String]() {
         didSet {
             saveFavorites()
