@@ -8,6 +8,25 @@
 
 import SwiftUI
 
+struct TrailingFetchDataButton: View {
+    @EnvironmentObject var store: Store
+    @EnvironmentObject var settings: Settings
+    
+    var body: some View {
+        Button(action: {
+            print("version: \(self.settings.version)")
+            self.store.fetch(version: self.settings.version)
+        }) {
+            Image(systemName: store.updateStatus.icon)
+                .foregroundColor(store.updateStatus.color)
+                .rotationEffect(.degrees(store.updateStatus.isUpdating ? 180 : 0))
+                .animation(store.updateStatus.isUpdating ? Animation.linear.repeatForever(autoreverses: false) : .default)
+                .padding(.vertical)
+                .padding(.leading, 8)
+        }
+    }
+}
+
 struct FetchDataButton: View {
     @EnvironmentObject var store: Store
     @EnvironmentObject var settings: Settings

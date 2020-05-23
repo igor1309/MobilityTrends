@@ -1,5 +1,5 @@
 //
-//  TrailingFavoriteToggleButton.swift
+//  TrailingFavoriteToggleButtonOLD.swift
 //  MobilityTrends
 //
 //  Created by Igor Malyarov on 07.05.2020.
@@ -9,7 +9,7 @@
 import SwiftUI
 import SwiftPI
 
-struct TrailingFavoriteToggleButton: View {
+struct TrailingFavoriteToggleButtonOLD: View {
     @EnvironmentObject var settings: Settings
     
     @Binding var region: String
@@ -26,9 +26,9 @@ struct TrailingFavoriteToggleButton: View {
     }
 }
 
-struct TrailingFavoriteToggleButton_Previews: PreviewProvider {
+struct TrailingFavoriteToggleButtonOLD_Previews: PreviewProvider {
     static var previews: some View {
-        TrailingFavoriteToggleButton(region: .constant("Moscow"))
+        TrailingFavoriteToggleButtonOLD(region: .constant("Moscow"))
             .environmentObject(Settings())
     }
 }

@@ -13,10 +13,16 @@ struct CountryTrendsHeader: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            FavoriteRegionPicker(selectedRegion: $store.selectedRegion)
-            RegionPicker(selectedRegion: $store.selectedRegion)
+            FavoriteRegionPickerButton(
+                selectedRegion: $store.selectedRegion
+            )
+            RegionPicker(
+                selectedRegion: $store.selectedRegion
+            )
                 .font(.headline)
+            
             Spacer()
+            
             FavoriteToggleButton(region: store.selectedRegion)
             FetchDataButton()
         }

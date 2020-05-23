@@ -8,6 +8,25 @@
 
 import SwiftUI
 
+struct TrailingFavoriteToggleButton: View {
+    @EnvironmentObject var settings: Settings
+
+    var region: String
+    
+    var body: some View {
+        let isFavorite = self.settings.isFavorite(region: self.region)
+        
+        return Button(action: {
+            self.settings.toggleFavorite(region: self.region)
+        }) {
+            Image(systemName: isFavorite ? "star" : "star")
+                .foregroundColor(isFavorite ? .systemOrange : .secondary)
+                .padding(.vertical)
+                .padding(.leading, 8)
+        }
+    }
+}
+
 struct FavoriteToggleButton: View {
     @EnvironmentObject var settings: Settings
 
@@ -21,6 +40,8 @@ struct FavoriteToggleButton: View {
         }) {
             Image(systemName: isFavorite ? "star" : "star")
                 .foregroundColor(isFavorite ? .systemOrange : .secondary)
+                .padding(.vertical)
+                .padding(.leading, 8)
         }
     }
 }
@@ -32,6 +53,8 @@ struct FavoriteToggleButtonTesting: View {
     
     var body: some View {
         VStack {
+            TrailingFavoriteToggleButton(region: region)
+            
             HStack {
                 Text(region)
                 Spacer()
@@ -50,7 +73,8 @@ struct FavoriteToggleButtonTesting: View {
 
 struct FavoriteToggleButton_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
+        HStack {
+            FavoriteToggleButton(region: "Moscow")
             FavoriteToggleButton(region: "Moscow")
             FavoriteToggleButtonTesting()
         }

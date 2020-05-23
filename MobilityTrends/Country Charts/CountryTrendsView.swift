@@ -11,6 +11,7 @@ import SwiftPI
 
 struct CountryTrendsView: View {
     @EnvironmentObject var store: Store
+    @EnvironmentObject var settings: Settings
     
     @State private var isUsingMovingAverage = true
     
@@ -81,56 +82,78 @@ struct CountryTrendsView: View {
                 .padding([.top])//, .leading])
         }
         
-        return VStack {
-            CountryTrendsHeader()
-            
-            if store.trend.isNotEmpty {
+        return NavigationView {
+            VStack {
+//                CountryTrendsHeader()
                 
-                ZStack(alignment: .topTrailing) {
+                if store.trend.isNotEmpty {
                     
-                    HStack(alignment: .top) {
-                        transportLegend
-                        Spacer()
-                        VStack(alignment: .trailing, spacing: 6) {
-                            sourceToggleButton
-                            
-                            if isUsingMovingAverage {
-                                Text("moving average")
-                                    .foregroundColor(.systemOrange)
-                                    .font(.caption)
-                            }
-                        }
-                    }
-                    
-                    VStack(spacing: 0) {
-                        ZStack(alignment: .trailing) {
-                            GraphGridShape(series: [100], minY: minY, maxY: maxY)
-                                .strokeBorder(Color.systemGray3, lineWidth: 0.5)
-                            
-                            BaseLineShape(series: [100], minY: minY, maxY: maxY)
-                                .stroke(Color.systemGray3)
-                            
-                            HStack(spacing: -20) {
-                                ZStack {
-                                    ForEach(TransportType.allCases, id: \.self) { transport in
-                                        lineGraph(series: series[transport] ?? [], transport: transport)
-                                    }
-                                }
+                    ZStack(alignment: .topTrailing) {
+                        
+                        HStack(alignment: .top) {
+                            transportLegend
+                            Spacer()
+                            VStack(alignment: .trailing, spacing: 6) {
+                                sourceToggleButton
                                 
-                                yScale
+                                if isUsingMovingAverage {
+                                    Text("moving average")
+                                        .foregroundColor(.systemOrange)
+                                        .font(.caption)
+                                }
                             }
                         }
                         
-                        XScaleView(labels: store.trend.xLabelsForSelected)
+                        VStack(spacing: 0) {
+                            ZStack(alignment: .trailing) {
+                                GraphGridShape(series: [100], minY: minY, maxY: maxY)
+                                    .strokeBorder(Color.systemGray3, lineWidth: 0.5)
+                                
+                                BaseLineShape(series: [100], minY: minY, maxY: maxY)
+                                    .stroke(Color.systemGray3)
+                                
+                                HStack(spacing: -20) {
+                                    ZStack {
+                                        ForEach(TransportType.allCases, id: \.self) { transport in
+                                            lineGraph(series: series[transport] ?? [], transport: transport)
+                                        }
+                                    }
+                                    
+                                    yScale
+                                }
+                            }
+                            
+                            XScaleView(labels: store.trend.xLabelsForSelected)
+                        }
                     }
+                } else {
+                    Text("No data, please update")
+                        .padding(.top)
+                        .foregroundColor(.systemRed)
+                        .opacity(0.6)
+                    Spacer()
                 }
-            } else {
-                Text("No data, please update")
-                Spacer()
             }
+            .padding(.horizontal)
+            .padding(.bottom, 8)
+            .navigationBarTitle(Text(store.selectedRegion), displayMode: .inline)
+            .navigationBarItems(
+                leading: HStack {
+                    LeadingRegionPickerButton(
+                        selectedRegion: $store.selectedRegion
+                    )
+                    LeadingFavoriteRegionPickerButton(
+                        selectedRegion: $store.selectedRegion
+                    )
+                },
+                trailing: HStack {
+                    TrailingFavoriteToggleButton(region: store.selectedRegion)
+                        .environmentObject(self.settings)
+                    
+                    TrailingFetchDataButton()
+                        .environmentObject(self.store)
+            })
         }
-        .padding(.horizontal)
-        .padding(.bottom, 8)
     }
 }
 

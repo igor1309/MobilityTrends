@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 import SwiftPI
 import Combine
 
@@ -20,6 +21,20 @@ final class Store: ObservableObject {
     @Published var query: String = ""
     @Published var selectedGeoType = GeoType.country
     @Published var queryResult = [Region]()
+
+    var currentMobilityIndex: [(String, CGFloat)] {
+        mobilityData.sources
+            .filter { $0.geoType == selectedGeoType && $0.transportType == transportType }
+            .map { source in
+                let name = source.region
+                let startWeekAverage = source.series.prefix(7).reduce(0, +) / 7
+                let lastWeekAverage = source.series.suffix(7).reduce(0, +) / 7
+                let index = lastWeekAverage / startWeekAverage
+                
+                return (name, CGFloat(index))// / 100)
+        }
+//        .filter { $0.1 < 0 }
+    }
     
     private var version: Int = UserDefaults.standard.integer(forKey: "AppleMobilityVersion") {
         didSet {

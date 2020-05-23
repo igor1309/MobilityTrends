@@ -95,7 +95,7 @@ struct HorizontalScale: Shape {
     }
 }
 
-struct VerticalGrid: Shape {
+struct VerticalGridQuarters: Shape {
     func path(in rect: CGRect) -> Path {
         Path { path in
             path.addLines([
@@ -126,58 +126,141 @@ struct VerticalGrid: Shape {
     }
 }
 
+struct VerticalGridFives: Shape {
+    func path(in rect: CGRect) -> Path {
+        Path { path in
+            
+            for i in 1...5 {
+                path.addLines([
+                    CGPoint(x: rect.maxX/5 * CGFloat(i), y: rect.minY),
+                    CGPoint(x: rect.maxX/5 * CGFloat(i), y: rect.maxY)
+                ])
+            }
+        }
+    }
+}
+
 
 struct NowView: View {
+    @EnvironmentObject var store: Store
+    @EnvironmentObject var settings: Settings
+    
+    @State private var showCountryDetail = false
+    
     let data: [(String, CGFloat)]
     
     let gradient = LinearGradient(gradient: Gradient(colors: [.systemBlue, .systemTeal, .green]), startPoint: .leading, endPoint: .trailing)
     
+    var sortedData: [(String, CGFloat)] {
+        if sortByName {
+            return data.sorted(by: { $0.0 < $1.0 })
+        } else {
+            return data.sorted(by: { $0.1 > $1.1 })
+        }
+    }
+    
     var body: some View {
-        let max: Int = self.data.map { $0.0.count }.max() ?? 3
-        let maxString = String(repeating: "w", count: max) + "100%"
         
-        return VStack {
-            Text("Current Mobility vs mid Jan 2020")
-                .foregroundColor(.systemTeal)
-                .font(.headline)
+        let maxLength: Int = min(self.sortedData.map { $0.0.count }.max() ?? 15, 10)
+        let maxString = String(repeating: "m", count: maxLength) + "100%"
+        
+        func bar(index: Int) -> some View {
+            let region = sortedData[index].0
+            let regionShort = String(sortedData[index].0.prefix(13))
             
-            ScrollView(.vertical, showsIndicators: false) {
-                ZStack {
-                    HStack {
-                        Text(maxString)
-                            .opacity(0.001)
-                            .font(.caption)
-                            .padding(.leading, 6)
-                        
-                        VerticalGrid()
-                            .stroke(Color.tertiary, lineWidth: 0.5)
-                    }
+            return HStack {
+                ZStack(alignment: .trailing) {
+                    Text(maxString)
+                        .opacity(0.001)
+                        .fixedSize()
                     
-                    VStack(spacing: 2) {
-                        ForEach(data.indices) { index in
-                            HStack {
-                                ZStack(alignment: .trailing) {
-                                    Text(maxString)
-                                        .opacity(0.001)
-                                    
-                                    //                                    Text(self.data[index].0)
-                                    Text("\(self.data[index].0), \(Double(self.data[index].1).formattedPercentage)")
-                                }
-                                .foregroundColor(.secondary)
-                                .font(.caption)
-                                .padding(.leading, 6)
-                                
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .relativeWidth(self.data[index].1)
-                                    .fill(self.gradient)
-                                    .frame(height: 10)
-                            }
-                        }
-                    }
+                    //  Text(self.data[index].0)
+                    Text("\(regionShort), \(Double(self.sortedData[index].1).formattedPercentage)")
+                }
+                .foregroundColor(.secondary)
+                .font(.caption)
+                .padding(.leading, 6)
+                
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .relativeWidth(self.sortedData[index].1)
+                    .fill(self.gradient)
+                    .frame(height: 10)
+                    .opacity(Double(self.sortedData[index].1))
+            }
+            .contextMenu {
+                Button(action: {
+                    self.store.selectedRegion = region
+                    self.showCountryDetail = true
+                }) {
+                    Image(systemName: "waveform.path.ecg")
+                    
+                    Text("\(sortedData[index].0), \(Double(self.sortedData[index].1).formattedPercentage)")
                 }
             }
         }
-        .padding(.trailing)
+        
+        return NavigationView {
+            VStack(spacing: 8) {
+                //            Text("Current Mobility vs mid Jan 2020")
+                //                .foregroundColor(.systemTeal)
+                //                .font(.headline)
+                
+                Text("\(store.transportType.rawValue), last week average vs mid Jan 2020")
+                    .foregroundColor(.systemTeal)
+                    .font(.subheadline)
+                    .padding(.top, 8)
+                
+                //            TransportTypePicker(selection: $store.transportType)
+                //                .padding(.leading)
+                
+                ScrollView(.vertical, showsIndicators: false) {
+                    ZStack {
+                        HStack {
+                            Text(maxString)
+                                .opacity(0.001)
+                                .font(.caption)
+                                .padding(.leading, 6)
+                            
+                            ZStack {
+                                //  VerticalGridQuarters()
+                                //  .stroke(Color.tertiary, lineWidth: 0.5)
+                                //  .opacity(0.75)
+                                
+                                VerticalGridFives()
+                                    .stroke(Color.tertiary, lineWidth: 0.5)
+                                    .opacity(0.75)
+                            }
+                        }
+                        
+                        VStack(spacing: 2) {
+                            ForEach(sortedData.indices) { index in
+                                bar(index: index)
+                            }
+                        }
+                        .padding(.bottom, 8)
+                    }
+                }
+            }
+            .padding(.trailing)
+            .sheet(isPresented: $showCountryDetail) {
+                CountryTrendsView()
+                    .environmentObject(self.store)
+                    .environmentObject(self.settings)
+            }
+            .navigationBarTitle(Text("Current Mobility"), displayMode: .inline)
+            .navigationBarItems(trailing: sortButton)
+        }
+    }
+    
+    @State private var sortByName = true
+    
+    var sortButton: some View {
+        Button(action: {
+            self.sortByName.toggle()
+        }) {
+            Image(systemName: "textformat.size")
+                .foregroundColor(sortByName ? .systemOrange : .accentColor)
+        }
     }
 }
 
@@ -212,6 +295,8 @@ struct NowView_Previews: PreviewProvider {
             
             NowViewTesting()
         }
+        .environmentObject(Store())
+        .environmentObject(Settings())
         .environment(\.colorScheme, .dark)
     }
 }

@@ -87,7 +87,7 @@ struct SearchView: View {
                 }
             }
             .navigationBarTitle(Text("Select Region"), displayMode: .inline)
-            .navigationBarItems(trailing: FetchDataButton().padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 0)))
+            .navigationBarItems(trailing: FetchDataButton().environmentObject(self.store))
         }
     }
 }

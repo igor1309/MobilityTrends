@@ -18,14 +18,14 @@ struct ContentView: View {
             
             CountryTrendsView()
                 .tabItem {
-                    Image(systemName: "1.circle")
+                    Image(systemName: "waveform.path.ecg")
                     Text("one")
             }
             .tag(0)
             
             SimpleChartView()
                 .tabItem {
-                    Image(systemName: "2.circle")
+                    Image(systemName: "waveform.path")
                     Text("two")
             }
             .tag(1)
@@ -37,7 +37,7 @@ struct ContentView: View {
             }
             .tag(2)
             
-            NowViewTesting()
+            NowView(data: store.currentMobilityIndex)
                 .tabItem {
                     Image(systemName: "text.alignleft")
                     Text("Now")
