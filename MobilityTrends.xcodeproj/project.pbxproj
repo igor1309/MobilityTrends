@@ -38,7 +38,13 @@
 		2A28BB2724657BA90041EDD5 /* FavoriteToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB2624657BA90041EDD5 /* FavoriteToggleButton.swift */; };
 		2A28BB29246582320041EDD5 /* GeoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB28246582320041EDD5 /* GeoType.swift */; };
 		2A28BB2B246582470041EDD5 /* TransportType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A28BB2A246582470041EDD5 /* TransportType.swift */; };
+		2A56A67224825BD700F33DF8 /* CurrentMobility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A56A67124825BD700F33DF8 /* CurrentMobility.swift */; };
+		2A7CA1E8248282120086FB9C /* Shape+Relative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7CA1E7248282120086FB9C /* Shape+Relative.swift */; };
+		2A7CA1EA2482823E0086FB9C /* SlightlyRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7CA1E92482823E0086FB9C /* SlightlyRoundedRectangle.swift */; };
+		2A7CA1ED2482828D0086FB9C /* HorizontalLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7CA1EC2482828D0086FB9C /* HorizontalLine.swift */; };
+		2A7CA1EF248282B90086FB9C /* Grids+Scales.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7CA1EE248282B90086FB9C /* Grids+Scales.swift */; };
 		2A7DB832247938710087ACD7 /* RegionPickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DB831247938710087ACD7 /* RegionPickerButton.swift */; };
+		2A8302552482859D0086A6C4 /* Preview Tweaks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A8302542482859D0086A6C4 /* Preview Tweaks.swift */; };
 		2A89C2E3246607A400D8D113 /* Tail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A89C2E2246607A400D8D113 /* Tail.swift */; };
 		2A89C2E524660FC700D8D113 /* applemobilitytrends-2020-05-07.csv in Resources */ = {isa = PBXBuildFile; fileRef = 2A89C2E424660FC700D8D113 /* applemobilitytrends-2020-05-07.csv */; };
 		2A89C2E72466177A00D8D113 /* Mobility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A89C2E62466177A00D8D113 /* Mobility.swift */; };
@@ -89,7 +95,13 @@
 		2A28BB2624657BA90041EDD5 /* FavoriteToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteToggleButton.swift; sourceTree = "<group>"; };
 		2A28BB28246582320041EDD5 /* GeoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoType.swift; sourceTree = "<group>"; };
 		2A28BB2A246582470041EDD5 /* TransportType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportType.swift; sourceTree = "<group>"; };
+		2A56A67124825BD700F33DF8 /* CurrentMobility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentMobility.swift; sourceTree = "<group>"; };
+		2A7CA1E7248282120086FB9C /* Shape+Relative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shape+Relative.swift"; sourceTree = "<group>"; };
+		2A7CA1E92482823E0086FB9C /* SlightlyRoundedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlightlyRoundedRectangle.swift; sourceTree = "<group>"; };
+		2A7CA1EC2482828D0086FB9C /* HorizontalLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalLine.swift; sourceTree = "<group>"; };
+		2A7CA1EE248282B90086FB9C /* Grids+Scales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Grids+Scales.swift"; sourceTree = "<group>"; };
 		2A7DB831247938710087ACD7 /* RegionPickerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPickerButton.swift; sourceTree = "<group>"; };
+		2A8302542482859D0086A6C4 /* Preview Tweaks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Preview Tweaks.swift"; sourceTree = "<group>"; };
 		2A89C2E2246607A400D8D113 /* Tail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tail.swift; sourceTree = "<group>"; };
 		2A89C2E424660FC700D8D113 /* applemobilitytrends-2020-05-07.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "applemobilitytrends-2020-05-07.csv"; sourceTree = "<group>"; };
 		2A89C2E62466177A00D8D113 /* Mobility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mobility.swift; sourceTree = "<group>"; };
@@ -141,8 +153,10 @@
 				2A09EDDC246356900021FC7D /* AppDelegate.swift */,
 				2A09EDDE246356900021FC7D /* SceneDelegate.swift */,
 				2A09EDE0246356900021FC7D /* ContentView.swift */,
+				2A830256248287C70086A6C4 /* Preview Tweaks */,
 				2AF8C02E24786CAE00611252 /* NowView.swift */,
 				2A1788A424771D3A007D1340 /* SettingsView.swift */,
+				2A7CA1EB2482825D0086FB9C /* Extensions */,
 				2A28BB2524657ABA0041EDD5 /* Supporting Views */,
 				2AC960B32469FF140080D930 /* XScale */,
 				2AC960B6246A06510080D930 /* YScaleView */,
@@ -183,6 +197,7 @@
 				2A89C2E2246607A400D8D113 /* Tail.swift */,
 				2AC582C224674E04002E2FBD /* Region.swift */,
 				2A89C2E62466177A00D8D113 /* Mobility.swift */,
+				2A56A67124825BD700F33DF8 /* CurrentMobility.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -224,6 +239,9 @@
 				2A28BB23246573130041EDD5 /* FetchDataButton.swift */,
 				2A28BB2624657BA90041EDD5 /* FavoriteToggleButton.swift */,
 				2A28BB082464A24E0041EDD5 /* TrailingFavoriteToggleButtonOLD.swift */,
+				2A7CA1E92482823E0086FB9C /* SlightlyRoundedRectangle.swift */,
+				2A7CA1EC2482828D0086FB9C /* HorizontalLine.swift */,
+				2A7CA1EE248282B90086FB9C /* Grids+Scales.swift */,
 			);
 			path = "Supporting Views";
 			sourceTree = "<group>";
@@ -245,6 +263,22 @@
 				2AC582BD24669446002E2FBD /* Ext+Bundle.swift */,
 			);
 			path = Parsing;
+			sourceTree = "<group>";
+		};
+		2A7CA1EB2482825D0086FB9C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2A7CA1E7248282120086FB9C /* Shape+Relative.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2A830256248287C70086A6C4 /* Preview Tweaks */ = {
+			isa = PBXGroup;
+			children = (
+				2A8302542482859D0086A6C4 /* Preview Tweaks.swift */,
+			);
+			path = "Preview Tweaks";
 			sourceTree = "<group>";
 		};
 		2AC960B32469FF140080D930 /* XScale */ = {
@@ -394,6 +428,7 @@
 				2AF8C02B24783D6A00611252 /* MobilityData.swift in Sources */,
 				2AC582BE24669446002E2FBD /* Ext+Bundle.swift in Sources */,
 				2A28BB092464A24E0041EDD5 /* TrailingFavoriteToggleButtonOLD.swift in Sources */,
+				2A56A67224825BD700F33DF8 /* CurrentMobility.swift in Sources */,
 				2AC582C524681FC0002E2FBD /* Trend.swift in Sources */,
 				2AC582C324674E04002E2FBD /* Region.swift in Sources */,
 				2A09EE03246382500021FC7D /* SearchView.swift in Sources */,
@@ -401,6 +436,7 @@
 				2AF4360924649CEC00212222 /* BaseLineShape.swift in Sources */,
 				2AF6243D2468A909007CCF62 /* CountryTrendsHeader.swift in Sources */,
 				2AF8C02F24786CAE00611252 /* NowView.swift in Sources */,
+				2A7CA1ED2482828D0086FB9C /* HorizontalLine.swift in Sources */,
 				2A09EDF3246357510021FC7D /* Store.swift in Sources */,
 				2A09EDDD246356900021FC7D /* AppDelegate.swift in Sources */,
 				2A09EDDF246356900021FC7D /* SceneDelegate.swift in Sources */,
@@ -412,13 +448,17 @@
 				2A1788A324771B11007D1340 /* Settings.swift in Sources */,
 				2A28BB2B246582470041EDD5 /* TransportType.swift in Sources */,
 				2AC960B52469FF370080D930 /* YScaleView.swift in Sources */,
+				2A7CA1EA2482823E0086FB9C /* SlightlyRoundedRectangle.swift in Sources */,
+				2A7CA1EF248282B90086FB9C /* Grids+Scales.swift in Sources */,
 				2A28BB24246573130041EDD5 /* FetchDataButton.swift in Sources */,
+				2A8302552482859D0086A6C4 /* Preview Tweaks.swift in Sources */,
 				2A09EE052463FEBD0021FC7D /* CSVParser.swift in Sources */,
 				2A09EDF12463571B0021FC7D /* Source.swift in Sources */,
 				2A09EDE1246356900021FC7D /* ContentView.swift in Sources */,
 				2AF8C0292477FC1800611252 /* UpdateStatus.swift in Sources */,
 				2A28BB1E24656AC30041EDD5 /* CountryTrendsView.swift in Sources */,
 				2A0BD5C22464529D00D98C96 /* FavoriteRegionsView.swift in Sources */,
+				2A7CA1E8248282120086FB9C /* Shape+Relative.swift in Sources */,
 				2A28BB0B2464A2F70041EDD5 /* TransportTypePicker.swift in Sources */,
 				2A28BB29246582320041EDD5 /* GeoType.swift in Sources */,
 				2A0BD5BC246420BB00D98C96 /* SimpleChartView.swift in Sources */,

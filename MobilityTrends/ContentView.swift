@@ -16,7 +16,10 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $settings.selectedTab) {
             
-            NowView(data: store.currentMobilityIndex)
+            NowView(
+                data: store.currentMobility.mobilityIndex(geoType: store.selectedGeoType, transport: store.transportType),
+                max: store.currentMobility.mobilityIndexMax(geoType: store.selectedGeoType, transport: store.transportType)
+            )
                 .tabItem {
                     Image(systemName: "text.alignleft")
                     Text("Now")

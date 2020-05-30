@@ -14,6 +14,8 @@ import Combine
 class MobilityTrendsAPI {
     static let shared = MobilityTrendsAPI()
     
+    private init() { }
+    
     func ping(version: Int) -> AnyPublisher<String, Never> {
         fetchURL(for: Endpoint.csvPath, version: version)
             .map { $0.absoluteString }

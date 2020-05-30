@@ -21,20 +21,8 @@ final class Store: ObservableObject {
     @Published var query: String = ""
     @Published var selectedGeoType = GeoType.country
     @Published var queryResult = [Region]()
-
-    var currentMobilityIndex: [(String, CGFloat)] {
-        mobilityData.sources
-            .filter { $0.geoType == selectedGeoType && $0.transportType == transportType }
-            .map { source in
-                let name = source.region
-                let startWeekAverage = source.series.prefix(7).reduce(0, +) / 7
-                let lastWeekAverage = source.series.suffix(7).reduce(0, +) / 7
-                let index = lastWeekAverage / startWeekAverage
-                
-                return (name, CGFloat(index))// / 100)
-        }
-//        .filter { $0.1 < 0 }
-    }
+    
+    var currentMobility = CurrentMobility(sources: [])
     
     private var version: Int = UserDefaults.standard.integer(forKey: "AppleMobilityVersion") {
         didSet {
@@ -42,13 +30,11 @@ final class Store: ObservableObject {
         }
     }
     
-    private var mobilityData = MobilityData() {
+    @Published private var mobilityData = MobilityData() {
         didSet {
-            mobilityDataUpdated.send(version)
             saveMobilityData()
         }
     }
-    private let mobilityDataUpdated = PassthroughSubject<Int, Never>()
     
     @Published private(set) var updateStatus: UpdateStatus = .ready {
         didSet {
@@ -77,6 +63,7 @@ final class Store: ObservableObject {
         //  create subscriptions
         self.createCSVSubscription()
         self.createUpdateTrendSubscriptions()
+        self.createUpdateCurrentMobilitySubscriptions()
         self.createSearchSubscription()
         
         //  load saved data from local JSON
@@ -86,7 +73,7 @@ final class Store: ObservableObject {
         // method within our initializer, since property
         // observers aren't triggered until after a value
         // has been fully initialized.
-        self.mobilityDataUpdated.send(version)
+        //        self.mobilityDataUpdated.send(version)
         
         //  MARK: TESTING/DEBUGGING ONLY
         //  get Sources from remote JSON and save to Document Directory
@@ -121,22 +108,41 @@ extension Store {
     //  MARK: subscription to update Trend when user changes selections or sources are updated
     private func createUpdateTrendSubscriptions() {
         
-        Publishers.CombineLatest3(
-            mobilityDataUpdated,
+        Publishers.CombineLatest(
+            $mobilityData,
             $selectedRegion
-                .removeDuplicates(),
+                .removeDuplicates()
+        )
+            .map { (mobilityData, region) in
+                Trend(sources: mobilityData.sources, selectedRegion: region)
+        }
+        .subscribe(on: DispatchQueue.global())
+        .receive(on: DispatchQueue.main)
+        .sink(receiveCompletion: { completion in
+            print("completion recieved: \(completion)")
+        }) {
+            [weak self] in
+            self?.trend = $0
+        }
+        .store(in: &cancellables)
+    }
+    
+    
+    //  MARK: subscription to update CurrentMobility when user changes selections or sources are updated
+    private func createUpdateCurrentMobilitySubscriptions() {
+        Publishers.CombineLatest3(
+            $mobilityData,
+            $selectedGeoType,
             $transportType
         )
-            .subscribe(on: DispatchQueue.global())
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                print("completion recieved: \(completion)")
-            }) {
-                [weak self] _ in
-                if self != nil {
-                    self!.trend = Trend(sources: self!.mobilityData.sources,
-                                        selectedRegion: self!.selectedRegion)
-                }
+            .map { (mobilityData, geoType, transport) in
+                CurrentMobility(sources: mobilityData.sources)
+        }
+        .subscribe(on: DispatchQueue.global())
+        .receive(on: DispatchQueue.main)
+        .sink {
+            [weak self] in
+            self?.currentMobility = $0
         }
         .store(in: &cancellables)
     }
@@ -197,7 +203,7 @@ extension Store {
                 .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
                 .removeDuplicates(),
             $selectedGeoType,
-            mobilityDataUpdated
+            $mobilityData
         )
             .map { query, type, _ in
                 queryList(for: query, with: type)
