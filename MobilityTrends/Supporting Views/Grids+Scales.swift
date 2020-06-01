@@ -78,6 +78,9 @@ struct Grids_Scales_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             VerticalGridFives()
+                .stroke(Color.yellow)
+            
+            VerticalGridFives()
                 .relativeWidth(1 / xMax)
                 .stroke(Color.yellow)
             
@@ -88,7 +91,7 @@ struct Grids_Scales_Previews: PreviewProvider {
                 .stroke(Color.blue.opacity(0.5), lineWidth: 1)
         }
         .padding()
-        .frame(height: 300)
+        .frame(height: 200)
         .previewColorSchemes(.dark)
     }
 }

@@ -9,7 +9,16 @@
 import SwiftUI
 
 struct CurrentMobility {
-    private var mobilityIndexData: [(region: String, geoType: GeoType, transport: TransportType, value: CGFloat)]
+    
+    struct MobilityIndexItem: Hashable {
+        let region: String
+        let geoType: GeoType
+        let transport: TransportType
+        let value: CGFloat
+    }
+    
+    private var mobilityIndexData: [MobilityIndexItem]
+//    private var mobilityIndexData: Set<MobilityIndexItem>
     
     struct MobilityIndex: Identifiable {
         var id = UUID()
@@ -19,7 +28,9 @@ struct CurrentMobility {
     }
     
     init(sources: [Source]) {
-        mobilityIndexData = sources
+        let sourcesSet = Set(sources)
+        
+        mobilityIndexData = sourcesSet
             .map {
                 source in
                 let region = source.region
@@ -30,7 +41,7 @@ struct CurrentMobility {
                 let lastWeekAverage = source.series.suffix(7).reduce(0, +) / 7
                 let mobilityIndex = lastWeekAverage / startWeekAverage
                 
-                return (region: region, geoType: geoType, transport: transport, value: CGFloat(mobilityIndex))
+                return MobilityIndexItem(region: region, geoType: geoType, transport: transport, value: CGFloat(mobilityIndex))
         }
     }
     

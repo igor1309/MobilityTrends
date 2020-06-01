@@ -9,7 +9,7 @@
 import SwiftUI
 import SwiftPI
 
-enum TransportType: String, CaseIterable, Codable {
+enum TransportType: String, CaseIterable, Codable, Hashable {
     case driving, walking, transit
     
     var color: Color {

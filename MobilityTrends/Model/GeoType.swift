@@ -6,7 +6,7 @@
 //  Copyright © 2020 Igor Malyarov. All rights reserved.
 //
 
-enum GeoType: String, CaseIterable, Codable {
+enum GeoType: String, CaseIterable, Codable, Hashable {
     case all
     case country = "country/region"
     case city = "city"

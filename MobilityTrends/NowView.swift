@@ -51,12 +51,13 @@ struct NowView: View {
                 .font(.caption)
                 .padding(.leading, 6)
                 
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
                     .relativeWidth(item.normalized)
                     .fill(self.gradient)
                     .frame(height: 10)
                     .opacity(Double(item.normalized))
             }
+            .padding(.vertical, 1)
             .contextMenu {
                 Button(action: {
                     self.store.selectedRegion = region
@@ -70,6 +71,27 @@ struct NowView: View {
         }
         
         var grid: some View {
+            HStack {
+                Text(maxString)
+                    .opacity(0.001)
+                    .font(.caption)
+                    .padding(.leading, 6)
+                
+                ZStack(alignment: .bottom) {
+                    VerticalGrid(xMax: max, periodicity: .quarter)
+                        .stroke(Color.tertiary, lineWidth: 1)
+                        .opacity(0.5)
+
+                    VerticalGrid(xMax: max, periodicity: .half)
+                        .stroke(Color.tertiary, lineWidth: 1)
+
+                    VerticalGrigLabels(xMax: max, periodicity: .half)
+                }
+                .opacity(0.7)
+            }
+        }
+        
+        var grid2: some View {
             HStack {
                 Text(maxString)
                     .opacity(0.001)
@@ -99,18 +121,19 @@ struct NowView: View {
                             .padding(.top, 8)
                         ScrollView(.vertical, showsIndicators: false) {
                             ZStack {
-                                VStack(spacing: 2) {
+                                VStack(spacing: 0) {
                                     ForEach(sortedData) { item in
                                         bar(item: item)
                                     }
                                 }
-                                .padding(.bottom, 8)
+                                .padding(.bottom)
                                 
                                 grid
                             }
                         }
                     }
                     .padding(.trailing)
+                    .padding(.bottom, 8)
                     .sheet(isPresented: $showCountryDetail) {
                         CountryTrendsView()
                             .environmentObject(self.store)
@@ -121,9 +144,9 @@ struct NowView: View {
                         .padding(.top)
                         .foregroundColor(.systemRed)
                         .opacity(0.6)
-
+                    
                     FetchDataButton()
-
+                    
                     Spacer()
                 }
             }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Source: Identifiable, Codable {
+struct Source: Identifiable, Codable, Hashable {
     let id = UUID()
     let region: String
     let geoType: GeoType
