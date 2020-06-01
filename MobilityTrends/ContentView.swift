@@ -40,10 +40,11 @@ struct ContentView: View {
             }
             .tag(2)
             
-            SearchView(selection: $store.query)
+            FavoritesView()
+//            SearchView(selection: $store.query)
                 .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("Search")
+                    Image(systemName: "star")// "magnifyingglass")
+                    Text("Favs")//"Search")
             }
             .tag(3)
             

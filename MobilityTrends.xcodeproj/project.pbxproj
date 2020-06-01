@@ -52,6 +52,12 @@
 		2A89C2E72466177A00D8D113 /* Mobility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A89C2E62466177A00D8D113 /* Mobility.swift */; };
 		2A901F8F2485012400C6293C /* Periodicity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A901F8E2485012400C6293C /* Periodicity.swift */; };
 		2A901F912485027800C6293C /* VerticalGrigLabels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A901F902485027800C6293C /* VerticalGrigLabels.swift */; };
+		2A9D844D248534E6007DBD33 /* ChartsLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 2A9D844C248534E6007DBD33 /* ChartsLibrary */; };
+		2A9D844F248534E6007DBD33 /* CollectionLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 2A9D844E248534E6007DBD33 /* CollectionLibrary */; };
+		2A9D845124853534007DBD33 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9D845024853534007DBD33 /* FavoritesView.swift */; };
+		2A9D845424853674007DBD33 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9D845324853674007DBD33 /* CardView.swift */; };
+		2A9D84562485370E007DBD33 /* LineChartCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9D84552485370E007DBD33 /* LineChartCard.swift */; };
+		2A9D84582485377A007DBD33 /* series.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9D84572485377A007DBD33 /* series.swift */; };
 		2AC582BE24669446002E2FBD /* Ext+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC582BD24669446002E2FBD /* Ext+Bundle.swift */; };
 		2AC582C12466DB9E002E2FBD /* applemobilitytrends.json in Resources */ = {isa = PBXBuildFile; fileRef = 2AC582C02466D8BD002E2FBD /* applemobilitytrends.json */; };
 		2AC582C324674E04002E2FBD /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC582C224674E04002E2FBD /* Region.swift */; };
@@ -113,6 +119,12 @@
 		2A89C2E62466177A00D8D113 /* Mobility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mobility.swift; sourceTree = "<group>"; };
 		2A901F8E2485012400C6293C /* Periodicity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Periodicity.swift; sourceTree = "<group>"; };
 		2A901F902485027800C6293C /* VerticalGrigLabels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalGrigLabels.swift; sourceTree = "<group>"; };
+		2A9D844A248534CB007DBD33 /* ChartsLibrary */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ChartsLibrary; path = "../../Charts and Collection Libraries Folder/ChartsLibrary"; sourceTree = "<group>"; };
+		2A9D844B248534DD007DBD33 /* CollectionLibrary */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CollectionLibrary; path = "../../Charts and Collection Libraries Folder/CollectionLibrary"; sourceTree = "<group>"; };
+		2A9D845024853534007DBD33 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
+		2A9D845324853674007DBD33 /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		2A9D84552485370E007DBD33 /* LineChartCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChartCard.swift; sourceTree = "<group>"; };
+		2A9D84572485377A007DBD33 /* series.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = series.swift; sourceTree = "<group>"; };
 		2AC582BD24669446002E2FBD /* Ext+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+Bundle.swift"; sourceTree = "<group>"; };
 		2AC582C02466D8BD002E2FBD /* applemobilitytrends.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = applemobilitytrends.json; sourceTree = "<group>"; };
 		2AC582C224674E04002E2FBD /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
@@ -133,6 +145,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A09EDF62463593E0021FC7D /* SwiftPI in Frameworks */,
+				2A9D844F248534E6007DBD33 /* CollectionLibrary in Frameworks */,
+				2A9D844D248534E6007DBD33 /* ChartsLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,6 +158,7 @@
 			children = (
 				2A09EDDB246356900021FC7D /* MobilityTrends */,
 				2A09EDDA246356900021FC7D /* Products */,
+				2A9D8448248534A8007DBD33 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -161,6 +176,7 @@
 				2A09EDDC246356900021FC7D /* AppDelegate.swift */,
 				2A09EDDE246356900021FC7D /* SceneDelegate.swift */,
 				2A09EDE0246356900021FC7D /* ContentView.swift */,
+				2A9D845224853630007DBD33 /* Favorites View */,
 				2A830256248287C70086A6C4 /* Preview Tweaks */,
 				2A1788A424771D3A007D1340 /* SettingsView.swift */,
 				2A7CA1EB2482825D0086FB9C /* Extensions */,
@@ -172,7 +188,7 @@
 				2AF62435246848A5007CCF62 /* Country Charts */,
 				2AF6243424684898007CCF62 /* One Chart View */,
 				2AF62436246848AF007CCF62 /* Search View */,
-				2AF62437246848B8007CCF62 /* Favorites View */,
+				2AF62437246848B8007CCF62 /* Favorite Regions View */,
 				2AF4360524649C8200212222 /* Graph Shapes */,
 				2A28BB2C2465F25C0041EDD5 /* View Model */,
 				2A09EDF7246364BB0021FC7D /* Model */,
@@ -309,6 +325,26 @@
 			path = "Usage Example";
 			sourceTree = "<group>";
 		};
+		2A9D8448248534A8007DBD33 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A9D844B248534DD007DBD33 /* CollectionLibrary */,
+				2A9D844A248534CB007DBD33 /* ChartsLibrary */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2A9D845224853630007DBD33 /* Favorites View */ = {
+			isa = PBXGroup;
+			children = (
+				2A9D845024853534007DBD33 /* FavoritesView.swift */,
+				2A9D845324853674007DBD33 /* CardView.swift */,
+				2A9D84552485370E007DBD33 /* LineChartCard.swift */,
+				2A9D84572485377A007DBD33 /* series.swift */,
+			);
+			path = "Favorites View";
+			sourceTree = "<group>";
+		};
 		2AC960B32469FF140080D930 /* XScale */ = {
 			isa = PBXGroup;
 			children = (
@@ -363,12 +399,12 @@
 			path = "Search View";
 			sourceTree = "<group>";
 		};
-		2AF62437246848B8007CCF62 /* Favorites View */ = {
+		2AF62437246848B8007CCF62 /* Favorite Regions View */ = {
 			isa = PBXGroup;
 			children = (
 				2A0BD5C12464529D00D98C96 /* FavoriteRegionsView.swift */,
 			);
-			path = "Favorites View";
+			path = "Favorite Regions View";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -389,6 +425,8 @@
 			name = MobilityTrends;
 			packageProductDependencies = (
 				2A09EDF52463593E0021FC7D /* SwiftPI */,
+				2A9D844C248534E6007DBD33 /* ChartsLibrary */,
+				2A9D844E248534E6007DBD33 /* CollectionLibrary */,
 			);
 			productName = MobilityTrends;
 			productReference = 2A09EDD9246356900021FC7D /* MobilityTrends.app */;
@@ -452,6 +490,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AF62446246973D4007CCF62 /* XScaleView.swift in Sources */,
+				2A9D84562485370E007DBD33 /* LineChartCard.swift in Sources */,
 				2A09EDFC24636BDF0021FC7D /* Ext+URLSession.swift in Sources */,
 				2AF8C02B24783D6A00611252 /* MobilityData.swift in Sources */,
 				2AC582BE24669446002E2FBD /* Ext+Bundle.swift in Sources */,
@@ -497,7 +536,10 @@
 				2A8302582484FC520086A6C4 /* VerticalGrid.swift in Sources */,
 				2A28BB0D2464A47F0041EDD5 /* GraphGridShape.swift in Sources */,
 				2A28BB2224656F130041EDD5 /* FavoriteRegionPickerButton.swift in Sources */,
+				2A9D845424853674007DBD33 /* CardView.swift in Sources */,
+				2A9D84582485377A007DBD33 /* series.swift in Sources */,
 				2A83025A2484FD070086A6C4 /* VerticalGridView.swift in Sources */,
+				2A9D845124853534007DBD33 /* FavoritesView.swift in Sources */,
 				2A28BB2024656C1B0041EDD5 /* RegionPicker.swift in Sources */,
 				2A09EDF9246366EC0021FC7D /* MobilityTrendsAPI.swift in Sources */,
 				2A1788A524771D3A007D1340 /* SettingsView.swift in Sources */,
@@ -711,6 +753,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2A09EDF42463593E0021FC7D /* XCRemoteSwiftPackageReference "SwiftPI" */;
 			productName = SwiftPI;
+		};
+		2A9D844C248534E6007DBD33 /* ChartsLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ChartsLibrary;
+		};
+		2A9D844E248534E6007DBD33 /* CollectionLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CollectionLibrary;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

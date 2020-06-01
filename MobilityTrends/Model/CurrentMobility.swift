@@ -7,10 +7,11 @@
 //
 
 import SwiftUI
+import SwiftPI
 
 struct CurrentMobility {
     
-    struct MobilityIndexItem: Hashable {
+    private struct MobilityIndexItem: Hashable {
         let region: String
         let geoType: GeoType
         let transport: TransportType
@@ -18,7 +19,7 @@ struct CurrentMobility {
     }
     
     private var mobilityIndexData: [MobilityIndexItem]
-//    private var mobilityIndexData: Set<MobilityIndexItem>
+    //    private var mobilityIndexData: Set<MobilityIndexItem>
     
     struct MobilityIndex: Identifiable {
         var id = UUID()
@@ -63,5 +64,15 @@ struct CurrentMobility {
         return mobilityIndexData
             .filter { $0.geoType == geoType && $0.transport == transport }
             .map { MobilityIndex(region: $0.region, value: $0.value, normalized: $0.value / maxValue) }
+    }
+    
+    func mobilityIndex(region: String, geoType: GeoType, transport: TransportType) -> String {
+        
+         let value = mobilityIndexData
+            .first(where: { $0.region == region && $0.geoType == geoType && $0.transport == transport })?
+        .value
+        let valueStr = value == nil ? "n/a" : Double(value!).formattedGroupedWith1Decimal
+        
+        return valueStr
     }
 }

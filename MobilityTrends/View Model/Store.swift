@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 import SwiftPI
 import Combine
+import CollectionLibrary
 
 final class Store: ObservableObject {
     let baseline: Double = 100
@@ -34,6 +35,12 @@ final class Store: ObservableObject {
         didSet {
             saveMobilityData()
         }
+    }
+    
+    //  MARK: - слишком затратное обновление!!
+    //  TODO: - сделать хранимой переменной, обновляемой по издателю
+    func collection(for favorites: [String]) -> [CollectionRow] {
+        mobilityData.collection(for: favorites)
     }
     
     @Published private(set) var updateStatus: UpdateStatus = .ready {
